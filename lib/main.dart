@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MainApp());
+import 'config/constants/enviroment.dart';
+import 'config/router/app_router_provider.dart';
+
+void main() async {
+  await Enviroment.initEnviroment();
+  runApp(const ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  late final WebViewController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    final WebViewController controller = WebViewController();
-    controller
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadRequest(Uri.parse('https://puebly.com'));
-    _controller = controller;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WebViewWidget(controller: _controller);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appRouter = ref.watch(appRouterProvider);
+    return MaterialApp.router(
+      routerConfig: appRouter,
+    );
   }
 }
