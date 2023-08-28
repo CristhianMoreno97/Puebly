@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:puebly/config/constants/enviroment.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MainScreen extends StatelessWidget {
@@ -55,7 +57,8 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
         },
       ))
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(Enviroment.webUrl));
+      ..loadRequest(Uri.parse(Enviroment.webUrl))
+      ..setBackgroundColor(Colors.white);
     _webViewController = controller;
   }
 
@@ -146,6 +149,8 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
             icon: Icon(Icons.place_outlined),
             selectedIcon: Icon(Icons.place_rounded),
           ),
+          SizedBox(height: 64),
+          _WhatsappButton(),
         ],
       ),
       body: Stack(
@@ -158,6 +163,52 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
               value: loadingPercentage / 100,
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _WhatsappButton extends StatelessWidget {
+  const _WhatsappButton();
+
+  Future<void> launchWhatsapp(BuildContext context) async {
+    var whatsapp = "+573124270705";
+    var whatsappAndroid =
+        Uri.parse("whatsapp://send?phone=$whatsapp&text=Hola Puebly");
+    if (await canLaunchUrl(whatsappAndroid)) {
+      await launchUrl(whatsappAndroid);
+    } else {
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('La aplicación de WhatsApp no está instalada.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            ColorManager.secondary,
+          ),
+        ),
+        onPressed: () => launchWhatsapp(context),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FaIcon(FontAwesomeIcons.whatsapp, color: Colors.white),
+            SizedBox(width: 10),
+            Text('Chatea con nosotros', style: TextStyle(color: Colors.white)),
+          ],
+        ),
       ),
     );
   }
