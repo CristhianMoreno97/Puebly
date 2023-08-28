@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puebly/config/theme/app_theme.dart';
 
 import 'config/constants/enviroment.dart';
 import 'config/router/app_router_provider.dart';
@@ -17,6 +18,7 @@ class MainApp extends ConsumerWidget {
     final appRouter = ref.watch(appRouterProvider);
     return MaterialApp.router(
       routerConfig: appRouter,
+      theme: AppTheme().getTheme(),
     );
   }
 }
