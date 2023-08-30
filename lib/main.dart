@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/app_theme.dart';
 
-import 'config/constants/enviroment.dart';
+import 'config/constants/enviroment_constants.dart';
 import 'config/router/app_router_provider.dart';
 
 void main() async {
-  await Enviroment.initEnviroment();
+  await EnviromentConstants.initEnviroment();
   runApp(const ProviderScope(child: MainApp()));
 }
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:puebly/config/constants/enviroment.dart';
+import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,61 +24,66 @@ class WebViewWithDrawer extends StatefulWidget {
 
 class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late WebViewController _webViewController;
-  int navDrawerIndex = 0;
+
   int webviewContentLoadPercentage = 0;
 
-  void _drawerCloser() {
-    if (_scaffoldKey.currentState!.isDrawerOpen) {
-      Navigator.pop(context);
-    }
+  void _updateWebviewContentLoadPercentage(int progress) {
+    setState(() {
+      webviewContentLoadPercentage = progress;
+    });
   }
 
-  void _navigateToPath(String path) {
-    final url = Uri.parse('${Enviroment.webUrl}$path');
-    _webViewController.loadRequest(url);
-    _drawerCloser();
+  NavigationDelegate _controllerNavigationDelegate() {
+    return NavigationDelegate(
+      onPageStarted: (_) {
+        _updateWebviewContentLoadPercentage(0);
+      },
+      onProgress: (int progress) {
+        _updateWebviewContentLoadPercentage(progress);
+      },
+      onPageFinished: (_) {
+        _updateWebviewContentLoadPercentage(100);
+      },
+    );
   }
+
+  late WebViewController _webViewController;
 
   @override
   void initState() {
-    final homeUrl = Uri.parse(Enviroment.webUrl);
+    final homeUrl = Uri.parse(EnviromentConstants.webUrl);
     final WebViewController controller = WebViewController();
 
     controller
+      ..loadRequest(homeUrl)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.white)
-      ..loadRequest(homeUrl)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (String url) {
-            setState(
-              () {
-                webviewContentLoadPercentage = 0;
-              },
-            );
-          },
-          onProgress: (int progress) {
-            setState(
-              () {
-                webviewContentLoadPercentage = progress;
-              },
-            );
-          },
-          onPageFinished: (String url) {
-            setState(
-              () {
-                webviewContentLoadPercentage = 100;
-              },
-            );
-          },
-        ),
-      );
+      ..setNavigationDelegate(_controllerNavigationDelegate());
 
     _webViewController = controller;
 
     super.initState(); // ??? en que momento es adecuado ejecutar esto?
   }
+
+  static const DecorationImage headerImage = DecorationImage(
+    image: AssetImage('assets/images/logo-puebly.png'),
+    alignment: Alignment(-0.25, 0),
+  );
+
+  final Widget _header = Container(
+    height: 40,
+    decoration: const BoxDecoration(
+      image: headerImage,
+    ),
+  );
+
+  void _changeWebViewPath(String path) {
+    final url = Uri.parse('${EnviromentConstants.webUrl}$path');
+    _webViewController.loadRequest(url);
+    Utils.drawerCloser(context, _scaffoldKey);
+  }
+
+  int navDrawerIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -86,14 +92,7 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
       appBar: AppBar(
         backgroundColor: ColorManager.colorSeed,
         toolbarHeight: 64,
-        title: Container(
-          height: 40,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                alignment: Alignment(-0.25, 0),
-                image: AssetImage('assets/images/logo-puebly.png')),
-          ),
-        ),
+        title: _header,
         leadingWidth: 64,
         leading: Row(
           children: [
@@ -133,52 +132,52 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
           });
           switch (index) {
             case 0:
-              _navigateToPath('/');
+              _changeWebViewPath('/');
               break;
             case 1:
-              _navigateToPath('/empleo');
+              _changeWebViewPath('/empleo');
               break;
             case 2:
-              _navigateToPath('/plaza');
+              _changeWebViewPath('/plaza');
               break;
             case 3:
-              _navigateToPath('/Comercio');
+              _changeWebViewPath('/Comercio');
               break;
             case 4:
-              _navigateToPath('/Turismo');
+              _changeWebViewPath('/Turismo');
               break;
             default:
           }
         },
-        children: const <Widget>[
-          SizedBox(height: 16),
-          NavigationDrawerDestination(
+        children: <Widget>[
+          const SizedBox(height: 16),
+          const NavigationDrawerDestination(
             label: Text('Inicio'),
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
           ),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
             label: Text('Empleo'),
             icon: Icon(Icons.work_outline_outlined),
             selectedIcon: Icon(Icons.work_outlined),
           ),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
             label: Text('Plaza'),
             icon: Icon(Icons.shopping_basket_outlined),
             selectedIcon: Icon(Icons.shopping_basket_rounded),
           ),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
             label: Text('Comercio'),
             icon: Icon(Icons.storefront_outlined),
             selectedIcon: Icon(Icons.storefront_rounded),
           ),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
             label: Text('Turismo'),
             icon: Icon(Icons.place_outlined),
             selectedIcon: Icon(Icons.place_rounded),
           ),
-          SizedBox(height: 16),
-          _WhatsappButton(),
+          const SizedBox(height: 16),
+          _WhatsappButton(_scaffoldKey),
         ],
       ),
       body: Stack(
@@ -197,24 +196,29 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
 }
 
 class _WhatsappButton extends StatelessWidget {
-  const _WhatsappButton();
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
-  Future<void> launchWhatsapp(BuildContext context) async {
-    var whatsapp = "+573124270705";
-    var whatsappAndroid =
-        Uri.parse("whatsapp://send?phone=$whatsapp&text=Hola Puebly");
+  const _WhatsappButton(this._scaffoldKey);
+
+  Future<void> _launchWhatsapp(BuildContext context,
+      {String message = ''}) async {
+    final whatsapp = EnviromentConstants.whatsappNumber;
+    final whatsappAndroid =
+        Uri.parse('whatsapp://send?phone=$whatsapp&text=$message');
+
     if (await canLaunchUrl(whatsappAndroid)) {
       await launchUrl(whatsappAndroid);
-    } else {
-      if (context.mounted) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('La aplicación de WhatsApp no está instalada.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      return;
+    }
+
+    if (context.mounted) {
+      Utils.showSnackBar(
+        context,
+        _scaffoldKey,
+        'No se pudo abrir WhatsApp. \nAsegúrate de tener la aplicación instalada.',
+        backgroundColor: Colors.red,
+      );
+      Utils.drawerCloser(context, _scaffoldKey);
     }
   }
 
@@ -236,7 +240,7 @@ class _WhatsappButton extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () => launchWhatsapp(context),
+        onPressed: () => _launchWhatsapp(context, message: 'Hola Puebly, '),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
