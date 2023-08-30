@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'color_manager.dart';
 
 class AppTheme {
+  final bool isDarkMode;
+
+  const AppTheme({this.isDarkMode = true});
+
   ThemeData getTheme() => ThemeData(
         useMaterial3: true,
         colorSchemeSeed: ColorManager.colorSeed,
+        brightness: isDarkMode ? Brightness.dark : Brightness.light,
 
         /// drawer
         drawerTheme: const DrawerThemeData(
-          backgroundColor: Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(8),
@@ -23,25 +27,27 @@ class AppTheme {
             ),
           ),
         ),
-        navigationDrawerTheme: const NavigationDrawerThemeData(
+        navigationDrawerTheme: NavigationDrawerThemeData(
           tileHeight: 80,
-          elevation: 1,
-          indicatorSize: Size.fromHeight(double.infinity),
+          indicatorSize: const Size.fromHeight(double.infinity),
           indicatorColor: ColorManager.colorSeed,
-          iconTheme: MaterialStatePropertyAll(
+          surfaceTintColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          elevation: 0,
+          iconTheme: const MaterialStatePropertyAll(
             IconThemeData(
-              color: Colors.white,
               size: 60,
             ),
           ),
-          labelTextStyle: MaterialStatePropertyAll(
+          labelTextStyle: const MaterialStatePropertyAll(
             TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
           ),
-          indicatorShape: RoundedRectangleBorder(
+          indicatorShape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(16),
               bottomRight: Radius.circular(16),
@@ -49,7 +55,6 @@ class AppTheme {
               topLeft: Radius.circular(16),
             ),
           ),
-          
         ),
 
         /// Text
@@ -59,6 +64,6 @@ class AppTheme {
             fontSize: 20,
             fontWeight: FontWeight.w700,
           ),
-        )
+        ),
       );
 }

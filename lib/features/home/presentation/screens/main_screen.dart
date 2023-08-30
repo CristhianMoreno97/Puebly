@@ -157,9 +157,11 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
         ),
       ),
       drawer: NavigationDrawer(
-        //backgroundColor: ColorManager.background,
         selectedIndex: navDrawerIndex,
-        elevation: 1,
+        backgroundColor: Theme.of(context).navigationDrawerTheme.backgroundColor,
+        elevation: Theme.of(context).navigationDrawerTheme.elevation,
+        shadowColor: Theme.of(context).navigationDrawerTheme.shadowColor,
+        surfaceTintColor: Theme.of(context).navigationDrawerTheme.surfaceTintColor,
         onDestinationSelected: (index) {
           setState(() {
             navDrawerIndex = index;
@@ -222,17 +224,28 @@ class _WhatsappButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: ElevatedButton(
-        style: StyleManager.whatsappButtonStyle(context,
-            bgColor: ColorManager.secondary),
+        style: StyleManager.whatsappButtonStyle(
+          context,
+          bgColor: ColorManager.secondary,
+        ),
         onPressed: () => _launchWhatsapp(context, message: 'Hola Puebly, '),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(width: 24),
-            FaIcon(FontAwesomeIcons.whatsapp, color: Colors.black, size: 56),
-            SizedBox(width: 16),
-            Text('Comunicate con Puebly',
-                style: TextStyle(color: Colors.black)),
+            const SizedBox(width: 24),
+            const FaIcon(
+              FontAwesomeIcons.whatsapp,
+              color: Colors.white,
+              size: 56,
+            ),
+            const SizedBox(width: 16),
+            Text(
+              'Comunicate con Puebly',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    //color: Colors.black,
+                    fontSize: 18,
+                  ),
+            ),
           ],
         ),
       ),

@@ -18,7 +18,7 @@ class MainApp extends ConsumerWidget {
     final appRouter = ref.watch(appRouterProvider);
     return MaterialApp.router(
       routerConfig: appRouter,
-      theme: AppTheme().getTheme(),
+      theme: const AppTheme().getTheme(),
     );
   }
 }
