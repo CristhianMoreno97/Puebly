@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/config/theme/style_manager.dart';
+import 'package:puebly/features/home/presentation/navigation_drawer_item.dart';
 import 'package:puebly/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -26,11 +27,11 @@ class WebViewWithDrawer extends StatefulWidget {
 class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int webviewContentLoadPercentage = 0;
+  int webViewLoadingProgress = 0;
 
   void _updateWebviewContentLoadPercentage(int progress) {
     setState(() {
-      webviewContentLoadPercentage = progress;
+      webViewLoadingProgress = progress;
     });
   }
 
@@ -103,6 +104,34 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
     );
   }
 
+  final List<NavigationDrawerItem> drawerItems = [
+    NavigationDrawerItem(
+        label: 'Inicio',
+        urlPath: '/',
+        icon: const Icon(Icons.home_outlined),
+        selectedIcon: const Icon(Icons.home)),
+    NavigationDrawerItem(
+        label: 'Empleo',
+        urlPath: '/app-empleo',
+        icon: const Icon(Icons.work_outline_outlined),
+        selectedIcon: const Icon(Icons.work_outlined)),
+    NavigationDrawerItem(
+        label: 'Plaza',
+        urlPath: '/app-plaza',
+        icon: const Icon(Icons.shopping_basket_outlined),
+        selectedIcon: const Icon(Icons.shopping_basket_rounded)),
+    NavigationDrawerItem(
+        label: 'Comercio',
+        urlPath: '/app-comercio',
+        icon: const Icon(Icons.storefront_outlined),
+        selectedIcon: const Icon(Icons.storefront_rounded)),
+    NavigationDrawerItem(
+        label: 'Turismo',
+        urlPath: '/app-turismo',
+        icon: const Icon(Icons.place_outlined),
+        selectedIcon: const Icon(Icons.place_rounded)),
+  ];
+
   void _changeWebViewPath(String path) {
     final url = Uri.parse('${EnviromentConstants.webUrl}$path');
     _webViewController.loadRequest(url);
@@ -135,52 +164,17 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
           setState(() {
             navDrawerIndex = index;
           });
-          switch (index) {
-            case 0:
-              _changeWebViewPath('/');
-              break;
-            case 1:
-              _changeWebViewPath('/empleo');
-              break;
-            case 2:
-              _changeWebViewPath('/plaza');
-              break;
-            case 3:
-              _changeWebViewPath('/Comercio');
-              break;
-            case 4:
-              _changeWebViewPath('/Turismo');
-              break;
-            default:
+          if (index < drawerItems.length) {
+            final path = drawerItems[index].urlPath;
+            _changeWebViewPath(path);
           }
         },
         children: <Widget>[
           const SizedBox(height: 16),
-          const NavigationDrawerDestination(
-            label: Text('Inicio'),
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-          ),
-          const NavigationDrawerDestination(
-            label: Text('Empleo'),
-            icon: Icon(Icons.work_outline_outlined),
-            selectedIcon: Icon(Icons.work_outlined),
-          ),
-          const NavigationDrawerDestination(
-            label: Text('Plaza'),
-            icon: Icon(Icons.shopping_basket_outlined),
-            selectedIcon: Icon(Icons.shopping_basket_rounded),
-          ),
-          const NavigationDrawerDestination(
-            label: Text('Comercio'),
-            icon: Icon(Icons.storefront_outlined),
-            selectedIcon: Icon(Icons.storefront_rounded),
-          ),
-          const NavigationDrawerDestination(
-            label: Text('Turismo'),
-            icon: Icon(Icons.place_outlined),
-            selectedIcon: Icon(Icons.place_rounded),
-          ),
+          ...drawerItems.map((item) => NavigationDrawerDestination(
+              label: Text(item.label),
+              icon: item.icon,
+              selectedIcon: item.selectedIcon)),
           const SizedBox(height: 16),
           _WhatsappButton(_scaffoldKey),
         ],
@@ -188,10 +182,8 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
       body: Stack(
         children: [
           WebViewWidget(controller: _webViewController),
-          if (webviewContentLoadPercentage < 100)
-            LinearProgressIndicator(
-              value: webviewContentLoadPercentage / 100,
-            ),
+          if (webViewLoadingProgress < 100)
+            LinearProgressIndicator(value: webViewLoadingProgress / 100),
         ],
       ),
     );
