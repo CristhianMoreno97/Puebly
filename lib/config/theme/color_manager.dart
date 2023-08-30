@@ -10,4 +10,7 @@ class ColorManager {
   static const Color inputFocusBorder = Color(0xffFFA51B);
   static const Color inputLabel = Color(0xFF89A688);
   static const Color inputFloatingLabel = Color(0xFF304D2F);
+
+  // others
+  static const Color whastapp = Color(0xff25D366);
 }

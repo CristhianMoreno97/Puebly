@@ -10,6 +10,15 @@ class Utils {
     }
   }
 
+ static void drawerOpener(
+    BuildContext context,
+    GlobalKey<ScaffoldState> scaffoldKey,
+  ) {
+    if (!scaffoldKey.currentState!.isDrawerOpen) {
+      scaffoldKey.currentState!.openDrawer();
+    }
+  }
+
   static void showSnackBar(
     BuildContext context,
     GlobalKey<ScaffoldState> scaffoldKey,
@@ -26,4 +35,6 @@ class Utils {
       );
     }
   }
+
+
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/config/theme/style_manager.dart';
 import 'package:puebly/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -77,6 +78,31 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
     ),
   );
 
+  IconButton menuButton() {
+    return IconButton(
+      icon: const Icon(
+        Icons.menu,
+        size: 40,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        Utils.drawerOpener(context, _scaffoldKey);
+      },
+      padding: const EdgeInsets.all(8),
+      visualDensity: VisualDensity.compact,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          Colors.black,
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+
   void _changeWebViewPath(String path) {
     final url = Uri.parse('${EnviromentConstants.webUrl}$path');
     _webViewController.loadRequest(url);
@@ -97,28 +123,7 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
         leading: Row(
           children: [
             const SizedBox(width: 8),
-            IconButton.filled(
-              padding: const EdgeInsets.all(8),
-              visualDensity: VisualDensity.compact,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Colors.black,
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              icon: const Icon(
-                Icons.menu,
-                size: 40,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                _scaffoldKey.currentState!.openDrawer();
-              },
-            ),
+            menuButton(),
           ],
         ),
       ),
@@ -182,9 +187,7 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
       ),
       body: Stack(
         children: [
-          WebViewWidget(
-            controller: _webViewController,
-          ),
+          WebViewWidget(controller: _webViewController),
           if (webviewContentLoadPercentage < 100)
             LinearProgressIndicator(
               value: webviewContentLoadPercentage / 100,
@@ -227,19 +230,8 @@ class _WhatsappButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-            ColorManager.secondary,
-          ),
-          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-            const EdgeInsets.symmetric(vertical: 8),
-          ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-        ),
+        style: StyleManager.whatsappButtonStyle(context,
+            bgColor: ColorManager.secondary),
         onPressed: () => _launchWhatsapp(context, message: 'Hola Puebly, '),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.start,
