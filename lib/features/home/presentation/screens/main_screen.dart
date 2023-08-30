@@ -25,41 +25,58 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late WebViewController _webViewController;
   int navDrawerIndex = 0;
-  int loadingPercentage = 0;
+  int webviewContentLoadPercentage = 0;
+
+  void _drawerCloser() {
+    if (_scaffoldKey.currentState!.isDrawerOpen) {
+      Navigator.pop(context);
+    }
+  }
 
   void _navigateToPath(String path) {
-    _webViewController.loadRequest(
-      Uri.parse('${Enviroment.webUrl}$path'),
-    );
-    Navigator.pop(context); // Cierra el NavigationDrawer
+    final url = Uri.parse('${Enviroment.webUrl}$path');
+    _webViewController.loadRequest(url);
+    _drawerCloser();
   }
 
   @override
   void initState() {
-    super.initState();
+    final homeUrl = Uri.parse(Enviroment.webUrl);
     final WebViewController controller = WebViewController();
+
     controller
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (String url) {
-          setState(() {
-            loadingPercentage = 0;
-          });
-        },
-        onProgress: (int progress) {
-          setState(() {
-            loadingPercentage = progress;
-          });
-        },
-        onPageFinished: (String url) {
-          setState(() {
-            loadingPercentage = 100;
-          });
-        },
-      ))
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(Enviroment.webUrl))
-      ..setBackgroundColor(Colors.white);
+      ..setBackgroundColor(Colors.white)
+      ..loadRequest(homeUrl)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            setState(
+              () {
+                webviewContentLoadPercentage = 0;
+              },
+            );
+          },
+          onProgress: (int progress) {
+            setState(
+              () {
+                webviewContentLoadPercentage = progress;
+              },
+            );
+          },
+          onPageFinished: (String url) {
+            setState(
+              () {
+                webviewContentLoadPercentage = 100;
+              },
+            );
+          },
+        ),
+      );
+
     _webViewController = controller;
+
+    super.initState(); // ??? en que momento es adecuado ejecutar esto?
   }
 
   @override
@@ -67,25 +84,47 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: ColorManager.colorSeed,
+        toolbarHeight: 64,
         title: Container(
           height: 40,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              alignment: Alignment(-0.25, 0),
-              image: AssetImage(
-                  'assets/images/logo-puebly.png'), // Reemplaza 'ruta_de_la_imagen' con la ruta de tu imagen personalizada
-            ),
+                alignment: Alignment(-0.25, 0),
+                image: AssetImage('assets/images/logo-puebly.png')),
           ),
         ),
-        backgroundColor: ColorManager.colorSeed,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState!.openDrawer();
-          },
+        leadingWidth: 64,
+        leading: Row(
+          children: [
+            const SizedBox(width: 8),
+            IconButton.filled(
+              padding: const EdgeInsets.all(8),
+              visualDensity: VisualDensity.compact,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black,
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              icon: const Icon(
+                Icons.menu,
+                size: 40,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _scaffoldKey.currentState!.openDrawer();
+              },
+            ),
+          ],
         ),
       ),
       drawer: NavigationDrawer(
+        //backgroundColor: ColorManager.background,
         selectedIndex: navDrawerIndex,
         elevation: 1,
         onDestinationSelected: (index) {
@@ -112,30 +151,19 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
           }
         },
         children: const <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-                //color: Colors.blue,
-                ),
-            child: Text(
-              'Secciones',
-              style: TextStyle(
-                //color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
-          ),
+          SizedBox(height: 16),
           NavigationDrawerDestination(
             label: Text('Inicio'),
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
           ),
           NavigationDrawerDestination(
-            label: Text('empleo'),
+            label: Text('Empleo'),
             icon: Icon(Icons.work_outline_outlined),
             selectedIcon: Icon(Icons.work_outlined),
           ),
           NavigationDrawerDestination(
-            label: Text('plaza'),
+            label: Text('Plaza'),
             icon: Icon(Icons.shopping_basket_outlined),
             selectedIcon: Icon(Icons.shopping_basket_rounded),
           ),
@@ -149,7 +177,7 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
             icon: Icon(Icons.place_outlined),
             selectedIcon: Icon(Icons.place_rounded),
           ),
-          SizedBox(height: 64),
+          SizedBox(height: 16),
           _WhatsappButton(),
         ],
       ),
@@ -158,9 +186,9 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
           WebViewWidget(
             controller: _webViewController,
           ),
-          if (loadingPercentage < 100)
+          if (webviewContentLoadPercentage < 100)
             LinearProgressIndicator(
-              value: loadingPercentage / 100,
+              value: webviewContentLoadPercentage / 100,
             ),
         ],
       ),
@@ -193,20 +221,30 @@ class _WhatsappButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
             ColorManager.secondary,
           ),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+            const EdgeInsets.symmetric(vertical: 8),
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
         ),
         onPressed: () => launchWhatsapp(context),
         child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FaIcon(FontAwesomeIcons.whatsapp, color: Colors.white),
-            SizedBox(width: 10),
-            Text('Chatea con nosotros', style: TextStyle(color: Colors.white)),
+            SizedBox(width: 24),
+            FaIcon(FontAwesomeIcons.whatsapp, color: Colors.black, size: 56),
+            SizedBox(width: 16),
+            Text('Comunicate con Puebly',
+                style: TextStyle(color: Colors.black)),
           ],
         ),
       ),
