@@ -40,9 +40,9 @@ class AppTheme {
               size: 60,
             ),
           ),
-          labelTextStyle: const MaterialStatePropertyAll(
+          labelTextStyle: MaterialStatePropertyAll(
             TextStyle(
-              color: Colors.white,
+              color: isDarkMode ? Colors.white : Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),

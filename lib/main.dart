@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/app_theme.dart';
+import 'package:puebly/features/home/presentation/providers/is_dark_mode_provider.dart';
 
 import 'config/constants/enviroment_constants.dart';
 import 'config/router/app_router_provider.dart';
@@ -16,9 +17,10 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appRouter = ref.watch(appRouterProvider);
+    final isDarkMode = ref.watch(isDarkModeProvider);
     return MaterialApp.router(
       routerConfig: appRouter,
-      theme: const AppTheme().getTheme(),
+      theme: AppTheme(isDarkMode: isDarkMode).getTheme(),
     );
   }
 }

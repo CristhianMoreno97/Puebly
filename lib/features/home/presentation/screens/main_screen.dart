@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/config/theme/style_manager.dart';
 import 'package:puebly/features/home/presentation/navigation_drawer_item.dart';
+import 'package:puebly/features/home/presentation/providers/is_dark_mode_provider.dart';
 import 'package:puebly/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -17,14 +19,14 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-class WebViewWithDrawer extends StatefulWidget {
+class WebViewWithDrawer extends ConsumerStatefulWidget {
   const WebViewWithDrawer({super.key});
 
   @override
-  State<WebViewWithDrawer> createState() => _WebViewWithDrawerState();
+  WebViewWithDrawerState createState() => WebViewWithDrawerState();
 }
 
-class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
+class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int webViewLoadingProgress = 0;
@@ -138,10 +140,36 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
     Utils.drawerCloser(context, _scaffoldKey);
   }
 
+  Widget _darkModeButton(bool isDarkMode) {
+    return SizedBox(
+      height: 64,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            isDarkMode ? Colors.black : Colors.white,
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+        ),
+        child: Icon(
+          isDarkMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+          size: 32,
+        ),
+        onPressed: () {
+          ref.read(isDarkModeProvider.notifier).update((state) => !state);
+        },
+      ),
+    );
+  }
+
   int navDrawerIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(isDarkModeProvider);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -158,10 +186,12 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
       ),
       drawer: NavigationDrawer(
         selectedIndex: navDrawerIndex,
-        backgroundColor: Theme.of(context).navigationDrawerTheme.backgroundColor,
+        backgroundColor:
+            Theme.of(context).navigationDrawerTheme.backgroundColor,
         elevation: Theme.of(context).navigationDrawerTheme.elevation,
         shadowColor: Theme.of(context).navigationDrawerTheme.shadowColor,
-        surfaceTintColor: Theme.of(context).navigationDrawerTheme.surfaceTintColor,
+        surfaceTintColor:
+            Theme.of(context).navigationDrawerTheme.surfaceTintColor,
         onDestinationSelected: (index) {
           setState(() {
             navDrawerIndex = index;
@@ -179,6 +209,8 @@ class _WebViewWithDrawerState extends State<WebViewWithDrawer> {
               selectedIcon: item.selectedIcon)),
           const SizedBox(height: 16),
           _WhatsappButton(_scaffoldKey),
+          const SizedBox(height: 80),
+          Row(children: [_darkModeButton(isDarkMode)]),
         ],
       ),
       body: Stack(
@@ -242,7 +274,6 @@ class _WhatsappButton extends StatelessWidget {
             Text(
               'Comunicate con Puebly',
               style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    //color: Colors.black,
                     fontSize: 18,
                   ),
             ),
