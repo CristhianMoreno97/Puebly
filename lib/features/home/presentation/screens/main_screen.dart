@@ -31,7 +31,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
 
   int webViewLoadingProgress = 0;
 
-  void _updateWebviewContentLoadPercentage(int progress) {
+  void _updateWebviewLoadingProgress(int progress) {
     setState(() {
       webViewLoadingProgress = progress;
     });
@@ -40,13 +40,13 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
   NavigationDelegate _controllerNavigationDelegate() {
     return NavigationDelegate(
       onPageStarted: (_) {
-        _updateWebviewContentLoadPercentage(0);
+        _updateWebviewLoadingProgress(0);
       },
       onProgress: (int progress) {
-        _updateWebviewContentLoadPercentage(progress);
+        _updateWebviewLoadingProgress(progress);
       },
       onPageFinished: (_) {
-        _updateWebviewContentLoadPercentage(100);
+        _updateWebviewLoadingProgress(100);
       },
     );
   }
