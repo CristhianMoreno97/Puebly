@@ -106,6 +106,100 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     );
   }
 
+  Widget _buildHomeSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildHomeHeader(),
+        Expanded(child: _buildHomeButtons()),
+      ],
+    );
+  }
+
+  Widget _buildHomeHeader() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: Colors.blue,
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "¡Bienvenido a Puebly!",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            "Descubre Boyacá en Cada Rincón.",
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHomeButtons() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        children: [
+          _buildSectionButton(
+              "Comercio", Icons.storefront_outlined, '/app-comercio', 1),
+          _buildSectionButton(
+              "Plaza", Icons.shopping_basket_outlined, '/app-plaza', 2),
+          _buildSectionButton(
+              "Empleo", Icons.work_outline_outlined, '/app-empleo', 3),
+          _buildSectionButton(
+              "Turismo", Icons.place_outlined, '/app-turismo', 4),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionButton(
+      String label, IconData icon, String urlPath, int index) {
+    return ElevatedButton(
+      onPressed: () {
+        _changeWebViewPath(urlPath);
+        setState(() {
+          navDrawerIndex = index;
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 40,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   final List<NavigationDrawerItem> drawerItems = [
     NavigationDrawerItem(
         label: 'Inicio',
@@ -113,20 +207,20 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
         icon: const Icon(Icons.home_outlined),
         selectedIcon: const Icon(Icons.home)),
     NavigationDrawerItem(
-        label: 'Empleo',
-        urlPath: '/app-empleo',
-        icon: const Icon(Icons.work_outline_outlined),
-        selectedIcon: const Icon(Icons.work_outlined)),
+        label: 'Comercio',
+        urlPath: '/app-comercio',
+        icon: const Icon(Icons.storefront_outlined),
+        selectedIcon: const Icon(Icons.storefront_rounded)),
     NavigationDrawerItem(
         label: 'Plaza',
         urlPath: '/app-plaza',
         icon: const Icon(Icons.shopping_basket_outlined),
         selectedIcon: const Icon(Icons.shopping_basket_rounded)),
     NavigationDrawerItem(
-        label: 'Comercio',
-        urlPath: '/app-comercio',
-        icon: const Icon(Icons.storefront_outlined),
-        selectedIcon: const Icon(Icons.storefront_rounded)),
+        label: 'Empleo',
+        urlPath: '/app-empleo',
+        icon: const Icon(Icons.work_outline_outlined),
+        selectedIcon: const Icon(Icons.work_outlined)),
     NavigationDrawerItem(
         label: 'Turismo',
         urlPath: '/app-turismo',
@@ -215,9 +309,13 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
       ),
       body: Stack(
         children: [
-          WebViewWidget(controller: _webViewController),
-          if (webViewLoadingProgress < 100)
-            LinearProgressIndicator(value: webViewLoadingProgress / 100),
+          if (navDrawerIndex == 0)
+            _buildHomeSection()
+          else ...[
+            WebViewWidget(controller: _webViewController),
+            if (webViewLoadingProgress < 100)
+              LinearProgressIndicator(value: webViewLoadingProgress / 100)
+          ],
         ],
       ),
     );
