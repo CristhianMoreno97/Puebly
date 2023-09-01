@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
@@ -118,13 +119,48 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
 
   Widget _buildHomeHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
       color: Colors.blue,
+      child: Stack(
+        children: [
+          _buildWaveLayer(
+            clipper: WaveClipperTwo(reverse: true, flip: true),
+            color: Colors.blue,
+            height: 200,
+          ),
+          _buildWaveLayer(
+            clipper: WaveClipperOne(),
+            color: Colors.blue.shade900,
+            height: 150,
+          ),
+          _buildHomeHeaderContent(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWaveLayer({
+    required CustomClipper<Path> clipper,
+    required Color color,
+    required double height,
+  }) {
+    return ClipPath(
+      clipper: clipper,
+      child: Container(
+        color: color,
+        height: height,
+      ),
+    );
+  }
+
+  Widget _buildHomeHeaderContent() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      alignment: Alignment.centerLeft,
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "¡Bienvenido a Puebly!",
+            "¡Bienvenido a Puebly",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
