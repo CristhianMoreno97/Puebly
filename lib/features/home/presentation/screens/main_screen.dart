@@ -8,7 +8,6 @@ import 'package:puebly/config/theme/style_manager.dart';
 import 'package:puebly/features/home/presentation/navigation_drawer_item.dart';
 import 'package:puebly/features/home/presentation/providers/is_dark_mode_provider.dart';
 import 'package:puebly/utils/utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MainScreen extends StatelessWidget {
@@ -38,8 +37,32 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     });
   }
 
+  NavigationDecision _controllerNavigationDecision(String url) {
+    if (url.contains('puebly.com')) {
+      return NavigationDecision.navigate;
+    } else if (url.contains('api.whatsapp.com')) {
+      Utils.launchWhatsapp(
+        context,
+        _scaffoldKey,
+        message: 'Hola Puebly, ',
+      );
+    } else {
+      Utils.showSnackBar(
+        context,
+        _scaffoldKey,
+        'No se puede abrir la página $url',
+        backgroundColor: Colors.red,
+      );
+    }
+
+    return NavigationDecision.prevent;
+  }
+
   NavigationDelegate _controllerNavigationDelegate() {
     return NavigationDelegate(
+      onNavigationRequest: (request) {
+        return _controllerNavigationDecision(request.url);
+      },
       onPageStarted: (_) {
         _updateWebviewLoadingProgress(0);
       },
@@ -394,7 +417,11 @@ class _WhatsappButton extends StatelessWidget {
           context,
           bgColor: ColorManager.secondary,
         ),
-        onPressed: () => _launchWhatsapp(context, message: 'Hola Puebly, '),
+        onPressed: () => Utils.launchWhatsapp(
+          context,
+          _scaffoldKey,
+          message: 'Hola Puebly, ',
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

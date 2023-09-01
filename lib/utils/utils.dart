@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:puebly/config/constants/enviroment_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class Utils {
   static void drawerCloser(
@@ -10,7 +13,7 @@ class Utils {
     }
   }
 
- static void drawerOpener(
+  static void drawerOpener(
     BuildContext context,
     GlobalKey<ScaffoldState> scaffoldKey,
   ) {
@@ -36,5 +39,26 @@ class Utils {
     }
   }
 
+  static Future<void> launchWhatsapp(
+      BuildContext context, GlobalKey<ScaffoldState> scaffoldKey,
+      {String message = ''}) async {
+    final whatsapp = EnviromentConstants.whatsappNumber;
+    final whatsappAndroid =
+        Uri.parse('whatsapp://send?phone=$whatsapp&text=$message');
 
+    if (await canLaunchUrl(whatsappAndroid)) {
+      await launchUrl(whatsappAndroid);
+      return;
+    }
+
+    if (context.mounted) {
+      Utils.showSnackBar(
+        context,
+        scaffoldKey,
+        'No se pudo abrir WhatsApp. \nAsegúrate de tener la aplicación instalada.',
+        backgroundColor: Colors.red,
+      );
+      Utils.drawerCloser(context, scaffoldKey);
+    }
+  }
 }
