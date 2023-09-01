@@ -93,23 +93,13 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     super.initState(); // ??? en que momento es adecuado ejecutar esto?
   }
 
-  static const DecorationImage headerImage = DecorationImage(
-    image: AssetImage('assets/images/logo-puebly.png'),
-    alignment: Alignment(-0.25, 0),
-  );
-
   void _changeWebViewPath(String path) {
     final url = Uri.parse('${EnviromentConstants.webUrl}$path');
     _webViewController.loadRequest(url);
     Utils.drawerCloser(context, _scaffoldKey);
   }
 
-  final Widget _header = Container(
-    height: 40,
-    decoration: const BoxDecoration(
-      image: headerImage,
-    ),
-  );
+  int navDrawerIndex = 0;
 
   Widget _buildSectionButton(
       String label, IconData icon, String urlPath, int index) {
@@ -297,6 +287,18 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     );
   }
 
+  static const DecorationImage headerImage = DecorationImage(
+    image: AssetImage('assets/images/logo-puebly.png'),
+    alignment: Alignment(-0.25, 0),
+  );
+
+  final Widget _header = Container(
+    height: 40,
+    decoration: const BoxDecoration(
+      image: headerImage,
+    ),
+  );
+
   final List<NavigationDrawerItem> drawerItems = [
     NavigationDrawerItem(
         label: 'Inicio',
@@ -324,8 +326,6 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
         icon: const Icon(Icons.place_outlined),
         selectedIcon: const Icon(Icons.place_rounded)),
   ];
-
-  int navDrawerIndex = 0;
 
   @override
   Widget build(BuildContext context) {
