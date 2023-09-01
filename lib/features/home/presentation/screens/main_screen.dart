@@ -98,6 +98,12 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     alignment: Alignment(-0.25, 0),
   );
 
+  void _changeWebViewPath(String path) {
+    final url = Uri.parse('${EnviromentConstants.webUrl}$path');
+    _webViewController.loadRequest(url);
+    Utils.drawerCloser(context, _scaffoldKey);
+  }
+
   final Widget _header = Container(
     height: 40,
     decoration: const BoxDecoration(
@@ -105,57 +111,57 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     ),
   );
 
-  IconButton menuButton() {
-    return IconButton(
-      icon: const Icon(
-        Icons.menu,
-        size: 40,
-        color: Colors.white,
-      ),
+  Widget _buildSectionButton(
+      String label, IconData icon, String urlPath, int index) {
+    return ElevatedButton(
       onPressed: () {
-        Utils.drawerOpener(context, _scaffoldKey);
+        _changeWebViewPath(urlPath);
+        setState(() {
+          navDrawerIndex = index;
+        });
       },
-      padding: const EdgeInsets.all(8),
-      visualDensity: VisualDensity.compact,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
-          Colors.black,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 40,
           ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
         ),
+        ],
       ),
     );
   }
 
-  Widget _buildHomeSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildHomeHeader(),
-        Expanded(child: _buildHomeButtons()),
-      ],
-    );
-  }
-
-  Widget _buildHomeHeader() {
-    return Container(
-      color: Colors.blue,
-      child: Stack(
+  Widget _buildHomeButtons() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
         children: [
-          _buildWaveLayer(
-            clipper: WaveClipperTwo(reverse: true, flip: true),
-            color: Colors.blue,
-            height: 200,
-          ),
-          _buildWaveLayer(
-            clipper: WaveClipperOne(),
-            color: Colors.blue.shade900,
-            height: 150,
-          ),
-          _buildHomeHeaderContent(),
+          _buildSectionButton(
+              "Comercio", Icons.storefront_outlined, '/app-comercio', 1),
+          _buildSectionButton(
+              "Plaza", Icons.shopping_basket_outlined, '/app-plaza', 2),
+          _buildSectionButton(
+              "Empleo", Icons.work_outline_outlined, '/app-empleo', 3),
+          _buildSectionButton(
+              "Turismo", Icons.place_outlined, '/app-turismo', 4),
         ],
       ),
     );
@@ -203,59 +209,91 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
     );
   }
 
-  Widget _buildHomeButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: GridView.count(
-        crossAxisCount: 2,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
+  Widget _buildHomeHeader() {
+    return Container(
+      color: Colors.blue,
+      child: Stack(
         children: [
-          _buildSectionButton(
-              "Comercio", Icons.storefront_outlined, '/app-comercio', 1),
-          _buildSectionButton(
-              "Plaza", Icons.shopping_basket_outlined, '/app-plaza', 2),
-          _buildSectionButton(
-              "Empleo", Icons.work_outline_outlined, '/app-empleo', 3),
-          _buildSectionButton(
-              "Turismo", Icons.place_outlined, '/app-turismo', 4),
+          _buildWaveLayer(
+            clipper: WaveClipperTwo(reverse: true, flip: true),
+            color: Colors.blue,
+            height: 200,
+          ),
+          _buildWaveLayer(
+            clipper: WaveClipperOne(),
+            color: Colors.blue.shade900,
+            height: 150,
+          ),
+          _buildHomeHeaderContent(),
         ],
       ),
     );
   }
 
-  Widget _buildSectionButton(
-      String label, IconData icon, String urlPath, int index) {
-    return ElevatedButton(
-      onPressed: () {
-        _changeWebViewPath(urlPath);
-        setState(() {
-          navDrawerIndex = index;
-        });
-      },
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 40,
+  Widget _buildHomeSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildHomeHeader(),
+        Expanded(child: _buildHomeButtons()),
+      ],
+    );
+  }
+
+  Widget _darkModeButton(bool isDarkMode) {
+    return SizedBox(
+      height: 64,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            isDarkMode ? Colors.black : Colors.white,
           ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 16,
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            textAlign: TextAlign.center,
           ),
-        ],
+        ),
+        child: Icon(
+          isDarkMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+          size: 32,
+        ),
+        onPressed: () {
+          ref.read(isDarkModeProvider.notifier).update((state) => !state);
+        },
       ),
+    );
+  }
+
+  IconButton menuButton() {
+    return IconButton(
+      icon: const Icon(
+        Icons.menu,
+        size: 40,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        Utils.drawerOpener(context, _scaffoldKey);
+      },
+      padding: const EdgeInsets.all(8),
+      visualDensity: VisualDensity.compact,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          Colors.black,
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          ),
+      ),
+    );
+  }
+
+  Widget _buildWebView() {
+    return GestureDetector(
+      onTap: () {},
+      child: WebViewWidget(controller: _webViewController),
     );
   }
 
@@ -286,37 +324,6 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
         icon: const Icon(Icons.place_outlined),
         selectedIcon: const Icon(Icons.place_rounded)),
   ];
-
-  void _changeWebViewPath(String path) {
-    final url = Uri.parse('${EnviromentConstants.webUrl}$path');
-    _webViewController.loadRequest(url);
-    Utils.drawerCloser(context, _scaffoldKey);
-  }
-
-  Widget _darkModeButton(bool isDarkMode) {
-    return SizedBox(
-      height: 64,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-            isDarkMode ? Colors.black : Colors.white,
-          ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-        ),
-        child: Icon(
-          isDarkMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
-          size: 32,
-        ),
-        onPressed: () {
-          ref.read(isDarkModeProvider.notifier).update((state) => !state);
-        },
-      ),
-    );
-  }
 
   int navDrawerIndex = 0;
 
@@ -371,7 +378,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
           if (navDrawerIndex == 0)
             _buildHomeSection()
           else ...[
-            WebViewWidget(controller: _webViewController),
+            _buildWebView(),
             if (webViewLoadingProgress < 100)
               LinearProgressIndicator(value: webViewLoadingProgress / 100)
           ],
@@ -385,28 +392,6 @@ class _WhatsappButton extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   const _WhatsappButton(this._scaffoldKey);
-
-  Future<void> _launchWhatsapp(BuildContext context,
-      {String message = ''}) async {
-    final whatsapp = EnviromentConstants.whatsappNumber;
-    final whatsappAndroid =
-        Uri.parse('whatsapp://send?phone=$whatsapp&text=$message');
-
-    if (await canLaunchUrl(whatsappAndroid)) {
-      await launchUrl(whatsappAndroid);
-      return;
-    }
-
-    if (context.mounted) {
-      Utils.showSnackBar(
-        context,
-        _scaffoldKey,
-        'No se pudo abrir WhatsApp. \nAsegúrate de tener la aplicación instalada.',
-        backgroundColor: Colors.red,
-      );
-      Utils.drawerCloser(context, _scaffoldKey);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
