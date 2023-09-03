@@ -96,7 +96,6 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
   void _changeWebViewPath(String path) {
     final url = Uri.parse('${EnviromentConstants.webUrl}$path');
     _webViewController.loadRequest(url);
-    Utils.drawerCloser(context, _scaffoldKey);
   }
 
   int navDrawerIndex = 0;
@@ -353,13 +352,14 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
         surfaceTintColor:
             Theme.of(context).navigationDrawerTheme.surfaceTintColor,
         onDestinationSelected: (index) {
-          setState(() {
-            navDrawerIndex = index;
-          });
-          if (index < drawerItems.length) {
+          if (index < drawerItems.length && index != 0) {
             final path = drawerItems[index].urlPath;
             _changeWebViewPath(path);
           }
+          setState(() {
+            navDrawerIndex = index;
+          });
+          Utils.drawerCloser(context, _scaffoldKey);
         },
         children: <Widget>[
           const SizedBox(height: 16),
