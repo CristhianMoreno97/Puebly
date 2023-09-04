@@ -7,6 +7,7 @@ import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/config/theme/style_manager.dart';
 import 'package:puebly/features/home/presentation/navigation_drawer_item.dart';
 import 'package:puebly/features/home/presentation/providers/is_dark_mode_provider.dart';
+import 'package:puebly/features/home/presentation/widgets/webview_with_tabs.dart';
 import 'package:puebly/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -15,7 +16,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(child: WebViewWithDrawer());
+    return const SafeArea(child: WebViewWithTabs());
   }
 }
 
@@ -129,7 +130,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
               fontSize: 16,
             ),
             textAlign: TextAlign.center,
-        ),
+          ),
         ],
       ),
     );
@@ -274,7 +275,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          ),
+        ),
       ),
     );
   }
@@ -375,9 +376,9 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
       ),
       body: Stack(
         children: [
-          if (navDrawerIndex == 0)
-            _buildHomeSection()
-          else ...[
+          if (navDrawerIndex == 0) ...[
+            _buildHomeSection(),
+          ] else ...[
             _buildWebView(),
             if (webViewLoadingProgress < 100)
               LinearProgressIndicator(value: webViewLoadingProgress / 100)

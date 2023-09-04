@@ -14,3 +14,18 @@ class ColorManager {
   // others
   static const Color whastapp = Color(0xff25D366);
 }
+
+class ColorPalette1 {
+  static const Color color1 = Color(0xff53d400);
+  static const Color color1a = Color(0xff87E14D);
+  static const Color color2 = Color(0xffadec00);
+  static const Color color2a = Color(0xffC6F24D);
+  static const Color color3 = Color(0xffffe008);
+  static const Color color3a = Color(0xffFFE952);
+  static const Color color4 = Color(0xffff7c17);
+  static const Color color4a = Color(0xffFFA35D);
+  static const Color color5 = Color(0xffff0c1e);
+  static const Color color5a = Color(0xffFF5562);
+  static const Color color6 = Color(0xFFff0099);
+  static const Color color6a = Color(0xFFFF4DB8);
+}
