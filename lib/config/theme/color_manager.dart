@@ -28,4 +28,6 @@ class ColorPalette1 {
   static const Color color5a = Color(0xffFF5562);
   static const Color color6 = Color(0xFFff0099);
   static const Color color6a = Color(0xFFFF4DB8);
+  static const Color color7 = Color(0xFF00e4ff);
+  static const Color color7a = Color(0xFF59D9DB);
 }

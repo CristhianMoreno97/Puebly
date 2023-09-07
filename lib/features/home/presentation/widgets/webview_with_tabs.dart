@@ -20,22 +20,26 @@ class WebViewWithTabs extends ConsumerWidget {
     final tabs = [
       TabInfo(
           'Comercio',
-          Icons.shopping_cart,
+          Icons.storefront_outlined,
+          Icons.storefront_rounded,
           const LinearGradient(
-              colors: [ColorPalette1.color1, ColorPalette1.color1a])),
+              colors: [ColorPalette1.color7, ColorPalette1.color7a])),
       TabInfo(
           'Empleo',
-          Icons.work,
+          Icons.work_outline_outlined,
+          Icons.work_outlined,
           const LinearGradient(
-              colors: [ColorPalette1.color3, ColorPalette1.color3a])),
+              colors: [ColorPalette1.color1, ColorPalette1.color2a])),
       TabInfo(
           'Plaza',
-          Icons.shopping_bag,
+          Icons.shopping_basket_outlined,
+          Icons.shopping_basket_rounded,
           const LinearGradient(
               colors: [ColorPalette1.color4, ColorPalette1.color4a])),
       TabInfo(
           'Turismo',
-          Icons.tour,
+          Icons.place_outlined,
+          Icons.place_rounded,
           const LinearGradient(
               colors: [ColorPalette1.color5, ColorPalette1.color5a])),
     ];
@@ -51,8 +55,8 @@ class WebViewWithTabs extends ConsumerWidget {
             ref.read(indexWebViewProvider.notifier).state = index,
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        surfaceTintColor: Colors.white,
+        color: Colors.black,
+        surfaceTintColor: Colors.black,
         elevation: 20,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -75,9 +79,15 @@ class WebViewWithTabs extends ConsumerWidget {
 class TabInfo {
   final String label;
   final IconData iconData;
+  final IconData iconDataSelected;
   final LinearGradient gradient;
 
-  TabInfo(this.label, this.iconData, this.gradient);
+  TabInfo(
+    this.label,
+    this.iconData,
+    this.iconDataSelected,
+    this.gradient,
+  );
 }
 
 class CustomTabBarItem extends StatelessWidget {
@@ -101,7 +111,7 @@ class CustomTabBarItem extends StatelessWidget {
         ? [
             BoxShadow(
               color: tabInfo.gradient.colors[0].withOpacity(0.6),
-              blurRadius: 2,
+              blurRadius: 4,
               offset: const Offset(0, 1),
             ),
           ]
@@ -121,16 +131,18 @@ class CustomTabBarItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              tabInfo.iconData,
+              isSelected ? tabInfo.iconDataSelected : tabInfo.iconData,
               color: iconColor,
               size: 32,
-              shadows: isSelected ? [
-                Shadow(
-                  color: Colors.black.withOpacity(0.4),
-                  blurRadius: 4,
-                  offset: const Offset(0, 1),
-                ),
-              ]: null,
+              shadows: isSelected
+                  ? [
+                      Shadow(
+                        color: Colors.black.withOpacity(0.4),
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      ),
+                    ]
+                  : null,
             ),
             if (isSelected)
               Flexible(
