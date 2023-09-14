@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/drawer_item.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -6,7 +8,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final drawerItems = <DrawerItem>[
+    final topDrawerItems = <DrawerItem>[
       DrawerItem(
         label: 'Inicio',
         urlPath: '/',
@@ -27,26 +29,51 @@ class CustomDrawer extends StatelessWidget {
       ),
     ];
 
+    const drawerHeader = DrawerHeader(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          colorFilter: ColorFilter.mode(ColorPalette1.color1a, BlendMode.srcATop),
+          image: AssetImage('assets/images/logo-puebly.png'),
+          alignment: Alignment(-0.25, 0),
+        ),
+      ),
+      child: null,
+    );
+
     return Drawer(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(24),
+          bottomRight: Radius.circular(24),
+        ),
+      ),
       child: Container(
-        color: Colors.black,
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(24),
+            bottomRight: Radius.circular(24),
+          ),
+          gradient: LinearGradient(
+            colors: [
+              Colors.black,
+              Colors.black,
+              Colors.black,
+              Colors.black,
+              Colors.black87,
+            ],
+          ),
+        ),
+        //color: Colors.black,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/logo-puebly.png'),
-                  alignment: Alignment(-0.25, 0),
-                ),
-              ),
-              child: null,
-            ),
-            ...drawerItems.map((item) {
+            drawerHeader,
+            ...topDrawerItems.map((item) {
               return ListTile(
                 leading: Icon(
                   item.icon,
-                  color: Colors.white,
+                  color: ColorManager.colorSeed,
                 ),
                 title: Text(
                   item.label,
@@ -62,12 +89,12 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.white,
             ),
             ListTile(
-              leading: const Icon(
-                Icons.phone_outlined,
-                color: Colors.white,
+              leading: const FaIcon(
+                FontAwesomeIcons.whatsapp,
+                color: ColorManager.colorSeed,
               ),
               title: const Text(
-                'Contacto',
+                'Whatsapp',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
@@ -77,7 +104,7 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.info_outline,
-                color: Colors.white,
+                color: ColorManager.colorSeed,
               ),
               title: const Text(
                 'Acerca de',
@@ -87,6 +114,64 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
+            const Divider(
+              color: Colors.white,
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.facebook_outlined,
+                color: ColorManager.colorSeed,
+              ),
+              title: const Text(
+                'Facebook',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            // instagram
+            ListTile(
+              leading: FaIcon(
+                FontAwesomeIcons.instagram,
+                color: ColorManager.colorSeed,
+              ),
+              title: const Text(
+                'Instagram',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            // tiktok
+            ListTile(
+              leading: FaIcon(
+                FontAwesomeIcons.tiktok,
+                color: ColorManager.colorSeed,
+              ),
+              title: const Text(
+                'Tiktok',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            // youtube
+            ListTile(
+              leading: FaIcon(
+                FontAwesomeIcons.youtube,
+                color: ColorManager.colorSeed,
+              ),
+              title: const Text(
+                'Youtube',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),            
           ],
         ),
       ),
