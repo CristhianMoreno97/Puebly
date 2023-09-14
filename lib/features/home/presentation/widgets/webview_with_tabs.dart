@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
+import 'package:puebly/features/home/presentation/providers/scaffoldkey_provider.dart';
 import 'package:puebly/features/home/presentation/providers/webview_providers.dart';
+import 'package:puebly/features/home/presentation/widgets/custom_drawer.dart';
+import 'package:puebly/features/home/presentation/widgets/custom_tab_item.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewWithTabs extends ConsumerWidget {
@@ -9,167 +13,143 @@ class WebViewWithTabs extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final webViews = [
-      ref.watch(commerceWebviewControllerProvider),
-      ref.watch(employmentWebviewControllerProvider),
-      ref.watch(marketWebviewControllerProvider),
-      ref.watch(tourismWebviewControllerProvider),
-    ];
-    final indexWebView = ref.watch(indexWebViewProvider);
-    final pageController = ref.watch(pageControllerProvider);
+    final GlobalKey<ScaffoldState> scaffoldKey = ref.watch(scaffoldKeyProvider);
+
+    const tabGradientColors = LinearGradient(colors: [
+      ColorPalette1.color1,
+      ColorPalette1.color1a,
+    ]);
+
     final tabs = [
       TabInfo(
-          'Comercio',
-          Icons.storefront_outlined,
-          Icons.storefront_rounded,
-          const LinearGradient(
-              colors: [ColorPalette1.color7, ColorPalette1.color7a])),
+        'Comercio',
+        Icons.storefront_outlined,
+        Icons.storefront_rounded,
+        tabGradientColors,
+      ),
       TabInfo(
-          'Empleo',
-          Icons.work_outline_outlined,
-          Icons.work_outlined,
-          const LinearGradient(
-              colors: [ColorPalette1.color1, ColorPalette1.color2a])),
+        'Empleo',
+        Icons.work_outline_outlined,
+        Icons.work_outlined,
+        tabGradientColors,
+      ),
       TabInfo(
-          'Plaza',
-          Icons.shopping_basket_outlined,
-          Icons.shopping_basket_rounded,
-          const LinearGradient(
-              colors: [ColorPalette1.color4, ColorPalette1.color4a])),
+        'Plaza',
+        Icons.shopping_basket_outlined,
+        Icons.shopping_basket_rounded,
+        tabGradientColors,
+      ),
       TabInfo(
-          'Turismo',
-          Icons.place_outlined,
-          Icons.place_rounded,
-          const LinearGradient(
-              colors: [ColorPalette1.color5, ColorPalette1.color5a])),
+        'Turismo',
+        Icons.place_outlined,
+        Icons.place_rounded,
+        tabGradientColors,
+      ),
     ];
 
-    return Scaffold(
-      body: PageView.builder(
-        controller: pageController,
-        itemCount: webViews.length,
-        itemBuilder: (context, index) =>
-            WebViewWidget(controller: webViews[index]),
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) =>
-            ref.read(indexWebViewProvider.notifier).state = index,
+    const DecorationImage pueblyLogo = DecorationImage(
+      image: AssetImage('assets/images/logo-puebly.png'),
+      alignment: Alignment(-0.25, 0),
+    );
+
+    final appBarTitle = Container(
+      height: 40,
+      decoration: const BoxDecoration(
+        image: pueblyLogo,
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
-        surfaceTintColor: Colors.black,
-        elevation: 20,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            for (int i = 0; i < webViews.length; i++)
-              CustomTabBarItem(
-                tabInfo: tabs[i],
-                isSelected: indexWebView == i,
-                onTap: () {
-                  pageController.jumpToPage(i);
-                },
-              ),
-          ],
+    );
+
+    final menuButton = IconButton(
+      padding: const EdgeInsets.all(8),
+      visualDensity: VisualDensity.compact,
+      icon: const Icon(
+        Icons.menu,
+        size: 40,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        ref.read(scaffoldKeyProvider.notifier).drawerOpener(context);
+      },
+      // TODO: difinir estilo del boton en un archivo de tema, por ejemplo: app_theme.dart
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
       ),
+    );
+
+    final appBarLeading = Row(
+      children: [
+        const SizedBox(width: 8),
+        menuButton,
+      ],
+    );
+
+    final appBar = AppBar(
+      backgroundColor: ColorPalette1.color1,
+      toolbarHeight: 64,
+      title: appBarTitle,
+      leadingWidth: 64,
+      leading: appBarLeading,
+    );
+
+    final indexWebView = ref.watch(indexWebViewProvider);
+    final pageController = ref.watch(pageControllerProvider);
+    final totalWebViews = ref.watch(totalWebViewsProvider);
+
+    void goToWebView(int index) {
+      pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+
+    final bottomAppBar = BottomAppBar(
+      color: Colors.white,
+      surfaceTintColor: Colors.white,
+      elevation: 20,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          for (int index = 0; index < totalWebViews; index++)
+            CustomTabItem(
+              tabInfo: tabs[index],
+              isSelected: indexWebView == index,
+              onTap: () => goToWebView(index),
+            ),
+        ],
+      ),
+    );
+
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: appBar,
+      body: const MainBody(),
+      drawer: const CustomDrawer(),
+      bottomNavigationBar: bottomAppBar,
     );
   }
 }
 
-class TabInfo {
-  final String label;
-  final IconData iconData;
-  final IconData iconDataSelected;
-  final LinearGradient gradient;
-
-  TabInfo(
-    this.label,
-    this.iconData,
-    this.iconDataSelected,
-    this.gradient,
-  );
-}
-
-class CustomTabBarItem extends StatelessWidget {
-  final TabInfo tabInfo;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const CustomTabBarItem({
-    super.key,
-    required this.tabInfo,
-    required this.isSelected,
-    required this.onTap,
-  });
+class MainBody extends ConsumerWidget {
+  const MainBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final tabColor = isSelected ? tabInfo.gradient : null;
-    const textColor = Colors.white;
-    final iconColor = isSelected ? Colors.white : tabInfo.gradient.colors[0];
-    final boxShadow = isSelected
-        ? [
-            BoxShadow(
-              color: tabInfo.gradient.colors[0].withOpacity(0.6),
-              blurRadius: 4,
-              offset: const Offset(0, 1),
-            ),
-          ]
-        : null;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 64,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          gradient: tabColor,
-          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-          boxShadow: boxShadow,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isSelected ? tabInfo.iconDataSelected : tabInfo.iconData,
-              color: iconColor,
-              size: 32,
-              shadows: isSelected
-                  ? [
-                      Shadow(
-                        color: Colors.black.withOpacity(0.4),
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ]
-                  : null,
-            ),
-            if (isSelected)
-              Flexible(
-                child: SizedBox(
-                  width: 80,
-                  child: Center(
-                    child: Text(
-                      tabInfo.label,
-                      style: TextStyle(
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.4),
-                            blurRadius: 4,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final webViewControllers = ref.watch(webViewControllerProviders);
+    final pageController = ref.watch(pageControllerProvider);
+    return PageView.builder(
+      controller: pageController,
+      itemCount: webViewControllers.length,
+      itemBuilder: (context, index) =>
+          WebViewWidget(controller: webViewControllers[index]),
+      physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: (index) =>
+          ref.read(indexWebViewProvider.notifier).state = index,
     );
   }
 }

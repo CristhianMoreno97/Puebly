@@ -5,7 +5,7 @@ class EnviromentConstants {
     await dotenv.load(fileName: ".env");
   }
 
-  static String get webUrl => dotenv.env['URL_BASE'] ?? '';
+  static String get homeURL => dotenv.env['URL_BASE'] ?? '';
 
   static String get whatsappNumber => dotenv.env['PUEBLY_WHATSAPP_NUMBER'] ?? '';
 }

@@ -70,7 +70,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
 
   @override
   void initState() {
-    final homeUrl = Uri.parse(EnviromentConstants.webUrl);
+    final homeUrl = Uri.parse(EnviromentConstants.homeURL);
     final WebViewController controller = WebViewController();
 
     controller
@@ -85,7 +85,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
   }
 
   void _changeWebViewPath(String path) {
-    final url = Uri.parse('${EnviromentConstants.webUrl}$path');
+    final url = Uri.parse('${EnviromentConstants.homeURL}$path');
     _webViewController.loadRequest(url);
   }
 
