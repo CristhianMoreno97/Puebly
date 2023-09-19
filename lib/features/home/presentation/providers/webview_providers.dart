@@ -7,7 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewInfo {
   late final WebViewController controller;
-  late final String path;
+  final String path;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final BuildContext context;
 
@@ -117,7 +117,6 @@ final tourismWebViewProvider =
 
 final webViewProviders =
     Provider.family<List<WebViewInfo>, BuildContext>((ref, context) {
-
   final webViews = [
     ref.watch(commerceWebViewProvider(context)),
     ref.watch(employmentWebViewProvider(context)),
