@@ -39,10 +39,10 @@ final marketWebviewControllerProvider = StateProvider<WebViewController>((ref) {
 
 final webViewControllerProviders = Provider<List<WebViewController>>((ref) {
   return [
-    ref.watch(employmentWebviewControllerProvider),
-    ref.watch(tourismWebviewControllerProvider),
     ref.watch(commerceWebviewControllerProvider),
-    ref.watch(marketWebviewControllerProvider)
+    ref.watch(employmentWebviewControllerProvider),
+    ref.watch(marketWebviewControllerProvider),
+    ref.watch(tourismWebviewControllerProvider),
   ];
 });
 
