@@ -98,7 +98,7 @@ class WebViewWithTabs extends ConsumerWidget {
 
     final indexWebView = ref.watch(indexWebViewProvider);
     final pageController = ref.watch(pageControllerProvider);
-    final totalWebViews = ref.watch(totalWebViewsProvider);
+    final totalWebViews = ref.watch(webViewProviders(context)).length;
 
     void goToWebView(int index) {
       pageController.animateToPage(
@@ -140,13 +140,13 @@ class MainBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final webViewControllers = ref.watch(webViewControllerProviders);
+    final webViews = ref.watch(webViewProviders(context));
     final pageController = ref.watch(pageControllerProvider);
     return PageView.builder(
       controller: pageController,
-      itemCount: webViewControllers.length,
+      itemCount: webViews.length,
       itemBuilder: (context, index) =>
-          WebViewWidget(controller: webViewControllers[index]),
+          WebViewWidget(controller: webViews[index].controller),
       physics: const NeverScrollableScrollPhysics(),
       onPageChanged: (index) =>
           ref.read(indexWebViewProvider.notifier).state = index,

@@ -1,52 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
+import 'package:puebly/features/home/presentation/providers/scaffoldkey_provider.dart';
+import 'package:puebly/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-final indexWebViewProvider = StateProvider<int>((ref) => 0);
+class WebViewInfo {
+  late final WebViewController controller;
+  late final String path;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  final BuildContext context;
 
-WebViewController _buildWebviewController(Uri webViewURL) {
-  final controller = WebViewController();
-  controller
-    ..loadRequest(webViewURL)
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(Colors.white);
-  return controller;
+  WebViewInfo(this.path, {required this.scaffoldKey, required this.context}) {
+    controller = _buildWebviewController(
+        Uri.parse('${EnviromentConstants.homeURL}/$path'));
+  }
+
+  int loadingProgress = 0;
+
+  void _setLoadingProgress(int progress) {
+    loadingProgress = progress;
+  }
+
+  NavigationDecision _controllerNavigationDecision(String url) {
+    if (url.contains('puebly.com')) {
+      return NavigationDecision.navigate;
+    } else if (url.contains('api.whatsapp.com')) {
+      Utils.launchWhatsapp(
+        context,
+        scaffoldKey,
+        message: 'Hola Puebly, ',
+      );
+    } else {
+      Utils.showSnackBar(
+        context,
+        scaffoldKey,
+        'No se puede abrir la página $url',
+        backgroundColor: Colors.red,
+      );
+    }
+
+    return NavigationDecision.prevent;
+  }
+
+  NavigationDelegate _controllerNavigationDelegate() {
+    return NavigationDelegate(
+      onNavigationRequest: (request) {
+        return _controllerNavigationDecision(request.url);
+      },
+      onPageStarted: (url) {
+        _setLoadingProgress(0);
+      },
+      onPageFinished: (url) {
+        _setLoadingProgress(100);
+      },
+      onProgress: (progress) {
+        _setLoadingProgress(progress);
+      },
+    );
+  }
+
+  WebViewController _buildWebviewController(Uri webViewURL) {
+    final controller = WebViewController();
+    controller
+      ..loadRequest(webViewURL)
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
+      ..setNavigationDelegate(_controllerNavigationDelegate());
+    return controller;
+  }
 }
 
-final employmentWebviewControllerProvider =
-    StateProvider<WebViewController>((ref) {
-  final webViewURL = Uri.parse('${EnviromentConstants.homeURL}/app-empleo');
-  return _buildWebviewController(webViewURL);
+class WebViewNotifier extends StateNotifier<WebViewInfo> {
+  final String path;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  final BuildContext context;
+
+  WebViewNotifier(
+    this.path, {
+    required this.scaffoldKey,
+    required this.context,
+  }) : super(WebViewInfo(path, scaffoldKey: scaffoldKey, context: context));
+}
+
+final commerceWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  return WebViewNotifier('/app-comercio',
+      scaffoldKey: scaffoldKey, context: context);
 });
 
-final tourismWebviewControllerProvider =
-    StateProvider<WebViewController>((ref) {
-  final webViewURL = Uri.parse('${EnviromentConstants.homeURL}/app-turismo');
-  return _buildWebviewController(webViewURL);
+final employmentWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  return WebViewNotifier('/app-empleo',
+      scaffoldKey: scaffoldKey, context: context);
 });
 
-final commerceWebviewControllerProvider =
-    StateProvider<WebViewController>((ref) {
-  final webViewURL = Uri.parse('${EnviromentConstants.homeURL}/app-comercio');
-  return _buildWebviewController(webViewURL);
+final marketWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  return WebViewNotifier('/app-plaza',
+      scaffoldKey: scaffoldKey, context: context);
 });
 
-final marketWebviewControllerProvider = StateProvider<WebViewController>((ref) {
-  final webViewURL = Uri.parse('${EnviromentConstants.homeURL}/app-plaza');
-  return _buildWebviewController(webViewURL);
+final tourismWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  return WebViewNotifier('/app-turismo',
+      scaffoldKey: scaffoldKey, context: context);
 });
 
-final webViewControllerProviders = Provider<List<WebViewController>>((ref) {
-  return [
-    ref.watch(commerceWebviewControllerProvider),
-    ref.watch(employmentWebviewControllerProvider),
-    ref.watch(marketWebviewControllerProvider),
-    ref.watch(tourismWebviewControllerProvider),
+final webViewProviders =
+    Provider.family<List<WebViewInfo>, BuildContext>((ref, context) {
+
+  final webViews = [
+    ref.watch(commerceWebViewProvider(context)),
+    ref.watch(employmentWebViewProvider(context)),
+    ref.watch(marketWebViewProvider(context)),
+    ref.watch(tourismWebViewProvider(context)),
   ];
+  return webViews;
 });
 
-final totalWebViewsProvider = Provider<int>((ref) {
-  final webViews = ref.watch(webViewControllerProviders);
-  return webViews.length;
-});
+final indexWebViewProvider = StateProvider<int>((ref) => 0);
