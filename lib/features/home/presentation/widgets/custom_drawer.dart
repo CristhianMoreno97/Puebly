@@ -12,19 +12,25 @@ class CustomDrawer extends StatelessWidget {
       DrawerItem(
         label: 'Inicio',
         urlPath: '/',
-        icon: Icons.home_outlined,
+        icon: Icons.home_filled,
         selectedIcon: Icons.home,
       ),
       DrawerItem(
         label: 'Comunidad',
         urlPath: '/comunidad',
-        icon: Icons.group_outlined,
+        icon: Icons.group_rounded,
         selectedIcon: Icons.group_rounded,
       ),
       DrawerItem(
-        label: 'Descubrir',
-        urlPath: '/descubrir',
-        icon: Icons.explore_outlined,
+        label: 'Clasificados',
+        urlPath: '/comunidad',
+        icon: Icons.sell_rounded,
+        selectedIcon: Icons.sell_rounded,
+      ),
+      DrawerItem(
+        label: 'Sabías que...',
+        urlPath: '/app-sabias-que',
+        icon: Icons.menu_book_rounded,
         selectedIcon: Icons.explore_outlined,
       ),
     ];
@@ -32,7 +38,8 @@ class CustomDrawer extends StatelessWidget {
     const drawerHeader = DrawerHeader(
       decoration: BoxDecoration(
         image: DecorationImage(
-          colorFilter: ColorFilter.mode(ColorPalette1.color1a, BlendMode.srcATop),
+          colorFilter:
+              ColorFilter.mode(ColorPalette1.color1a, BlendMode.srcATop),
           image: AssetImage('assets/images/logo-puebly.png'),
           alignment: Alignment(-0.25, 0),
         ),
@@ -40,6 +47,113 @@ class CustomDrawer extends StatelessWidget {
       child: null,
     );
 
+    buildTopDrawerItem(DrawerItem item) {
+      return ListTile(
+        leading: Icon(
+          item.icon,
+          color: ColorManager.colorSeed,
+        ),
+        title: Text(
+          item.label,
+          style: const TextStyle(color: Colors.white),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      );
+    }
+
+    Widget buildDrawerItem({
+      required IconData iconData,
+      required String label,
+      required Function onTap,
+      bool isFaIcon = false,
+    }) {
+      const iconColor = ColorManager.colorSeed;
+      final icon = isFaIcon
+          ? FaIcon(iconData, color: iconColor)
+          : Icon(iconData, color: iconColor);
+
+      return ListTile(
+        leading: icon,
+        title: Text(
+          label,
+          style: const TextStyle(color: Colors.white),
+        ),
+        onTap: () {
+          onTap();
+          Navigator.pop(context);
+        },
+      );
+    }
+
+    onTapDrawerItem() {
+      print('tap');
+    }
+
+    final drawerContent = ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        drawerHeader,
+        ...topDrawerItems.map((item) => buildTopDrawerItem(item)),
+        const Divider(color: Colors.white),
+        buildDrawerItem(
+          iconData: Icons.info_rounded,
+          label: 'Acerca de nosotros',
+          onTap: onTapDrawerItem,
+        ),
+        buildDrawerItem(
+          iconData: FontAwesomeIcons.whatsapp,
+          label: 'Whatsapp',
+          onTap: onTapDrawerItem,
+          isFaIcon: true,
+        ),
+        const Divider(color: Colors.white),
+        buildDrawerItem(
+          iconData: Icons.facebook_outlined,
+          label: 'Facebook',
+          onTap: onTapDrawerItem,
+        ),
+        buildDrawerItem(
+          iconData: FontAwesomeIcons.instagram,
+          label: 'Instagram',
+          onTap: onTapDrawerItem,
+          isFaIcon: true,
+        ), // instagram
+        buildDrawerItem(
+          iconData: FontAwesomeIcons.tiktok,
+          label: 'TikTok',
+          onTap: onTapDrawerItem,
+          isFaIcon: true,
+        ), // instagram
+        buildDrawerItem(
+          iconData: FontAwesomeIcons.youtube,
+          label: 'Youtube',
+          onTap: onTapDrawerItem,
+          isFaIcon: true,
+        ),
+      ],
+    );
+    final drawerView = Container(
+      padding: const EdgeInsets.all(24),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(24),
+          bottomRight: Radius.circular(24),
+        ),
+        gradient: LinearGradient(
+          colors: [
+            Colors.black,
+            Colors.black,
+            Colors.black,
+            Colors.black,
+            Colors.black87,
+          ],
+        ),
+      ),
+      //color: Colors.black,
+      child: drawerContent,
+    );
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -47,134 +161,7 @@ class CustomDrawer extends StatelessWidget {
           bottomRight: Radius.circular(24),
         ),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(24),
-            bottomRight: Radius.circular(24),
-          ),
-          gradient: LinearGradient(
-            colors: [
-              Colors.black,
-              Colors.black,
-              Colors.black,
-              Colors.black,
-              Colors.black87,
-            ],
-          ),
-        ),
-        //color: Colors.black,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            drawerHeader,
-            ...topDrawerItems.map((item) {
-              return ListTile(
-                leading: Icon(
-                  item.icon,
-                  color: ColorManager.colorSeed,
-                ),
-                title: Text(
-                  item.label,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, item.urlPath);
-                },
-              );
-            }),
-            const Divider(
-              color: Colors.white,
-            ),
-            ListTile(
-              leading: const FaIcon(
-                FontAwesomeIcons.whatsapp,
-                color: ColorManager.colorSeed,
-              ),
-              title: const Text(
-                'Whatsapp',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.info_outline,
-                color: ColorManager.colorSeed,
-              ),
-              title: const Text(
-                'Acerca de',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            const Divider(
-              color: Colors.white,
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.facebook_outlined,
-                color: ColorManager.colorSeed,
-              ),
-              title: const Text(
-                'Facebook',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            // instagram
-            ListTile(
-              leading: FaIcon(
-                FontAwesomeIcons.instagram,
-                color: ColorManager.colorSeed,
-              ),
-              title: const Text(
-                'Instagram',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            // tiktok
-            ListTile(
-              leading: FaIcon(
-                FontAwesomeIcons.tiktok,
-                color: ColorManager.colorSeed,
-              ),
-              title: const Text(
-                'Tiktok',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            // youtube
-            ListTile(
-              leading: FaIcon(
-                FontAwesomeIcons.youtube,
-                color: ColorManager.colorSeed,
-              ),
-              title: const Text(
-                'Youtube',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),            
-          ],
-        ),
-      ),
+      child: drawerView,
     );
   }
 }
