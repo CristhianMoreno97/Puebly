@@ -17,13 +17,13 @@ class CustomDrawer extends StatelessWidget {
       ),
       DrawerItem(
         label: 'Comunidad',
-        urlPath: '/comunidad',
+        urlPath: '/app-comunidad',
         icon: Icons.group_rounded,
         selectedIcon: Icons.group_rounded,
       ),
       DrawerItem(
         label: 'Clasificados',
-        urlPath: '/comunidad',
+        urlPath: '/app-clasificados',
         icon: Icons.sell_rounded,
         selectedIcon: Icons.sell_rounded,
       ),
