@@ -142,16 +142,25 @@ class MainBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final webViews = ref.watch(webViewProviders(context));
     final pageController = ref.watch(pageControllerProvider);
+
     return PageView.builder(
       controller: pageController,
       itemCount: webViews.length,
       itemBuilder: (context, index) {
         if (webViews[index].controller == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 8,
+          ));
         }
         if (webViews[index].loadingProgress < 100) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 8,
+          ));
         }
+        // Esperar a que el webview renderize la nueva carga
+        Future.delayed(const Duration(microseconds: 250));
         return WebViewWidget(
             controller: webViews[index].controller as WebViewController);
       },
