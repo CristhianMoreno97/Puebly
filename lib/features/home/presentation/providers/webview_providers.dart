@@ -6,20 +6,50 @@ import 'package:puebly/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewInfo {
-  late final WebViewController controller;
+  final WebViewController? controller;
+  final String path;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  final BuildContext context;
+  final int loadingProgress;
+
+  WebViewInfo(this.path,
+      {required this.scaffoldKey,
+      required this.context,
+      this.controller,
+      this.loadingProgress = 0});
+
+  WebViewInfo copyWith({
+    WebViewController? controller,
+    String? path,
+    GlobalKey<ScaffoldState>? scaffoldKey,
+    BuildContext? context,
+    int? loadingProgress,
+  }) {
+    return WebViewInfo(
+      path ?? this.path,
+      controller: controller ?? this.controller,
+      scaffoldKey: scaffoldKey ?? this.scaffoldKey,
+      context: context ?? this.context,
+      loadingProgress: loadingProgress ?? this.loadingProgress,
+    );
+  }
+}
+
+class WebViewNotifier extends StateNotifier<WebViewInfo> {
   final String path;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final BuildContext context;
 
-  WebViewInfo(this.path, {required this.scaffoldKey, required this.context}) {
-    controller = _buildWebviewController(
-        Uri.parse('${EnviromentConstants.homeURL}/$path'));
+  WebViewNotifier(
+    this.path, {
+    required this.scaffoldKey,
+    required this.context,
+  }) : super(WebViewInfo(path, scaffoldKey: scaffoldKey, context: context)){
+    _buildWebViewController();
   }
 
-  int loadingProgress = 0;
-
   void _setLoadingProgress(int progress) {
-    loadingProgress = progress;
+    state = state.copyWith(loadingProgress: progress);
   }
 
   NavigationDecision _controllerNavigationDecision(String url) {
@@ -60,27 +90,18 @@ class WebViewInfo {
     );
   }
 
-  WebViewController _buildWebviewController(Uri webViewURL) {
+  void _buildWebViewController() {
+    final webViewURL = Uri.parse('${EnviromentConstants.homeURL}/${state.path}');
     final controller = WebViewController();
     controller
       ..loadRequest(webViewURL)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.white)
       ..setNavigationDelegate(_controllerNavigationDelegate());
-    return controller;
+    state = state.copyWith(
+      controller: controller,
+    );
   }
-}
-
-class WebViewNotifier extends StateNotifier<WebViewInfo> {
-  final String path;
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  final BuildContext context;
-
-  WebViewNotifier(
-    this.path, {
-    required this.scaffoldKey,
-    required this.context,
-  }) : super(WebViewInfo(path, scaffoldKey: scaffoldKey, context: context));
 }
 
 final commerceWebViewProvider =

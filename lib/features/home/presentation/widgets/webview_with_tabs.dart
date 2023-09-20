@@ -145,8 +145,16 @@ class MainBody extends ConsumerWidget {
     return PageView.builder(
       controller: pageController,
       itemCount: webViews.length,
-      itemBuilder: (context, index) =>
-          WebViewWidget(controller: webViews[index].controller),
+      itemBuilder: (context, index) {
+        if (webViews[index].controller == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (webViews[index].loadingProgress < 100) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return WebViewWidget(
+            controller: webViews[index].controller as WebViewController);
+      },
       physics: const NeverScrollableScrollPhysics(),
       onPageChanged: (index) =>
           ref.read(indexWebViewProvider.notifier).state = index,
