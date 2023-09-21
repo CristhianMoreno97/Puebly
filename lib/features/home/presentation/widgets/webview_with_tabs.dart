@@ -28,9 +28,9 @@ class WebViewWithTabs extends ConsumerWidget {
         tabGradientColors,
       ),
       TabInfo(
-        'Empleo',
-        Icons.work_outline_outlined,
-        Icons.work_outlined,
+        'Turismo',
+        Icons.place_outlined,
+        Icons.place_rounded,
         tabGradientColors,
       ),
       TabInfo(
@@ -40,9 +40,9 @@ class WebViewWithTabs extends ConsumerWidget {
         tabGradientColors,
       ),
       TabInfo(
-        'Turismo',
-        Icons.place_outlined,
-        Icons.place_rounded,
+        'Empleo',
+        Icons.work_outline_outlined,
+        Icons.work_outlined,
         tabGradientColors,
       ),
     ];

@@ -140,9 +140,9 @@ final webViewProviders =
     Provider.family<List<WebViewInfo>, BuildContext>((ref, context) {
   final webViews = [
     ref.watch(commerceWebViewProvider(context)),
-    ref.watch(employmentWebViewProvider(context)),
-    ref.watch(marketWebViewProvider(context)),
     ref.watch(tourismWebViewProvider(context)),
+    ref.watch(marketWebViewProvider(context)),
+    ref.watch(employmentWebViewProvider(context)),
   ];
   return webViews;
 });
