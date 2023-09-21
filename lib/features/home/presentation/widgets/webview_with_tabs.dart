@@ -160,7 +160,7 @@ class MainBody extends ConsumerWidget {
           ));
         }
         // Esperar a que el webview renderize la nueva carga
-        Future.delayed(const Duration(microseconds: 250));
+        Future.delayed(const Duration(milliseconds: 100));
         return WebViewWidget(
             controller: webViews[index].controller as WebViewController);
       },
