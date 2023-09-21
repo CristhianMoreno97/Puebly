@@ -147,7 +147,7 @@ class CustomDrawer extends ConsumerWidget {
       ],
     );
     final drawerView = Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(24),
