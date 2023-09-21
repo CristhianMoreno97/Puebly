@@ -19,7 +19,13 @@ class AuxiliaryScreen extends ConsumerWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
-        body: WebViewWidget(controller: webView.controller!),
+        body: webView.loadingProgress < 100
+            ? const Center(
+                child: CircularProgressIndicator(
+                color: Colors.green,
+                strokeWidth: 8,
+              ))
+            : WebViewWidget(controller: webView.controller!),
       ),
     );
   }
