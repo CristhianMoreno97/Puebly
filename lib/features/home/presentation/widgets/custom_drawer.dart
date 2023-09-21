@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/drawer_item.dart';
+import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final topDrawerItems = <DrawerItem>[
       DrawerItem(
         label: 'Inicio',
@@ -59,6 +61,7 @@ class CustomDrawer extends StatelessWidget {
         ),
         onTap: () {
           Navigator.pop(context);
+          ref.read(showHomeScreenProvider.notifier).state = true;
         },
       );
     }
