@@ -4,6 +4,7 @@ import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/scaffoldkey_provider.dart';
 import 'package:puebly/features/home/presentation/providers/webview_providers.dart';
+import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_tab_item.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -47,18 +48,6 @@ class WebViewWithTabs extends ConsumerWidget {
       ),
     ];
 
-    const DecorationImage pueblyLogo = DecorationImage(
-      image: AssetImage('assets/images/logo-puebly.png'),
-      alignment: Alignment(-0.25, 0),
-    );
-
-    final appBarTitle = Container(
-      height: 40,
-      decoration: const BoxDecoration(
-        image: pueblyLogo,
-      ),
-    );
-
     final menuButton = IconButton(
       padding: const EdgeInsets.all(8),
       visualDensity: VisualDensity.compact,
@@ -91,7 +80,7 @@ class WebViewWithTabs extends ConsumerWidget {
     final appBar = AppBar(
       backgroundColor: ColorPalette1.color1,
       toolbarHeight: 64,
-      title: appBarTitle,
+      title: const AppBarTitle(),
       leadingWidth: 64,
       leading: appBarLeading,
     );
