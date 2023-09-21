@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/providers/webview_providers.dart';
 
@@ -10,6 +11,12 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void goToSection(int sectionIndex) {
       ref.read(showHomeScreenProvider.notifier).state = false;
+      ref.read(pageControllerProvider.notifier).update((state) {
+        state.animateToPage(sectionIndex,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut);
+        return state;
+      });
       ref.read(indexWebViewProvider.notifier).state = sectionIndex;
     }
 
