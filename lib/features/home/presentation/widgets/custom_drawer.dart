@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/drawer_item.dart';
+import 'package:puebly/features/home/presentation/providers/auxiliary_webview_providers.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 
 class CustomDrawer extends ConsumerWidget {
@@ -13,25 +15,25 @@ class CustomDrawer extends ConsumerWidget {
     final topDrawerItems = <DrawerItem>[
       DrawerItem(
         label: 'Inicio',
-        urlPath: '/',
+        urlPath: null,
         icon: Icons.home_filled,
         selectedIcon: Icons.home,
       ),
       DrawerItem(
         label: 'Comunidad',
-        urlPath: '/app-comunidad',
+        urlPath: 'app-comunidad',
         icon: Icons.group_rounded,
         selectedIcon: Icons.group_rounded,
       ),
       DrawerItem(
         label: 'Clasificados',
-        urlPath: '/app-clasificados',
+        urlPath: 'app-clasificados',
         icon: Icons.sell_rounded,
         selectedIcon: Icons.sell_rounded,
       ),
       DrawerItem(
         label: 'Sabías que...',
-        urlPath: '/app-sabias-que',
+        urlPath: 'app-sabias-que',
         icon: Icons.menu_book_rounded,
         selectedIcon: Icons.explore_outlined,
       ),
@@ -61,7 +63,14 @@ class CustomDrawer extends ConsumerWidget {
         ),
         onTap: () {
           Navigator.pop(context);
-          ref.read(showHomeScreenProvider.notifier).state = true;
+          final webViewPath = item.urlPath;
+
+          if (webViewPath == null) {
+            ref.read(showHomeScreenProvider.notifier).state = true;
+            return;
+          }
+          ref.read(auxiliaryWebViewPathProvider.notifier).state = webViewPath;
+          context.push('/auxiliary-screen');
         },
       );
     }

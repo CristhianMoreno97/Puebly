@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DrawerItem {
   final String label;
-  final String urlPath;
+  final String? urlPath;
   final IconData icon;
   final IconData selectedIcon;
 
