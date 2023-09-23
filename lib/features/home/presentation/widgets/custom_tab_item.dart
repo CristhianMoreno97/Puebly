@@ -44,7 +44,7 @@ class CustomTabItem extends StatelessWidget {
             Icon(
               isSelected ? tabInfo.iconDataSelected : tabInfo.iconData,
               color: iconColor,
-              size: 32,
+              size: 34,
               shadows: isSelected
                   ? [
                       Shadow(
@@ -65,7 +65,7 @@ class CustomTabItem extends StatelessWidget {
   Flexible buildTabText(Color textColor) {
     return Flexible(
       child: SizedBox(
-        width: 80,
+        width: 88,
         child: Center(
           child: Text(
             tabInfo.label,

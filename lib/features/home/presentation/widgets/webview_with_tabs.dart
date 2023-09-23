@@ -99,8 +99,8 @@ class WebViewWithTabs extends ConsumerWidget {
 
     final bottomAppBar = BottomAppBar(
       color: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 20,
+      surfaceTintColor: Colors.green,
+      elevation: 4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
