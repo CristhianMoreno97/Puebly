@@ -37,15 +37,4 @@ final tourismWebViewProvider =
       scaffoldKey: scaffoldKey, context: context);
 });
 
-final webViewProviders =
-    Provider.family<List<WebViewInfo>, BuildContext>((ref, context) {
-  final webViews = [
-    ref.watch(commerceWebViewProvider(context)),
-    ref.watch(tourismWebViewProvider(context)),
-    ref.watch(marketWebViewProvider(context)),
-    ref.watch(employmentWebViewProvider(context)),
-  ];
-  return webViews;
-});
-
 final indexWebViewProvider = StateProvider<int>((ref) => 0);

@@ -15,6 +15,12 @@ class WebViewWithTabs extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<ScaffoldState> scaffoldKey = ref.watch(scaffoldKeyProvider);
+    final webViews = [
+      ref.watch(commerceWebViewProvider(context)),
+      ref.watch(tourismWebViewProvider(context)),
+      ref.watch(marketWebViewProvider(context)),
+      ref.watch(employmentWebViewProvider(context)),
+    ];
 
     const tabGradientColors = LinearGradient(colors: [
       ColorPalette1.color1,
@@ -85,11 +91,8 @@ class WebViewWithTabs extends ConsumerWidget {
       leading: appBarLeading,
     );
 
-    final indexWebView = ref.watch(indexWebViewProvider);
-    final pageController = ref.watch(pageControllerProvider);
-    final totalWebViews = ref.watch(webViewProviders(context)).length;
-
     void goToWebView(int index) {
+      final pageController = ref.watch(pageControllerProvider);
       pageController.animateToPage(
         index,
         duration: const Duration(milliseconds: 500),
@@ -104,10 +107,10 @@ class WebViewWithTabs extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          for (int index = 0; index < totalWebViews; index++)
+          for (int index = 0; index < webViews.length; index++)
             CustomTabItem(
               tabInfo: tabs[index],
-              isSelected: indexWebView == index,
+              isSelected: index == ref.watch(indexWebViewProvider),
               onTap: () => goToWebView(index),
             ),
         ],
@@ -115,30 +118,76 @@ class WebViewWithTabs extends ConsumerWidget {
     );
 
     Future<bool> willPopAction() async {
-      bool confirmExit = await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          title: const Text('Confirmar salida'),
-          content: const Text('¿Estás seguro de que deseas salir?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false); // No salir
-              },
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true); // Salir
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        ),
+      final indexWebView = ref.read(indexWebViewProvider);
+      final currentWebView = webViews[indexWebView];
+
+      if (currentWebView.controller == null) {
+        return true;
+      }
+
+      if (await currentWebView.controller!.canGoBack()) {
+        currentWebView.controller!.goBack();
+        return false;
+      }
+
+      if (context.mounted) {
+        bool confirmExit = await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            title: const Text('Confirmar salida'),
+            content: const Text('¿Estás seguro de que deseas salir?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // No salir
+                },
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); // Salir
+                },
+                child: const Text('Aceptar'),
+              ),
+            ],
+          ),
+        );
+        return confirmExit;
+      }
+      return false;
+    }
+
+    PageView buidPageView() {
+      final pageController = ref.watch(pageControllerProvider);
+
+      return PageView.builder(
+        controller: pageController,
+        itemCount: webViews.length,
+        itemBuilder: (context, index) {
+          if (webViews[index].controller == null) {
+            return const Center(
+                child: CircularProgressIndicator(
+              strokeWidth: 8,
+            ));
+          }
+          if (webViews[index].loadingProgress < 100) {
+            return const Center(
+                child: CircularProgressIndicator(
+              strokeWidth: 8,
+            ));
+          }
+          // Esperar a que el webview renderize la nueva carga
+          Future.delayed(const Duration(milliseconds: 100));
+          final webView = WebViewWidget(
+              controller: webViews[index].controller as WebViewController);
+          return webView;
+        },
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (index) =>
+            ref.read(indexWebViewProvider.notifier).state = index,
       );
-      return confirmExit;
     }
 
     return Scaffold(
@@ -146,46 +195,10 @@ class WebViewWithTabs extends ConsumerWidget {
       appBar: appBar,
       body: WillPopScope(
         onWillPop: () => willPopAction(),
-        child: const MainBody(),
+        child: buidPageView(),
       ),
       drawer: const CustomDrawer(),
       bottomNavigationBar: bottomAppBar,
-    );
-  }
-}
-
-class MainBody extends ConsumerWidget {
-  const MainBody({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final webViews = ref.watch(webViewProviders(context));
-    final pageController = ref.watch(pageControllerProvider);
-
-    return PageView.builder(
-      controller: pageController,
-      itemCount: webViews.length,
-      itemBuilder: (context, index) {
-        if (webViews[index].controller == null) {
-          return const Center(
-              child: CircularProgressIndicator(
-            strokeWidth: 8,
-          ));
-        }
-        if (webViews[index].loadingProgress < 100) {
-          return const Center(
-              child: CircularProgressIndicator(
-            strokeWidth: 8,
-          ));
-        }
-        // Esperar a que el webview renderize la nueva carga
-        Future.delayed(const Duration(milliseconds: 100));
-        return WebViewWidget(
-            controller: webViews[index].controller as WebViewController);
-      },
-      physics: const NeverScrollableScrollPhysics(),
-      onPageChanged: (index) =>
-          ref.read(indexWebViewProvider.notifier).state = index,
     );
   }
 }
