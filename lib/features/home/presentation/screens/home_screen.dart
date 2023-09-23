@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
-import 'package:puebly/features/home/presentation/providers/webview_providers.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -17,7 +16,6 @@ class HomeScreen extends ConsumerWidget {
             curve: Curves.easeInOut);
         return state;
       });
-      ref.read(indexWebViewProvider.notifier).state = sectionIndex;
     }
 
     return Scaffold(
