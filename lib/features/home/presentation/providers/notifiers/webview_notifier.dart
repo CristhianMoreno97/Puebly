@@ -14,7 +14,7 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
     this.path, {
     required this.scaffoldKey,
     required this.context,
-  }) : super(WebViewInfo(path, scaffoldKey: scaffoldKey, context: context)){
+  }) : super(WebViewInfo(path, scaffoldKey: scaffoldKey, context: context)) {
     _buildWebViewController();
   }
 
@@ -61,7 +61,8 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
   }
 
   void _buildWebViewController() {
-    final webViewURL = Uri.parse('${EnviromentConstants.homeURL}/${state.path}');
+    final webViewURL =
+        Uri.parse('${EnviromentConstants.homeURL}/${state.path}');
     final controller = WebViewController();
     controller
       ..loadRequest(webViewURL)
