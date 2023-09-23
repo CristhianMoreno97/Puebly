@@ -114,10 +114,40 @@ class WebViewWithTabs extends ConsumerWidget {
       ),
     );
 
+    Future<bool> willPopAction() async {
+       bool confirmExit = await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              title: const Text('Confirmar salida'),
+              content: const Text('¿Estás seguro de que deseas salir?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // No salir
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // Salir
+                  },
+                  child: const Text('Aceptar'),
+                ),
+              ],
+            ),
+          );
+          return confirmExit;
+    }
+
     return Scaffold(
       key: scaffoldKey,
       appBar: appBar,
-      body: const MainBody(),
+      body: WillPopScope(
+        onWillPop: () => willPopAction(),
+        child: const MainBody(),
+      ),
       drawer: const CustomDrawer(),
       bottomNavigationBar: bottomAppBar,
     );
