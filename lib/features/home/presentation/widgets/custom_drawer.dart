@@ -39,16 +39,17 @@ class CustomDrawer extends ConsumerWidget {
       ),
     ];
 
-    const drawerHeader = DrawerHeader(
-      decoration: BoxDecoration(
+    final drawerHeader = Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      height: 120,
+      decoration: const BoxDecoration(
         image: DecorationImage(
           colorFilter:
-              ColorFilter.mode(ColorPalette1.color1a, BlendMode.srcATop),
+              ColorFilter.mode(ColorManager.colorSeed, BlendMode.srcATop),
           image: AssetImage('assets/images/logo-puebly.png'),
           alignment: Alignment(-0.25, 0),
         ),
       ),
-      child: null,
     );
 
     buildTopDrawerItem(DrawerItem item) {
@@ -107,8 +108,15 @@ class CustomDrawer extends ConsumerWidget {
       padding: EdgeInsets.zero,
       children: [
         drawerHeader,
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(color: Colors.white),
+        ),
         ...topDrawerItems.map((item) => buildTopDrawerItem(item)),
-        const Divider(color: Colors.white),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(color: Colors.white),
+        ),
         buildDrawerItem(
           iconData: Icons.info_rounded,
           label: 'Acerca de nosotros',
@@ -120,7 +128,10 @@ class CustomDrawer extends ConsumerWidget {
           onTap: onTapDrawerItem,
           isFaIcon: true,
         ),
-        const Divider(color: Colors.white),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(color: Colors.white),
+        ),
         buildDrawerItem(
           iconData: Icons.facebook_outlined,
           label: 'Facebook',
