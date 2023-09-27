@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
+import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -138,6 +139,14 @@ class HomeScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: ColorPalette1.color1,
+          title: const Padding(
+            padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+            child: AppBarTitle(),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
       body: SafeArea(
         child: buildHomeSection(),
       ),
