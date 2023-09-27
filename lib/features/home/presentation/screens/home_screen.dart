@@ -5,6 +5,7 @@ import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
+import 'package:puebly/features/home/presentation/widgets/custom_button_appbar.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -150,6 +151,7 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: buildHomeSection(),
       ),
+      bottomNavigationBar: const CustomButtonAppbar(),
     );
   }
 }
