@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class ColorManager {
   static const Color colorSeed = Color.fromARGB(255, 255, 85, 232);
+  static const Color colorSeedShade1 = Color(0xFFCC44BA);
   static const Color primary = Color(0xffFF0099);
-  static const Color secondary = Color(0xff46FF00);
+  static const Color secondary = Color(0xff53d400);
+  static const Color secondaryShade1 = Color(0xff42AA00);
   static const Color background = Color(0xffFFFFFF);
   /// inputs
   static const Color inputFill = Color(0xffFFFFFF);
@@ -64,4 +66,23 @@ class ColorPalette3 {
   static const Color color6a = Color(0xFFb67903);
   static const Color color7 = Color(0xFFd8612a);
   static const Color color7a = Color(0xFF6866cc);
+}
+
+class ColorPalette4 {
+  static const Color color1 = Color(0xff8249b4);
+  static const Color color1a = Color(0xff080ff8);
+  static const Color color2 = Color(0xff5a7888);
+  static const Color color2a = Color(0xffC280ff);
+  static const Color color3 = Color(0xff31a75c);
+  static const Color color3a = Color(0xfff59a23);
+  static const Color color4 = Color(0xff56af3a);
+  static const Color color4a = Color(0xff027db4);
+  static const Color color5 = Color(0xffa0a21c);
+  static const Color color5a = Color(0xff70b603);
+  static const Color color6 = Color(0xFFd4880c);
+  static const Color color6a = Color(0xFFb67903);
+  static const Color color7 = Color(0xFFd85314);
+  static const Color color7a = Color(0xFF6866cc);
+  static const Color color8 = Color(0xFFdd1d1d);
+  static const Color color8a = Color(0xFF6866cc);
 }
