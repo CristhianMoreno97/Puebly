@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/home/presentation/providers/auxiliary_webview_providers.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
@@ -22,79 +23,70 @@ class HomeScreen extends ConsumerWidget {
       });
     }
 
-    Widget buildSectionButton(String label, IconData icon, int index) {
-      return ElevatedButton(
-        onPressed: () {
-          goToSection(index);
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          padding: const EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 40,
-              color: ColorPalette1.color1,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 16,
-                color: ColorPalette1.color1,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+    Widget buildSectionButton(
+        String label, IconData icon, int? index, String? webViewPath) {
+      return IconButton(
+        onPressed: () {},
+        icon: Icon(
+          icon,
+          size: 32,
+          color: Colors.white,
         ),
       );
     }
 
     Widget buildHomeHeaderContent() {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         alignment: Alignment.centerLeft,
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "¡Bienvenido a Puebly!",
+            const Text(
+              "¡Hola",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: ColorManager.colorSeedShade1,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              "Descubre Boyacá en Cada Rincón.",
+            const Text(
+              "Puebly-amigos!",
               style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: ColorManager.colorSeedShade1,
               ),
             ),
+            RichText(
+              text: const TextSpan(
+                text:
+                    'Te damos la bienvenida a la aplicación donde encontrarás de ',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'todo',
+                    style: TextStyle(
+                      color: ColorManager
+                          .secondaryShade1,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' para todos.',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
-        ),
-      );
-    }
-
-    Widget buildWaveLayer({
-      required CustomClipper<Path> clipper,
-      required Color color,
-      required double height,
-    }) {
-      return ClipPath(
-        clipper: clipper,
-        child: Container(
-          color: color,
-          height: height,
         ),
       );
     }
@@ -102,30 +94,146 @@ class HomeScreen extends ConsumerWidget {
     Widget buildHomeHeader() {
       return Stack(
         children: [
-          buildWaveLayer(
-            clipper: WaveClipperOne(),
-            color: ColorPalette1.color1,
-            height: 150,
-          ),
           buildHomeHeaderContent(),
         ],
       );
     }
 
-    Widget buildHomeButtons() {
-      return Padding(
-        padding: const EdgeInsets.all(24),
-        child: GridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 24,
-          crossAxisSpacing: 24,
-          children: [
-            buildSectionButton("Comercio", Icons.storefront_outlined, 0),
-            buildSectionButton("Turismo", Icons.place_outlined, 1),
-            buildSectionButton("Plaza", Icons.shopping_basket_outlined, 2),
-            buildSectionButton("Empleo", Icons.work_outline_outlined, 3),
-          ],
+    Widget buildCustomCard(
+        Color color,
+        String label,
+        IconData icon,
+        String description,
+        int? index,
+        String? webViewPath,
+        String? imagePath) {
+      return GestureDetector(
+        onTap: () {
+          if (index != null) {
+            goToSection(index);
+            return;
+          }
+          if (webViewPath != null) {
+            ref.read(auxiliaryWebViewPathProvider.notifier).state = webViewPath;
+            context.push('/auxiliary-screen');
+          }
+        },
+        child: Card(
+          color: color,
+          elevation: 0,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // image avatar
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(500),
+                    child: Image.asset(
+                      width: 48,
+                      height: 48,
+                      imagePath ?? 'assets/images/placeholder_1.jpg',
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 220,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          label,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          description,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  buildSectionButton("-", icon, index, webViewPath),
+                ]),
+          ),
         ),
+      );
+    }
+
+    Widget buildHomeButtons() {
+      return ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        children: [
+          buildCustomCard(
+              ColorPalette4.color7,
+              "Comunidad",
+              Icons.group_outlined,
+              "Entérate de anuncios de la alcaldía, fechas del pago adulto mayor, entre otros.",
+              null,
+              'app-comunidad',
+              'assets/images/Comunidad.jpg'),
+          const SizedBox(height: 8),
+          buildCustomCard(
+              ColorPalette4.color6,
+              "Comercio",
+              Icons.storefront_outlined,
+              "Conoce los mejores restaurantes, tiendas, hoteles y negocios locales.\n",
+              0,
+              null,
+              'assets/images/Comercio.jpg'),
+          const SizedBox(height: 8),
+          buildCustomCard(
+              ColorPalette4.color5,
+              "Plaza",
+              Icons.shopping_basket_outlined,
+              "Consigue una amplia variedad de hortalizas, tubérculos, hierbas y animales, al por mayor y al detalle.",
+              2,
+              null,
+              'assets/images/Plaza.jpg'),
+          const SizedBox(height: 8),
+          buildCustomCard(
+              ColorPalette4.color4,
+              "Turismo",
+              Icons.place_outlined,
+              "Explora los puntos turísticos que ofrece nuestro hermoso municipio.\n",
+              1,
+              null,
+              'assets/images/Turismo.jpg'),
+          const SizedBox(height: 8),
+          buildCustomCard(
+              ColorPalette4.color3,
+              "Clasificados",
+              Icons.sell_outlined,
+              "Infórmate sobre servicios de finca raíz, acarreos, construcción, aseo, maquinaria y mucho más",
+              null,
+              'app-clasificados',
+              'assets/images/Clasificados.jpg'),
+          const SizedBox(height: 8),
+          buildCustomCard(
+              ColorPalette4.color2,
+              "Empleo",
+              Icons.work_outline_outlined,
+              "Encuentra ofertas de trabajo por jornal en diversas tareas del campo.\n",
+              3,
+              null,
+              'assets/images/empleo.jpg'),
+          const SizedBox(height: 8),
+          buildCustomCard(
+              ColorPalette4.color1,
+              "¿Sabías que...",
+              Icons.place_outlined,
+              "Descubre datos interesantes y curiosos sobre nuestro municipio y su historia.\n",
+              null,
+              'app-sabias-que',
+              'assets/images/Sabías que.jpg'),
+        ],
       );
     }
 
@@ -141,13 +249,15 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: ColorPalette1.color1,
-          title: const Padding(
-            padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
-            child: AppBarTitle(),
-          ),
-          iconTheme: const IconThemeData(color: Colors.white),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        backgroundColor: ColorPalette1.color1,
+        title: const Padding(
+          padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+          child: AppBarTitle(),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: SafeArea(
         child: buildHomeSection(),
       ),
