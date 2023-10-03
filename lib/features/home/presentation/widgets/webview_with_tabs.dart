@@ -85,6 +85,8 @@ class WebViewWithTabs extends ConsumerWidget {
 
     final appBar = AppBar(
       backgroundColor: ColorPalette1.color1,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
       toolbarHeight: 64,
       title: const AppBarTitle(),
       leadingWidth: 64,
