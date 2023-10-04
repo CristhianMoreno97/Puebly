@@ -6,6 +6,7 @@ import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/drawer_item.dart';
 import 'package:puebly/features/home/presentation/providers/auxiliary_webview_providers.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
@@ -76,10 +77,19 @@ class CustomDrawer extends ConsumerWidget {
       );
     }
 
+    launchLinkApp({required Uri url}) async {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+
     Widget buildDrawerItem({
       required IconData iconData,
       required String label,
-      required Function onTap,
+      String? androidPackageName,
+      Uri? url,
       bool isFaIcon = false,
     }) {
       const iconColor = ColorManager.colorSeed;
@@ -88,24 +98,23 @@ class CustomDrawer extends ConsumerWidget {
           : Icon(iconData, color: iconColor);
 
       return ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         leading: icon,
         title: Text(
           label,
           style: const TextStyle(color: Colors.white),
         ),
-        onTap: () {
-          onTap();
+        onTap: () async {
           Navigator.pop(context);
+          if (url != null) {
+            await launchLinkApp(url: url);
+          }
         },
       );
     }
 
-    onTapDrawerItem() {
-      print('tap');
-    }
-
     final drawerContent = ListView(
-      padding: EdgeInsets.zero,
+      //padding: EdgeInsets.zero,
       children: [
         drawerHeader,
         const Padding(
@@ -117,16 +126,22 @@ class CustomDrawer extends ConsumerWidget {
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Divider(color: Colors.white),
         ),
-        buildDrawerItem(
-          iconData: Icons.info_rounded,
-          label: 'Acerca de nosotros',
-          onTap: onTapDrawerItem,
+
+        buildTopDrawerItem(
+          DrawerItem(
+            label: 'Acerca de nosotros',
+            urlPath: 'acerca-de-nosotros',
+            icon: Icons.info_rounded,
+            selectedIcon: Icons.info_rounded,
+          ),
         ),
+
         buildDrawerItem(
           iconData: FontAwesomeIcons.whatsapp,
           label: 'Whatsapp',
-          onTap: onTapDrawerItem,
           isFaIcon: true,
+          url: Uri.parse(
+              'whatsapp://send?phone=+573124270705&text=Hola Puebly, '),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
@@ -135,26 +150,38 @@ class CustomDrawer extends ConsumerWidget {
         buildDrawerItem(
           iconData: Icons.facebook_outlined,
           label: 'Facebook',
-          onTap: onTapDrawerItem,
+          url: Uri.parse('https://m.facebook.com/profile.php?id=100093991082104')
         ),
         buildDrawerItem(
           iconData: FontAwesomeIcons.instagram,
           label: 'Instagram',
-          onTap: onTapDrawerItem,
           isFaIcon: true,
+          url: Uri.parse('https://instagram.com/puebly_oficial'),
         ), // instagram
         buildDrawerItem(
           iconData: FontAwesomeIcons.tiktok,
           label: 'TikTok',
-          onTap: onTapDrawerItem,
           isFaIcon: true,
+          url: Uri.parse('https://www.tiktok.com/@puebly_oficial')
         ), // instagram
         buildDrawerItem(
           iconData: FontAwesomeIcons.youtube,
           label: 'Youtube',
-          onTap: onTapDrawerItem,
           isFaIcon: true,
+          url: Uri.parse('https://youtube.com/@Puebly'),
+          androidPackageName: 'com.google.android.youtube',
         ),
+        // dark mode button
+        /*
+        Row(
+          children: [
+            IconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                onPressed: () {},
+                icon: const Icon(Icons.light_mode_rounded,
+                    color: ColorManager.colorSeed))
+          ],
+        )*/
       ],
     );
     final drawerView = Container(
