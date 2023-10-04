@@ -32,7 +32,7 @@ class CustomTabItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 56,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           gradient: tabColor,
           borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -44,7 +44,7 @@ class CustomTabItem extends StatelessWidget {
             Icon(
               isSelected ? tabInfo.iconDataSelected : tabInfo.iconData,
               color: iconColor,
-              size: 34,
+              size: 28,
               shadows: isSelected
                   ? [
                       Shadow(
@@ -62,25 +62,23 @@ class CustomTabItem extends StatelessWidget {
     );
   }
 
-  Flexible buildTabText(Color textColor) {
-    return Flexible(
-      child: SizedBox(
-        width: 88,
-        child: Center(
-          child: Text(
-            tabInfo.label,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withOpacity(0.4),
-                  blurRadius: 4,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
+  Widget buildTabText(Color textColor) {
+    return SizedBox(
+      width: 88,
+      child: Center(
+        child: Text(
+          tabInfo.label,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+            shadows: [
+              Shadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 4,
+                offset: const Offset(0, 1),
+              ),
+            ],
           ),
         ),
       ),
