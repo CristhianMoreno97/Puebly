@@ -63,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
                 text:
                     'Te damos la bienvenida a la aplicación donde encontrarás de ',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.black54,
                 ),
@@ -78,7 +78,7 @@ class HomeScreen extends ConsumerWidget {
                   TextSpan(
                     text: ' para todos.',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black54,
                     ),

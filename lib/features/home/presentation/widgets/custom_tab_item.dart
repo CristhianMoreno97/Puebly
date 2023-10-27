@@ -71,7 +71,7 @@ class CustomTabItem extends StatelessWidget {
           style: TextStyle(
             color: textColor,
             fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+            fontSize: 16.0,
             shadows: [
               Shadow(
                 color: Colors.black.withOpacity(0.4),
