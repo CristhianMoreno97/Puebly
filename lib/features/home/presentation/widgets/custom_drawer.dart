@@ -195,9 +195,6 @@ class CustomDrawer extends ConsumerWidget {
           colors: [
             Colors.black,
             Colors.black,
-            Colors.black,
-            Colors.black,
-            Colors.black87,
           ],
         ),
       ),
