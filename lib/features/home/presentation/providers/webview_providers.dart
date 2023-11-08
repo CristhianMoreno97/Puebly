@@ -9,7 +9,8 @@ final commerceWebViewProvider =
     StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
         (ref, context) {
   final scaffoldKey = ref.watch(scaffoldKeyProvider);
-  return WebViewNotifier('/app-comercio',
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-comercio/?_categories=$town%2Ccomercio',
       scaffoldKey: scaffoldKey, context: context);
 });
 
@@ -17,7 +18,8 @@ final employmentWebViewProvider =
     StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
         (ref, context) {
   final scaffoldKey = ref.watch(scaffoldKeyProvider);
-  return WebViewNotifier('/app-empleo',
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-empleo/?_categories=$town%2Cempleo',
       scaffoldKey: scaffoldKey, context: context);
 });
 
@@ -25,7 +27,8 @@ final marketWebViewProvider =
     StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
         (ref, context) {
   final scaffoldKey = ref.watch(scaffoldKeyProvider);
-  return WebViewNotifier('/app-plaza',
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-plaza/?_categories=$town%2Cplaza',
       scaffoldKey: scaffoldKey, context: context);
 });
 
@@ -33,8 +36,12 @@ final tourismWebViewProvider =
     StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
         (ref, context) {
   final scaffoldKey = ref.watch(scaffoldKeyProvider);
-  return WebViewNotifier('/app-turismo',
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-turismo/?_categories=$town%2Cturismo',
       scaffoldKey: scaffoldKey, context: context);
 });
+
+final townParameter = StateProvider<String>((ref) => 'boyaca-boyacaboyaca');
+final sectionParameter = StateProvider<String>((ref) => 'comercio');
 
 final indexWebViewProvider = StateProvider<int>((ref) => 0);
