@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/auxiliary_webview_providers.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
+import 'package:puebly/features/home/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_button_appbar.dart';
+import 'package:puebly/features/home/presentation/widgets/custom_town_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -71,8 +73,7 @@ class HomeScreen extends ConsumerWidget {
                   TextSpan(
                     text: 'todo',
                     style: TextStyle(
-                      color: ColorManager
-                          .secondaryShade1,
+                      color: ColorManager.secondaryShade1,
                     ),
                   ),
                   TextSpan(
@@ -102,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
     Widget buildCustomCard(
         Color color,
         String label,
-        IconData icon,
+        IconData? icon,
         String description,
         int? index,
         String? webViewPath,
@@ -160,80 +161,31 @@ class HomeScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  buildSectionButton("-", icon, index, webViewPath),
+                  buildSectionButton(
+                      "-", icon ?? Icons.abc, index, webViewPath),
                 ]),
           ),
         ),
       );
     }
 
+    final towns = ref.watch(townsProvider).towns;
+
     Widget buildHomeButtons() {
-      return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        children: [
-          buildCustomCard(
-              ColorPalette4.color7,
-              "Comunidad",
-              Icons.group_outlined,
-              "Entérate de anuncios de la alcaldía, fechas del pago adulto mayor, entre otros.",
-              null,
-              'app-comunidad',
-              'assets/images/Comunidad.jpg'),
-          const SizedBox(height: 8),
-          buildCustomCard(
-              ColorPalette4.color6,
-              "Comercio",
-              Icons.storefront_outlined,
-              "Conoce los mejores restaurantes, tiendas, hoteles y negocios locales.\n",
-              0,
-              null,
-              'assets/images/Comercio.jpg'),
-          const SizedBox(height: 8),
-          buildCustomCard(
-              ColorPalette4.color5,
-              "Plaza",
-              Icons.shopping_basket_outlined,
-              "Consigue una amplia variedad de hortalizas, tubérculos, hierbas y animales, al por mayor y al detalle.",
-              2,
-              null,
-              'assets/images/Plaza.jpg'),
-          const SizedBox(height: 8),
-          buildCustomCard(
-              ColorPalette4.color4,
-              "Turismo",
-              Icons.place_outlined,
-              "Explora los puntos turísticos que ofrece nuestro hermoso municipio.\n",
-              1,
-              null,
-              'assets/images/Turismo.jpg'),
-          const SizedBox(height: 8),
-          buildCustomCard(
-              ColorPalette4.color3,
-              "Clasificados",
-              Icons.sell_outlined,
-              "Infórmate sobre servicios de finca raíz, acarreos, construcción, aseo, maquinaria y mucho más",
-              null,
-              'app-clasificados',
-              'assets/images/Clasificados.jpg'),
-          const SizedBox(height: 8),
-          buildCustomCard(
-              ColorPalette4.color2,
-              "Empleo",
-              Icons.work_outline_outlined,
-              "Encuentra ofertas de trabajo por jornal en diversas tareas del campo.\n",
-              3,
-              null,
-              'assets/images/empleo.jpg'),
-          const SizedBox(height: 8),
-          buildCustomCard(
-              ColorPalette4.color1,
-              "¿Sabías que...",
-              Icons.place_outlined,
-              "Descubre datos interesantes y curiosos sobre nuestro municipio y su historia.\n",
-              null,
-              'app-sabias-que',
-              'assets/images/Sabías que.jpg'),
-        ],
+      // retornar un listview por town
+      return ListView.builder(
+        itemCount: towns.length,
+        itemBuilder: (context, index) {
+          final town = towns[index];
+          return CustomTownCard(
+              name: town.name,
+              description: town.description,
+              hexColor: town.hexColor,
+              id: town.id,
+              enabled: town.enabled,
+              imagePath: town.imagePath
+              );
+        },
       );
     }
 
