@@ -4,7 +4,7 @@ class TownModel {
   final String hexColor;
   final String id;
   final String name;
-  final String? imagePath;
+  final String imagePath;
 
   TownModel({
     required this.enabled,
@@ -12,7 +12,7 @@ class TownModel {
     required this.hexColor,
     required this.id,
     required this.name,
-    this.imagePath,
+    required this.imagePath,
   });
 
   factory TownModel.fromJson(Map<String, dynamic> json) {

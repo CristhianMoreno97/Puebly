@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/auxiliary_webview_providers.dart';
@@ -8,7 +9,7 @@ import 'package:puebly/features/home/presentation/providers/towns_provider.dart'
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_button_appbar.dart';
-import 'package:puebly/features/home/presentation/widgets/custom_town_card.dart';
+import 'package:puebly/features/home/presentation/widgets/custom_town_grid_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -44,6 +45,7 @@ class HomeScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
             const Text(
               "¡Hola",
               style: TextStyle(
@@ -52,18 +54,10 @@ class HomeScreen extends ConsumerWidget {
                 color: ColorManager.colorSeedShade1,
               ),
             ),
-            const Text(
-              "Puebly-amigos!",
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: ColorManager.colorSeedShade1,
-              ),
-            ),
-            RichText(
+            /*RichText(
               text: const TextSpan(
                 text:
-                    'Te damos la bienvenida a la aplicación donde encontrarás de ',
+                    'Bienvenido a Puebly, \nencuentra la información de tu',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -71,13 +65,13 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'todo',
+                    text: ' Pueblo',
                     style: TextStyle(
                       color: ColorManager.secondaryShade1,
                     ),
                   ),
                   TextSpan(
-                    text: ' para todos.',
+                    text: ' en un solo lugar.[mensaje-pendiente]',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -86,7 +80,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-            )
+            )*/
           ],
         ),
       );
@@ -171,22 +165,21 @@ class HomeScreen extends ConsumerWidget {
 
     final towns = ref.watch(townsProvider).towns;
 
-    Widget buildHomeButtons() {
-      // retornar un listview por town
-      return ListView.builder(
-        itemCount: towns.length,
-        itemBuilder: (context, index) {
-          final town = towns[index];
-          return CustomTownCard(
-              name: town.name,
+    Widget buildHomeGridButtons() {
+      return MasonryGridView.count(
+          crossAxisCount: 2,
+          padding: const EdgeInsets.all(8),
+          itemCount: towns.length,
+          itemBuilder: (context, index) {
+            final town = towns[index];
+            return CustomTownGridCard(
+              title: town.name,
               description: town.description,
-              hexColor: town.hexColor,
-              id: town.id,
+              imagePath: town.imagePath,
+              townId: town.id,
               enabled: town.enabled,
-              imagePath: town.imagePath
-              );
-        },
-      );
+            );
+          });
     }
 
     Widget buildHomeSection() {
@@ -194,7 +187,7 @@ class HomeScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildHomeHeader(),
-          Expanded(child: buildHomeButtons()),
+          Expanded(child: buildHomeGridButtons()),
         ],
       );
     }

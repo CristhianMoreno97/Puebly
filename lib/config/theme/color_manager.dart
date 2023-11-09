@@ -7,6 +7,14 @@ class ColorManager {
   static const Color secondary = Color(0xff53d400);
   static const Color secondaryShade1 = Color(0xff42AA00);
   static const Color background = Color(0xffFFFFFF);
+  static const Color pueblyPrimary1 = Color(0xff00C417);
+  static const Color pueblyPrimary2 = Color(0xff00EF1F);
+  static const Color pueblyPrimary2a = Color(0xff738B76);
+  static const Color pueblyPrimary2b = Color(0xff808080);
+  static const Color pueblyPrimary2c = Color(0xffB3B3B3);
+  static const Color pueblySecundary1 = Color(0xffFF9E00);
+  static const Color pueblySecundary1a = Color(0xffFFE2B3);
+  static const Color pueblySecundary2 = Color(0xffFECB00);
   /// inputs
   static const Color inputFill = Color(0xffFFFFFF);
   static const Color inputFocusBorder = Color(0xffFFA51B);
