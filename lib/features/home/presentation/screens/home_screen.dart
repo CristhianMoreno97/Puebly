@@ -9,6 +9,7 @@ import 'package:puebly/features/home/presentation/providers/towns_provider.dart'
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_button_appbar.dart';
+import 'package:puebly/features/home/presentation/widgets/custom_home_card.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_town_grid_card.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -40,20 +41,30 @@ class HomeScreen extends ConsumerWidget {
 
     Widget buildHomeHeaderContent() {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         alignment: Alignment.centerLeft,
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
-            const Text(
-              "¡Hola",
+            CustomHomeCard(),
+            SizedBox(height: 16),
+            Text(
+              "Pueblos",
               style: TextStyle(
-                fontSize: 40,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: ColorManager.colorSeedShade1,
+                color: ColorManager.pueblyPrimary2a,
+              ),
+            ),   
+            Text(
+              "Próximamente tú municipio en Puebly.",
+              style: TextStyle(
+                fontSize: 12,
+                //fontWeight: FontWeight.bold,
+                color: ColorManager.pueblyPrimary2a,
               ),
             ),
+            SizedBox(height: 4),      
             /*RichText(
               text: const TextSpan(
                 text:
