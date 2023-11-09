@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/features/home/presentation/webview_info.dart';
 import 'package:puebly/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewNotifier extends StateNotifier<WebViewInfo> {
@@ -22,6 +23,14 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
     state = state.copyWith(loadingProgress: progress);
   }
 
+  launchLinkApp({required Uri url}) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   NavigationDecision _controllerNavigationDecision(String url) {
     if (url.contains('puebly.com')) {
       return NavigationDecision.navigate;
@@ -31,6 +40,15 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
         scaffoldKey,
         message: 'Hola Puebly, ',
       );
+    } else if (url.contains('tel:')) {
+      Utils.launchPhoneCall(
+        context,
+        scaffoldKey,
+        Uri.parse(url),
+      );
+    } else if (url.contains('https://www.google.com/maps/') ||
+        url.contains('https://www.google.com.co/maps')) {
+      launchUrl(Uri.parse(url));
     } else {
       Utils.showSnackBar(
         context,

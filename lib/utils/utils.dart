@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class Utils {
   static void drawerCloser(
     BuildContext context,
@@ -36,6 +35,24 @@ class Utils {
           backgroundColor: backgroundColor,
         ),
       );
+    }
+  }
+
+  static Future<void> launchPhoneCall(BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, Uri phoneUrl) async {
+    if (await canLaunchUrl(phoneUrl)) {
+      await launchUrl(phoneUrl);
+      return;
+    }
+
+    if (context.mounted) {
+      Utils.showSnackBar(
+        context,
+        scaffoldKey,
+        'No se pudo realizar la llamada. \nAsegúrate de tener la aplicación instalada.',
+        backgroundColor: Colors.red,
+      );
+      Utils.drawerCloser(context, scaffoldKey);
     }
   }
 
