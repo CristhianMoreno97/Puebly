@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
 import 'package:puebly/features/home/presentation/providers/scaffoldkey_provider.dart';
+import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/providers/webview_providers.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_drawer.dart';
@@ -20,11 +21,14 @@ class WebViewWithTabs extends ConsumerWidget {
       ref.watch(tourismWebViewProvider(context)),
       ref.watch(marketWebViewProvider(context)),
       ref.watch(employmentWebViewProvider(context)),
+      ref.watch(classifiedWebViewProvider(context)),
+      ref.watch(communityWebViewProvider(context)),
+      ref.watch(curiositiesWebViewProvider(context)),
     ];
 
     const tabGradientColors = LinearGradient(colors: [
-      ColorPalette1.color1,
-      ColorPalette1.color1a,
+      ColorManager.pueblyPrimary1,
+      ColorManager.pueblyPrimary2,
     ]);
 
     final tabs = [
@@ -50,6 +54,24 @@ class WebViewWithTabs extends ConsumerWidget {
         'Empleo',
         Icons.work_outline_outlined,
         Icons.work_outlined,
+        tabGradientColors,
+      ),
+      TabInfo(
+        'Anuncios',
+        Icons.sell_outlined,
+        Icons.sell_rounded,
+        tabGradientColors,
+      ),
+      TabInfo(
+        'Comunidad',
+        Icons.group_outlined,
+        Icons.group_rounded,
+        tabGradientColors,
+      ),
+      TabInfo(
+        'Sabías que',
+        Icons.menu_book_rounded,
+        Icons.menu_book_rounded,
         tabGradientColors,
       ),
     ];
@@ -84,7 +106,7 @@ class WebViewWithTabs extends ConsumerWidget {
     );
 
     final appBar = AppBar(
-      backgroundColor: ColorPalette1.color1,
+      backgroundColor: ColorManager.pueblyPrimary1,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       toolbarHeight: 64,
@@ -94,30 +116,49 @@ class WebViewWithTabs extends ConsumerWidget {
     );
 
     void goToWebView(int index) {
+      //ref.read(indexWebViewProvider.notifier).state = index;
       final pageController = ref.watch(pageControllerProvider);
       pageController.animateToPage(
         index,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
+      final width = MediaQuery.of(context).size.width;
+      double offset = index < 3 ? 0 : index * width * 0.1;
+      ref.read(scrollControllerProvider.notifier).update((state) {
+        state.animateTo(
+          offset,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+        return state;
+      });
     }
 
     final bottomAppBar = BottomAppBar(
+      padding: const EdgeInsets.all(16),
       color: Colors.white,
-      surfaceTintColor: Colors.green,
+      surfaceTintColor: ColorManager.pueblyPrimary1,
       elevation: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          for (int index = 0; index < webViews.length; index++)
-            CustomTabItem(
-              tabInfo: tabs[index],
-              isSelected: index == ref.watch(indexWebViewProvider),
-              onTap: () => goToWebView(index),
-            ),
-        ],
+      child: SingleChildScrollView(
+        controller: ref.watch(scrollControllerProvider),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            for (int index = 0; index < webViews.length; index++)
+              CustomTabItem(
+                tabInfo: tabs[index],
+                isSelected: index == ref.watch(indexWebViewProvider),
+                onTap: () => goToWebView(index),
+              ),
+          ],
+        ),
       ),
     );
+
+    final showSectionsScreen = ref.watch(showSectionsScreenProvider);
+    final showHomeScreen = ref.watch(showHomeScreenProvider);
 
     Future<bool> willPopAction() async {
       final indexWebView = ref.read(indexWebViewProvider);
@@ -129,6 +170,16 @@ class WebViewWithTabs extends ConsumerWidget {
 
       if (await currentWebView.controller!.canGoBack()) {
         currentWebView.controller!.goBack();
+        return false;
+      }
+
+      if (!showSectionsScreen) {
+        ref.read(showSectionsScreenProvider.notifier).state = true;
+        return false;
+      }
+
+      if (!showHomeScreen) {
+        ref.read(showHomeScreenProvider.notifier).state = true;
         return false;
       }
 
@@ -172,12 +223,14 @@ class WebViewWithTabs extends ConsumerWidget {
             return const Center(
                 child: CircularProgressIndicator(
               strokeWidth: 8,
+              color: ColorManager.colorSeed,
             ));
           }
           if (webViews[index].loadingProgress < 100) {
             return const Center(
                 child: CircularProgressIndicator(
               strokeWidth: 8,
+              color: ColorManager.colorSeed,
             ));
           }
           // Esperar a que el webview renderize la nueva carga

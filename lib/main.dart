@@ -19,6 +19,7 @@ class MainApp extends ConsumerWidget {
     final appRouter = ref.watch(appRouterProvider);
     final isDarkMode = ref.watch(isDarkModeProvider);
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/screens/home_screen.dart';
+import 'package:puebly/features/home/presentation/screens/sections_screen.dart';
 import 'package:puebly/features/home/presentation/widgets/webview_with_tabs.dart';
 
 class MainScreen extends ConsumerWidget {
@@ -10,10 +11,12 @@ class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final showHomeScreen = ref.watch(showHomeScreenProvider);
+    final showSectionsScreen = ref.watch(showSectionsScreenProvider);
     return SafeArea(
         child: Stack(
       children: [
         const WebViewWithTabs(),
+        showSectionsScreen ? const SectionsScreen() : const SizedBox(),
         showHomeScreen ? const HomeScreen() : const SizedBox(),
       ],
     ));

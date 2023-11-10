@@ -8,7 +8,6 @@ import 'package:puebly/features/home/presentation/providers/page_controller_prov
 import 'package:puebly/features/home/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/widgets/appbar_title.dart';
-import 'package:puebly/features/home/presentation/widgets/custom_button_appbar.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_home_card.dart';
 import 'package:puebly/features/home/presentation/widgets/custom_town_grid_card.dart';
 
@@ -55,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
                 color: ColorManager.pueblyPrimary2a,
               ),
-            ),   
+            ),
             Text(
               "Próximamente tú municipio en Puebly.",
               style: TextStyle(
@@ -64,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
                 color: ColorManager.pueblyPrimary2a,
               ),
             ),
-            SizedBox(height: 4),      
+            SizedBox(height: 4),
             /*RichText(
               text: const TextSpan(
                 text:
@@ -207,7 +206,7 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        backgroundColor: ColorPalette1.color1,
+        backgroundColor: ColorManager.pueblyPrimary1,
         title: const Padding(
           padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
           child: AppBarTitle(),
@@ -217,7 +216,7 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: buildHomeSection(),
       ),
-      bottomNavigationBar: const CustomButtonAppbar(),
+      //bottomNavigationBar: const CustomButtonAppbar(),
     );
   }
 }

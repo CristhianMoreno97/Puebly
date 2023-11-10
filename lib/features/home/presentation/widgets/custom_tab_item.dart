@@ -15,9 +15,10 @@ class CustomTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final tabColor = isSelected ? tabInfo.gradient : null;
     const textColor = Colors.white;
-    final iconColor = isSelected ? Colors.white : ColorPalette1.color1;
+    final iconColor = isSelected ? Colors.white : ColorManager.pueblyPrimary1;
     final boxShadow = isSelected
         ? [
             BoxShadow(
@@ -41,19 +42,22 @@ class CustomTabItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              isSelected ? tabInfo.iconDataSelected : tabInfo.iconData,
-              color: iconColor,
-              size: 28,
-              shadows: isSelected
-                  ? [
-                      Shadow(
-                        color: Colors.black.withOpacity(0.4),
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ]
-                  : null,
+            SizedBox(
+              width: width * 0.1,
+              child: Icon(
+                isSelected ? tabInfo.iconDataSelected : tabInfo.iconData,
+                color: iconColor,
+                size: 28,
+                shadows: isSelected
+                    ? [
+                        Shadow(
+                          color: Colors.black.withOpacity(0.4),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ]
+                    : null,
+              ),
             ),
             if (isSelected) buildTabText(textColor),
           ],

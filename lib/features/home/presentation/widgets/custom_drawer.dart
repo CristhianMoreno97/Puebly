@@ -20,7 +20,7 @@ class CustomDrawer extends ConsumerWidget {
         icon: Icons.home_filled,
         selectedIcon: Icons.home,
       ),
-      DrawerItem(
+      /*DrawerItem(
         label: 'Comunidad',
         urlPath: 'app-comunidad',
         icon: Icons.group_rounded,
@@ -37,7 +37,7 @@ class CustomDrawer extends ConsumerWidget {
         urlPath: 'app-sabias-que',
         icon: Icons.menu_book_rounded,
         selectedIcon: Icons.explore_outlined,
-      ),
+      ),*/
     ];
 
     final drawerHeader = Container(
@@ -69,6 +69,7 @@ class CustomDrawer extends ConsumerWidget {
 
           if (webViewPath == null) {
             ref.read(showHomeScreenProvider.notifier).state = true;
+            ref.read(showSectionsScreenProvider.notifier).state = true;
             return;
           }
           ref.read(auxiliaryWebViewPathProvider.notifier).state = webViewPath;

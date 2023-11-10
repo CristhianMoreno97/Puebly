@@ -44,7 +44,7 @@ class CustomHomeCard extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text:
-                                      'Te damos la bienvenida a la aplicación para ',
+                                      'Te damos la bienvenida a la aplicación creada para ',
                                 ),
                                 TextSpan(
                                   text: 'fortalecer',

@@ -14,21 +14,21 @@ class AuxiliaryScreen extends ConsumerWidget {
     if (webView.controller == null) {
       return const Center(
           child: CircularProgressIndicator(
-        color: Colors.green,
+        color: ColorManager.pueblyPrimary1,
         strokeWidth: 8,
       ));
     }
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: ColorPalette1.color1,
+          backgroundColor: ColorManager.pueblyPrimary1,
           title: const AppBarTitle(),
           iconTheme: const IconThemeData(color: Colors.white),
         ),
         body: webView.loadingProgress < 100
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Colors.green,
+                color: ColorManager.pueblyPrimary1,
                 strokeWidth: 8,
               ))
             : WebViewWidget(controller: webView.controller!),

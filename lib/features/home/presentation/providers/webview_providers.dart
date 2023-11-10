@@ -41,7 +41,35 @@ final tourismWebViewProvider =
       scaffoldKey: scaffoldKey, context: context);
 });
 
+final classifiedWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-clasificados/?_categories=$town%2Cclasificados',
+      scaffoldKey: scaffoldKey, context: context);
+});
+
+final communityWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-comunidad/?_categories=$town%2Ccomunidad',
+      scaffoldKey: scaffoldKey, context: context);
+});
+
+final curiositiesWebViewProvider =
+    StateNotifierProvider.family<WebViewNotifier, WebViewInfo, BuildContext>(
+        (ref, context) {
+  final scaffoldKey = ref.watch(scaffoldKeyProvider);
+  final town = ref.watch(townParameter);
+  return WebViewNotifier('app-sabias-que/?_categories=$town%2Csabias-que',
+      scaffoldKey: scaffoldKey, context: context);
+});
+
 final townParameter = StateProvider<String>((ref) => 'boyaca-boyacaboyaca');
+final townNameProvider = StateProvider<String>((ref) => 'Boyacá');
 final sectionParameter = StateProvider<String>((ref) => 'comercio');
 
 final indexWebViewProvider = StateProvider<int>((ref) => 0);

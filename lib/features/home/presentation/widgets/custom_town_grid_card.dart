@@ -37,6 +37,7 @@ class CustomTownGridCard extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         ref.read(townParameter.notifier).state = townId;
+        ref.read(townNameProvider.notifier).state = title;
         goToSection(0);
       },
       child: Container(
@@ -87,7 +88,7 @@ class CustomTownGridCard extends ConsumerWidget {
                     wordSpacing: 0,
                     height: 1.2,
                     color: enabled
-                        ? ColorManager.pueblyPrimary2b
+                        ? ColorManager.pueblyPrimary2a
                         : ColorManager.pueblyPrimary2c,
                     fontSize: 12,
                   ),
