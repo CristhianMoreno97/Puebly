@@ -63,7 +63,7 @@ class SectionsScreen extends ConsumerWidget {
         },
         child: Card(
           color: color,
-          elevation: 0,
+          elevation: 10,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Row(
@@ -124,7 +124,7 @@ class SectionsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
-        elevation: 0,
+        elevation: 10,
         backgroundColor: ColorManager.pueblyPrimary1,
         title: const Padding(
           padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
@@ -137,12 +137,14 @@ class SectionsScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
               const SizedBox(height: 16),
-              Text(
-                "Estás en $townName",
-                style: const TextStyle(
-                  color: ColorManager.pueblyPrimary2a,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+              Center(
+                child: Text(
+                  "Estás explorando $townName",
+                  style: const TextStyle(
+                    color: ColorManager.pueblyPrimary2a,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),

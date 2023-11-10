@@ -15,7 +15,7 @@ class CustomDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final topDrawerItems = <DrawerItem>[
       DrawerItem(
-        label: 'Inicio',
+        label: 'Pueblos',
         urlPath: null,
         icon: Icons.home_filled,
         selectedIcon: Icons.home,
