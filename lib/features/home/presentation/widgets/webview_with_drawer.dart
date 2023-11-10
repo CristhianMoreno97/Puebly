@@ -259,7 +259,7 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
       visualDensity: VisualDensity.compact,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(
-          Colors.black,
+          ColorManager.pueblyPrimary1,
         ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

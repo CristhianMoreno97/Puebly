@@ -173,7 +173,8 @@ class HomeScreen extends ConsumerWidget {
       );
     }
 
-    final towns = ref.watch(townsProvider).towns;
+    final townsState = ref.watch(townsProvider);
+    final towns = townsState.towns;
 
     Widget buildHomeGridButtons() {
       return MasonryGridView.count(
@@ -197,7 +198,11 @@ class HomeScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildHomeHeader(),
-          Expanded(child: buildHomeGridButtons()),
+          Expanded(child: townsState.isLoading 
+            ? const Center(child: CircularProgressIndicator(
+              color: ColorManager.pueblyPrimary1,
+            ))  
+            : buildHomeGridButtons()),
         ],
       );
     }

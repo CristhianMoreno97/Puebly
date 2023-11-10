@@ -19,7 +19,7 @@ class TownsNotifier extends StateNotifier<TownsState> {
     state = TownsState(isLoading: true);
     try {
       final towns = await _townsRepository.getTowns();
-      state = state.copyWith(towns: towns);
+      state = state.copyWith(towns: towns, isLoading: false);
     } catch (e) {
       state = TownsState(isFailed: true, errorMessage: e.toString());
     }
