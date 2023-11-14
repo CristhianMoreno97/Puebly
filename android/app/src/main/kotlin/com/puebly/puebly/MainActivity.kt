@@ -1,4 +1,4 @@
-package com.example.puebly
+package com.puebly.puebly
 
 import io.flutter.embedding.android.FlutterActivity
 

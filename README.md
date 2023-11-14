@@ -33,8 +33,20 @@ Donde **URL_BASE** es la url base de la api y **PUEBLY_WHATSAPP_NUMBER** es el n
 **3.** Agregar el archivo .env al .gitignore
 
 
+# Produccion
+cambiar el nombre del paquete
+```
+flutter pub run change_app_package_name:main com.puebly.pueblyboica
+```
 
+para cambiar el icono de la aplicacion:
+```
+flutter pub run flutter_launcher_icons
+```
 
+android AAB 
+
+flutter build appbundle
 
 
 
