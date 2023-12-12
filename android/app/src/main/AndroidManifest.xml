@@ -2,7 +2,7 @@
     package="com.puebly.puebly">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="puebly"
+        android:label="Puebly"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
