@@ -212,7 +212,7 @@ class WebViewWithTabs extends ConsumerWidget {
       return false;
     }
 
-    PageView buidPageView() {
+    PageView buildPageView() {
       final pageController = ref.watch(pageControllerProvider);
 
       return PageView.builder(
@@ -233,8 +233,6 @@ class WebViewWithTabs extends ConsumerWidget {
               color: ColorManager.colorSeed,
             ));
           }
-          // Esperar a que el webview renderize la nueva carga
-          Future.delayed(const Duration(milliseconds: 100));
           final webView = WebViewWidget(
               controller: webViews[index].controller as WebViewController);
           return webView;
@@ -250,7 +248,7 @@ class WebViewWithTabs extends ConsumerWidget {
       appBar: appBar,
       body: WillPopScope(
         onWillPop: () => willPopAction(),
-        child: buidPageView(),
+        child: buildPageView(),
       ),
       drawer: const CustomDrawer(),
       bottomNavigationBar: bottomAppBar,
