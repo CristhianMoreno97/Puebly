@@ -48,14 +48,16 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
       );
     } else if (url.contains('https://www.google.com/maps/') ||
         url.contains('https://www.google.com.co/maps')) {
-      launchUrl(Uri.parse(url));
+      launchLinkApp(url: Uri.parse(url));
     } else {
+      return NavigationDecision.navigate;
+      /*
       Utils.showSnackBar(
         context,
         scaffoldKey,
         'No se puede abrir la página $url',
         backgroundColor: Colors.red,
-      );
+      );*/
     }
 
     return NavigationDecision.prevent;
