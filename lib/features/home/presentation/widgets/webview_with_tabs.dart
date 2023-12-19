@@ -207,6 +207,14 @@ class WebViewWithTabs extends ConsumerWidget {
             ],
           ),
         );
+        if (confirmExit) {
+          for (var webView in webViews) {
+            if (webView.controller != null) {
+              await webView.controller!.clearCache();
+              await webView.controller!.clearLocalStorage();
+            }
+          }
+        }
         return confirmExit;
       }
       return false;
@@ -247,7 +255,9 @@ class WebViewWithTabs extends ConsumerWidget {
       key: scaffoldKey,
       appBar: appBar,
       body: WillPopScope(
-        onWillPop: () => willPopAction(),
+        onWillPop: () async {
+          return await willPopAction();
+        },
         child: buildPageView(),
       ),
       drawer: const CustomDrawer(),
