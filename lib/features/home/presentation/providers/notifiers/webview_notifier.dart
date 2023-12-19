@@ -10,14 +10,22 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
   final String path;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final BuildContext context;
+  final bool forceBuildWebviewController;
+  final Function() buildNextWebViewController;
 
   WebViewNotifier(
     this.path, {
     required this.scaffoldKey,
     required this.context,
+    required this.forceBuildWebviewController,
+    required this.buildNextWebViewController,
   }) : super(WebViewInfo(path, scaffoldKey: scaffoldKey, context: context)) {
-    _buildWebViewController();
+    if (forceBuildWebviewController) {
+      buildWebViewController();
+    }
   }
+
+  get loadingProgress => state.loadingProgress;
 
   void _setLoadingProgress(int progress) {
     state = state.copyWith(loadingProgress: progress);
@@ -73,6 +81,10 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
       },
       onPageFinished: (url) {
         _setLoadingProgress(100);
+        if (!state.loaded) {
+          buildNextWebViewController();
+          state = state.copyWith(loaded: true);
+        }
       },
       onProgress: (progress) {
         _setLoadingProgress(progress);
@@ -80,7 +92,7 @@ class WebViewNotifier extends StateNotifier<WebViewInfo> {
     );
   }
 
-  void _buildWebViewController() {
+  void buildWebViewController() {
     final webViewURL =
         Uri.parse('${EnviromentConstants.homeURL}/${state.path}');
     final controller = WebViewController();

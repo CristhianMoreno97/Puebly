@@ -14,6 +14,8 @@ final auxiliaryWebViewProvider =
     webViewPath,
     scaffoldKey: scaffoldKey,
     context: context,
+    forceBuildWebviewController: true,
+    buildNextWebViewController: () {},
   );
 });
 
