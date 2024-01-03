@@ -12,6 +12,30 @@ class MainScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final showHomeScreen = ref.watch(showHomeScreenProvider);
     final showSectionsScreen = ref.watch(showSectionsScreenProvider);
+    final showDialogBool = ref.watch(showDialogProvider);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+      if (!showDialogBool) return;
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Hola'),
+          content: const Text('Bienvenido'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                ref.read(dialogActivated.notifier).state = true;
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    });
+
     return SafeArea(
         child: Stack(
       children: [

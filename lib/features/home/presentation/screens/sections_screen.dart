@@ -22,11 +22,14 @@ class SectionsScreen extends ConsumerWidget {
       );
     }
 
-    void goToSection(int sectionIndex) {
+    Future<void> goToSection(int sectionIndex) async {
+      ref.read(showDialogProvider.notifier).state = true;
       ref.read(showHomeScreenProvider.notifier).state = false;
       ref.read(showSectionsScreenProvider.notifier).state = false;
+      
+      
       ref.read(pageControllerProvider.notifier).update((state) {
-        state.animateToPage(sectionIndex,
+          state.animateToPage(sectionIndex,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut);
         return state;
@@ -51,9 +54,9 @@ class SectionsScreen extends ConsumerWidget {
         String? webViewPath,
         String? imagePath) {
       return GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (index != null) {
-            goToSection(index);
+            await goToSection(index);
             return;
           }
           if (webViewPath != null) {
