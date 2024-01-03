@@ -108,24 +108,6 @@ class HomeScreen extends ConsumerWidget {
     }
 
     final townsState = ref.watch(townsProvider);
-    final towns = townsState.towns;
-
-    Widget buildHomeGridButtons() {
-      return MasonryGridView.count(
-          crossAxisCount: 2,
-          padding: const EdgeInsets.all(8),
-          itemCount: towns.length,
-          itemBuilder: (context, index) {
-            final town = towns[index];
-            return CustomTownGridCard(
-              title: town.name,
-              description: town.description,
-              imagePath: town.imagePath,
-              townId: town.id,
-              enabled: town.enabled,
-            );
-          });
-    }
 
     Widget buildHomeSection() {
       return Column(
@@ -138,7 +120,7 @@ class HomeScreen extends ConsumerWidget {
                       child: CircularProgressIndicator(
                       color: ColorManager.pueblyPrimary1,
                     ))
-                  : buildHomeGridButtons()),
+                  : const HomeGridButtons()),
         ],
       );
     }
@@ -159,6 +141,29 @@ class HomeScreen extends ConsumerWidget {
       ),
       //bottomNavigationBar: const CustomButtonAppbar(),
     );
+  }
+}
+
+class HomeGridButtons extends ConsumerWidget {
+  const HomeGridButtons({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final towns = ref.watch(townsProvider).towns;
+    return MasonryGridView.count(
+        crossAxisCount: 2,
+        padding: const EdgeInsets.all(8),
+        itemCount: towns.length,
+        itemBuilder: (context, index) {
+          final town = towns[index];
+          return CustomTownGridCard(
+            title: town.name,
+            description: town.description,
+            imagePath: town.imagePath,
+            townId: town.id,
+            enabled: town.enabled,
+          );
+        });
   }
 }
 
