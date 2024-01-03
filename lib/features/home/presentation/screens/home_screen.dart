@@ -38,14 +38,6 @@ class HomeScreen extends ConsumerWidget {
       );
     }
 
-    Widget buildHomeHeader() {
-      return const Stack(
-        children: [
-          HomeHeaderContent(),
-        ],
-      );
-    }
-
     Widget buildCustomCard(
         Color color,
         String label,
@@ -139,12 +131,14 @@ class HomeScreen extends ConsumerWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          buildHomeHeader(),
-          Expanded(child: townsState.isLoading 
-            ? const Center(child: CircularProgressIndicator(
-              color: ColorManager.pueblyPrimary1,
-            ))  
-            : buildHomeGridButtons()),
+          const HomeHeader(),
+          Expanded(
+              child: townsState.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: ColorManager.pueblyPrimary1,
+                    ))
+                  : buildHomeGridButtons()),
         ],
       );
     }
@@ -168,38 +162,51 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
+class HomeHeader extends StatelessWidget {
+  const HomeHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Stack(
+      children: [
+        HomeHeaderContent(),
+      ],
+    );
+  }
+}
+
 class HomeHeaderContent extends StatelessWidget {
   const HomeHeaderContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        alignment: Alignment.centerLeft,
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomHomeCard(),
-            SizedBox(height: 16),
-            Text(
-              "Pueblos",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: ColorManager.pueblyPrimary2a,
-              ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      alignment: Alignment.centerLeft,
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomHomeCard(),
+          SizedBox(height: 16),
+          Text(
+            "Pueblos",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: ColorManager.pueblyPrimary2a,
             ),
-            Text(
-              "Próximamente tú municipio en Puebly.",
-              style: TextStyle(
-                fontSize: 12,
-                //fontWeight: FontWeight.bold,
-                color: ColorManager.pueblyPrimary2a,
-              ),
+          ),
+          Text(
+            "Próximamente tú municipio en Puebly.",
+            style: TextStyle(
+              fontSize: 12,
+              //fontWeight: FontWeight.bold,
+              color: ColorManager.pueblyPrimary2a,
             ),
-            SizedBox(height: 4),
-          ],
-        ),
-      );
+          ),
+          SizedBox(height: 4),
+        ],
+      ),
+    );
   }
 }
