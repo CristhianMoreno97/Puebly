@@ -38,68 +38,10 @@ class HomeScreen extends ConsumerWidget {
       );
     }
 
-    Widget buildHomeHeaderContent() {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        alignment: Alignment.centerLeft,
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomHomeCard(),
-            SizedBox(height: 16),
-            Text(
-              "Pueblos",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: ColorManager.pueblyPrimary2a,
-              ),
-            ),
-            Text(
-              "Próximamente tú municipio en Puebly.",
-              style: TextStyle(
-                fontSize: 12,
-                //fontWeight: FontWeight.bold,
-                color: ColorManager.pueblyPrimary2a,
-              ),
-            ),
-            SizedBox(height: 4),
-            /*RichText(
-              text: const TextSpan(
-                text:
-                    'Bienvenido a Puebly, \nencuentra la información de tu',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black54,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: ' Pueblo',
-                    style: TextStyle(
-                      color: ColorManager.secondaryShade1,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' en un solo lugar.[mensaje-pendiente]',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            )*/
-          ],
-        ),
-      );
-    }
-
     Widget buildHomeHeader() {
-      return Stack(
+      return const Stack(
         children: [
-          buildHomeHeaderContent(),
+          HomeHeaderContent(),
         ],
       );
     }
@@ -223,5 +165,41 @@ class HomeScreen extends ConsumerWidget {
       ),
       //bottomNavigationBar: const CustomButtonAppbar(),
     );
+  }
+}
+
+class HomeHeaderContent extends StatelessWidget {
+  const HomeHeaderContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        alignment: Alignment.centerLeft,
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomHomeCard(),
+            SizedBox(height: 16),
+            Text(
+              "Pueblos",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: ColorManager.pueblyPrimary2a,
+              ),
+            ),
+            Text(
+              "Próximamente tú municipio en Puebly.",
+              style: TextStyle(
+                fontSize: 12,
+                //fontWeight: FontWeight.bold,
+                color: ColorManager.pueblyPrimary2a,
+              ),
+            ),
+            SizedBox(height: 4),
+          ],
+        ),
+      );
   }
 }
