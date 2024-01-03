@@ -107,24 +107,6 @@ class HomeScreen extends ConsumerWidget {
       );
     }
 
-    final townsState = ref.watch(townsProvider);
-
-    Widget buildHomeSection() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const HomeHeader(),
-          Expanded(
-              child: townsState.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: ColorManager.pueblyPrimary1,
-                    ))
-                  : const HomeGridButtons()),
-        ],
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
@@ -136,10 +118,32 @@ class HomeScreen extends ConsumerWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: SafeArea(
-        child: buildHomeSection(),
+      body: const SafeArea(
+        child: HomeSection(),
       ),
       //bottomNavigationBar: const CustomButtonAppbar(),
+    );
+  }
+}
+
+class HomeSection extends ConsumerWidget {
+  const HomeSection({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final townsState = ref.watch(townsProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const HomeHeader(),
+        Expanded(
+            child: townsState.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: ColorManager.pueblyPrimary1,
+                  ))
+                : const HomeGridButtons()),
+      ],
     );
   }
 }
