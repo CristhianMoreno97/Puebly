@@ -6,6 +6,7 @@ class Town {
   final String description;
   final String featuredImgUrl;
   final int categoryId;
+  final bool enabled;
   final List<TownSection> sections;
 
   Town({
@@ -14,6 +15,7 @@ class Town {
     required this.description,
     required this.featuredImgUrl,
     required this.categoryId,
+    required this.enabled,
     this.sections = const [],
   });
 
@@ -23,6 +25,7 @@ class Town {
     String? description,
     String? featuredImgUrl,
     int? categoryId,
+    bool? enabled,
     List<TownSection>? sections,
   }) {
     return Town(
@@ -31,6 +34,7 @@ class Town {
       description: description ?? this.description,
       featuredImgUrl: featuredImgUrl ?? this.featuredImgUrl,
       categoryId: categoryId ?? this.categoryId,
+      enabled: enabled ?? this.enabled,
       sections: sections ?? this.sections,
     );
   }  

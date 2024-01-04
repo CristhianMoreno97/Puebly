@@ -4,6 +4,7 @@ class TownModel {
   final String description;
   final String featuredImgUrl;
   final int categoryId;
+  final bool enabled;
 
   TownModel({
     required this.id,
@@ -11,6 +12,7 @@ class TownModel {
     required this.description,
     required this.featuredImgUrl,
     required this.categoryId,
+    required this.enabled,
   });
 
   TownModel copyWith({
@@ -19,6 +21,7 @@ class TownModel {
     String? description,
     String? featuredImgUrl,
     int? categoryId,
+    bool? enabled,
   }) {
     return TownModel(
       id: id ?? this.id,
@@ -26,6 +29,7 @@ class TownModel {
       description: description ?? this.description,
       featuredImgUrl: featuredImgUrl ?? this.featuredImgUrl,
       categoryId: categoryId ?? this.categoryId,
+      enabled: enabled ?? this.enabled,
     );
   }
 }

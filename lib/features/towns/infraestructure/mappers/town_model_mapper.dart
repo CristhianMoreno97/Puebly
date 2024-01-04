@@ -7,5 +7,6 @@ class TownModelMapper {
         categoryId: json['category_id'],
         description: json['description'],
         featuredImgUrl: json['featured_img_url'],
+        enabled: json['enabled'],
       );
 }

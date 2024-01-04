@@ -16,6 +16,7 @@ class TownsRepositoryImpl extends TownsRepository {
             name: town.name,
             description: town.description,
             featuredImgUrl: town.featuredImgUrl,
+            enabled: town.enabled,
             categoryId: town.categoryId))
         .toList();
   }
