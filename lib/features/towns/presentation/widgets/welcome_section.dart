@@ -13,7 +13,7 @@ class WelcomeSection extends StatelessWidget {
         Column(
           children: [
             SizedBox(
-              height: width * 0.2,
+              height: width * 0.14,
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: vPadding),
