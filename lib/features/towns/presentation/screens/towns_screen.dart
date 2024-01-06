@@ -8,11 +8,11 @@ import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/welcome_section.dart';
 
-class TownsScreen extends ConsumerWidget {
+class TownsScreen extends StatelessWidget {
   const TownsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       key: GlobalKey<ScaffoldState>(),
       drawer: const CustomDrawer(),
