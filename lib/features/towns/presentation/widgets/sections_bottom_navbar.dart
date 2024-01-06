@@ -29,9 +29,12 @@ class SectionsBottomNavBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(selectedSectionIndexProvider);
     return BottomAppBar(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       color: Colors.white,
+      height: 72,
       elevation: 0,
       child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         controller: ref.watch(sectionsScrollControllerProvider),
         child: Row(
