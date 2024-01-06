@@ -22,8 +22,6 @@ class TownsScreen extends StatelessWidget {
   }
 }
 
-
-
 class _MainView extends StatelessWidget {
   const _MainView();
 
