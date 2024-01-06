@@ -80,8 +80,8 @@ class _TownsSection extends ConsumerWidget {
     return SliverMasonryGrid.extent(
       //crossAxisCount: 2,
       maxCrossAxisExtent: 300,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 8,
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 0,
       childCount: towns.length,
       itemBuilder: (context, index) {
         final town = towns[index];

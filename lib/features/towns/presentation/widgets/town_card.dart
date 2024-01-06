@@ -23,6 +23,7 @@ class TownCard extends StatelessWidget {
         context.push('/town/${town.id}');
       },
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.only(
