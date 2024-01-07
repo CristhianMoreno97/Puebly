@@ -7,7 +7,7 @@ class WelcomeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final vPadding = width > 600 ? 32.0 : 16.0;
+    final vPadding = width > 480 ? 32.0 : 16.0;
     return Stack(
       children: [
         Column(
