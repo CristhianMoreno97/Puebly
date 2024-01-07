@@ -24,7 +24,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/town/:townCategoryId',
         builder: (context, state) =>
-            TownSectionsScreen(townCategoryId: state.pathParameters['townCategoryId'] ?? 'no-id'),
+            TownSectionsScreen(townId: state.pathParameters['townCategoryId'] ?? 'no-id'),
       ),
     ],
   );
