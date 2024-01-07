@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
@@ -48,12 +49,15 @@ class _ImageViewer extends StatelessWidget {
         topLeft: Radius.circular(16),
         bottomLeft: Radius.circular(16),
       ),
-      child: FadeInImage(
+      child: CachedNetworkImage(
+        imageUrl: imagePath,
         width: 120,
         height: 120,
         fit: BoxFit.cover,
-        image: NetworkImage(imagePath),
-        placeholder: const AssetImage('assets/images/placeholder_2.jpg'),
+        placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
     );
   }
