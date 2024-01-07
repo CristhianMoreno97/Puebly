@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
@@ -70,12 +71,16 @@ class _ImageViewer extends StatelessWidget {
             topRight: Radius.circular(16),
             bottomLeft: Radius.circular(16),
           ),
-          child: FadeInImage(
-              width: width,
-              height: width,
-              fit: BoxFit.cover,
-              image: NetworkImage(imagePath),
-              placeholder: const AssetImage('assets/images/placeholder_2.jpg')),
+          child: CachedNetworkImage(
+            imageUrl: imagePath,
+            width: width,
+            height: width,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
         );
       },
     );
