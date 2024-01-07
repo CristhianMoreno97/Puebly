@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/home/presentation/providers/page_controller_provider.dart';
+import 'package:puebly/features/home/presentation/providers/scaffoldkey_provider.dart';
 import 'package:puebly/features/home/presentation/providers/utils_provider.dart';
 import 'package:puebly/features/home/presentation/providers/webview_providers.dart';
+import 'package:puebly/utils/utils.dart';
 
 class CustomTownGridCard extends ConsumerWidget {
   const CustomTownGridCard({
@@ -24,6 +26,8 @@ class CustomTownGridCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final GlobalKey<ScaffoldState> scaffoldKey = ref.watch(scaffoldKeyProvider);
+
     void goToSection(int sectionIndex) {
       ref.read(showHomeScreenProvider.notifier).state = false;
       ref.read(pageControllerProvider.notifier).update((state) {
@@ -36,6 +40,13 @@ class CustomTownGridCard extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
+        if (!enabled) {
+          Utils.showSnackBar(
+              context, scaffoldKey, 'Próximamente en tu municipio',
+              backgroundColor: ColorManager.pueblySecundary1);
+          return;
+        }
+
         ref.read(townParameter.notifier).state = townId;
         ref.read(townNameProvider.notifier).state = title;
         goToSection(0);

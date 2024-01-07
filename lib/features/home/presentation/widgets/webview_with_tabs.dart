@@ -207,12 +207,20 @@ class WebViewWithTabs extends ConsumerWidget {
             ],
           ),
         );
+        if (confirmExit) {
+          for (var webView in webViews) {
+            if (webView.controller != null) {
+              await webView.controller!.clearCache();
+              await webView.controller!.clearLocalStorage();
+            }
+          }
+        }
         return confirmExit;
       }
       return false;
     }
 
-    PageView buidPageView() {
+    PageView buildPageView() {
       final pageController = ref.watch(pageControllerProvider);
 
       return PageView.builder(
@@ -233,8 +241,6 @@ class WebViewWithTabs extends ConsumerWidget {
               color: ColorManager.colorSeed,
             ));
           }
-          // Esperar a que el webview renderize la nueva carga
-          Future.delayed(const Duration(milliseconds: 100));
           final webView = WebViewWidget(
               controller: webViews[index].controller as WebViewController);
           return webView;
@@ -249,8 +255,10 @@ class WebViewWithTabs extends ConsumerWidget {
       key: scaffoldKey,
       appBar: appBar,
       body: WillPopScope(
-        onWillPop: () => willPopAction(),
-        child: buidPageView(),
+        onWillPop: () async {
+          return await willPopAction();
+        },
+        child: buildPageView(),
       ),
       drawer: const CustomDrawer(),
       bottomNavigationBar: bottomAppBar,

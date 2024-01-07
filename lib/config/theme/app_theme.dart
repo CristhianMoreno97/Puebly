@@ -47,6 +47,7 @@ class AppTheme {
               fontWeight: FontWeight.w700,
             ),
           ),
+          
           indicatorShape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(16),
@@ -63,6 +64,16 @@ class AppTheme {
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w700,
+          ),
+          titleLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+          bodyMedium: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
           ),
         ),
       );
