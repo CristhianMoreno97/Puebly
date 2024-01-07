@@ -20,7 +20,7 @@ class TownCard extends StatelessWidget {
           );
           return;
         }
-        context.push('/town/${town.id}');
+        context.push('/town/${town.categoryId}');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8),
