@@ -30,12 +30,14 @@ class _MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: WelcomeSection()),
             SliverToBoxAdapter(child: _HeaderSection()),
             _TownsSection(),
+            SliverToBoxAdapter(child: SizedBox(height: 16)),
+            SliverToBoxAdapter(child: _FooterSection()),
             SliverToBoxAdapter(child: SizedBox(height: 16)),
           ],
         ),
@@ -54,18 +56,14 @@ class _HeaderSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 8),
           Text(
-            "Pueblos",
+            "Recorre los pueblos mágicos de Boyacá",
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: ColorManager.colorSeed,
+                  color: ColorManager.pueblySecundary1,
                 ),
           ),
-          Text(
-            "Próximamente tú municipio en Puebly.",
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Colors.black54,
-                ),
-          ),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -82,12 +80,26 @@ class _TownsSection extends ConsumerWidget {
       //crossAxisCount: 2,
       maxCrossAxisExtent: 300,
       mainAxisSpacing: 16,
-      crossAxisSpacing: 0,
+      crossAxisSpacing: 8,
       childCount: towns.length,
       itemBuilder: (context, index) {
         final town = towns[index];
         return TownCard(town: town);
       },
+    );
+  }
+}
+
+class _FooterSection extends StatelessWidget {
+  const _FooterSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "¡Próximamente tú municipio en Puebly!",
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: Colors.black54,
+          ),
     );
   }
 }
