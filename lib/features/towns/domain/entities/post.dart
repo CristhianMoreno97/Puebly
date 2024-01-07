@@ -4,7 +4,7 @@ class Post {
   final String content;
   final String featuredImgUrl;
   final List<String> images;
-  final Map<String, dynamic> categories;
+  final List<Map<String, dynamic>> categories;
 
   Post({
     required this.id,
@@ -21,7 +21,7 @@ class Post {
     String? content,
     String? featuredImgUrl,
     List<String>? images,
-    Map<String, dynamic>? categories,
+    List<Map<String, dynamic>>? categories,
   }) {
     return Post(
       id: id ?? this.id,
