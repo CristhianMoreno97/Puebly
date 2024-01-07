@@ -33,20 +33,22 @@ class SectionsBottomNavBar extends ConsumerWidget {
       color: Colors.white,
       height: 72,
       elevation: 0,
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        controller: ref.watch(sectionsScrollControllerProvider),
-        child: Row(
-          children: [
-            for (int index = 0;
-                index < TownSectionsInfo.sections.length;
-                index++)
-              _NavBarItem(
-                  sectionInfo: TownSectionsInfo.sections[index],
-                  isSelected: index == selectedIndex,
-                  onTap: () => navigateToSection(index, ref, context)),
-          ],
+      child: Center(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          controller: ref.watch(sectionsScrollControllerProvider),
+          child: Row(
+            children: [
+              for (int index = 0;
+                  index < TownSectionsInfo.sections.length;
+                  index++)
+                _NavBarItem(
+                    sectionInfo: TownSectionsInfo.sections[index],
+                    isSelected: index == selectedIndex,
+                    onTap: () => navigateToSection(index, ref, context)),
+            ],
+          ),
         ),
       ),
     );
