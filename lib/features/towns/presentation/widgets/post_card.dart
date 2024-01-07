@@ -10,7 +10,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         boxShadow: [
           BoxShadow(
@@ -21,7 +21,7 @@ class PostCard extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: Colors.green.withOpacity(0.5),
+          color: ColorManager.pueblyPrimary1.withOpacity(0.2),
           width: 2,
           strokeAlign: BorderSide.strokeAlignOutside,
         ),
@@ -49,8 +49,8 @@ class _ImageViewer extends StatelessWidget {
         bottomLeft: Radius.circular(16),
       ),
       child: FadeInImage(
-        width: 160,
-        height: 160,
+        width: 120,
+        height: 120,
         fit: BoxFit.cover,
         image: NetworkImage(imagePath),
         placeholder: const AssetImage('assets/images/placeholder_2.jpg'),
@@ -70,9 +70,9 @@ class _TextContent extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: ColorManager.pueblyPrimary2a,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
         ),
       ),
     );
