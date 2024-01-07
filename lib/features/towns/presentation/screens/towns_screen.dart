@@ -14,6 +14,7 @@ class TownsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       key: GlobalKey<ScaffoldState>(),
       drawer: const CustomDrawer(),
       appBar: const CustomAppBar(),
@@ -56,13 +57,13 @@ class _HeaderSection extends StatelessWidget {
           Text(
             "Pueblos",
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: ColorManager.pueblyPrimary2a,
+                  color: ColorManager.colorSeed,
                 ),
           ),
           Text(
             "Próximamente tú municipio en Puebly.",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: ColorManager.pueblyPrimary2a,
+                  color: Colors.black54,
                 ),
           ),
         ],
