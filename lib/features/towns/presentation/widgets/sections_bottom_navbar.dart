@@ -14,10 +14,10 @@ class SectionsBottomNavBar extends ConsumerWidget {
           curve: Curves.easeInOut,
         );
     final width = MediaQuery.of(context).size.width;
-    final offset = index < 3 ? 0.0 : index * width * 0.1;
+    final offset = index < 3 ? 0.0 : index * 36.0;
     ref.read(sectionsScrollControllerProvider.notifier).update((state) {
       state.animateTo(
-        offset,
+        width < 572.0 ? offset : 0.0,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
