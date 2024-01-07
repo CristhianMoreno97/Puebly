@@ -4,8 +4,8 @@ class PostModel {
   final String content;
   final String featuredImgUrl;
   final List<String> images;
-  final Map<String, dynamic> categories;
-  final String sectionCategoryId;
+  final List<Map<String, dynamic>> categories;
+  final int sectionCategoryId;
 
   PostModel({
     required this.id,
@@ -23,8 +23,8 @@ class PostModel {
     String? content,
     String? featuredImgUrl,
     List<String>? images,
-    Map<String, dynamic>? categories,
-    String? sectionCategoryId,
+    List<Map<String, dynamic>>? categories,
+    int? sectionCategoryId,
   }) {
     return PostModel(
       id: id ?? this.id,
