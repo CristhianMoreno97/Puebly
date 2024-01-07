@@ -54,8 +54,10 @@ class _ImageViewer extends StatelessWidget {
         width: 120,
         height: 120,
         fit: BoxFit.cover,
-        placeholder: (context, url) => const Center(
-          child: CircularProgressIndicator(),
+        placeholder: (context, url) => Center(
+          child: ClipRRect(
+            child: Image.asset('assets/images/ph_2.jpg', fit: BoxFit.cover, width: 120, height: 120),
+          ),
         ),
         errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
