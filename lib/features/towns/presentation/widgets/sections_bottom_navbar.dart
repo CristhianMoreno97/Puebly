@@ -44,9 +44,10 @@ class SectionsBottomNavBar extends ConsumerWidget {
                   index < TownSectionsInfo.sections.length;
                   index++)
                 _NavBarItem(
-                    sectionInfo: TownSectionsInfo.sections[index],
-                    isSelected: index == selectedIndex,
-                    onTap: () => navigateToSection(index, ref, context)),
+                  sectionInfo: TownSectionsInfo.sections[index],
+                  isSelected: index == selectedIndex,
+                  onTap: () => navigateToSection(index, ref, context),
+                ),
             ],
           ),
         ),
