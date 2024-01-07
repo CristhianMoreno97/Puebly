@@ -94,7 +94,7 @@ class _HeaderText extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: ColorManager.pueblyPrimary2a,
+              color: ColorManager.colorSeed,
             ),
       ),
     );
@@ -113,7 +113,7 @@ class _Content extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: ColorManager.pueblyPrimary2a,
+              color: Colors.black54,
             ),
       ),
     );
