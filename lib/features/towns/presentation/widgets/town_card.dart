@@ -23,7 +23,7 @@ class TownCard extends StatelessWidget {
         context.push('/town/${town.categoryId}');
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.only(
@@ -33,9 +33,9 @@ class TownCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black12.withOpacity(0.1),
-              spreadRadius: 4,
-              blurRadius: 8,
-              offset: const Offset(0, 0),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: const Offset(1, 1),
             ),
           ],
         ),
