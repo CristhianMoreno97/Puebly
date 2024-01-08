@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:puebly/features/home/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/widgets/post_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/section_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/sections_bottom_navbar.dart';
