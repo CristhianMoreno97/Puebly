@@ -33,10 +33,10 @@ class _MainView extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: WelcomeView()),
-            SliverToBoxAdapter(child: _HeaderSection()),
-            _TownsSection(),
+            SliverToBoxAdapter(child: _HeaderView()),
+            _TownsView(),
             SliverToBoxAdapter(child: SizedBox(height: 16)),
-            SliverToBoxAdapter(child: _FooterSection()),
+            SliverToBoxAdapter(child: _FooterView()),
             SliverToBoxAdapter(child: SizedBox(height: 16)),
           ],
         ),
@@ -45,8 +45,8 @@ class _MainView extends StatelessWidget {
   }
 }
 
-class _HeaderSection extends StatelessWidget {
-  const _HeaderSection();
+class _HeaderView extends StatelessWidget {
+  const _HeaderView();
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +69,8 @@ class _HeaderSection extends StatelessWidget {
   }
 }
 
-class _TownsSection extends ConsumerWidget {
-  const _TownsSection();
+class _TownsView extends ConsumerWidget {
+  const _TownsView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,8 +89,8 @@ class _TownsSection extends ConsumerWidget {
   }
 }
 
-class _FooterSection extends StatelessWidget {
-  const _FooterSection();
+class _FooterView extends StatelessWidget {
+  const _FooterView();
 
   @override
   Widget build(BuildContext context) {
