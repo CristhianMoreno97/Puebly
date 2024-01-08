@@ -9,3 +9,6 @@ final selectedSectionIndexProvider =
 
 final sectionsScrollControllerProvider =
     StateProvider<ScrollController>((ref) => ScrollController());
+
+final showTownSectionsViewProvider =
+    StateProvider<bool>((ref) => true);
