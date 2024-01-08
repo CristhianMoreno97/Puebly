@@ -4,6 +4,7 @@ import 'package:puebly/features/home/presentation/screens/auxiliary_screen.dart'
 import 'package:puebly/features/home/presentation/screens/main_screen.dart';
 import 'package:puebly/features/towns/presentation/screens/town_sections_screen.dart';
 import 'package:puebly/features/towns/presentation/screens/towns_screen.dart';
+import 'package:puebly/features/towns/presentation/screens/webview_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -23,8 +24,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/town/:townCategoryId',
-        builder: (context, state) =>
-            TownSectionsScreen(townId: state.pathParameters['townCategoryId'] ?? 'no-id'),
+        builder: (context, state) => TownSectionsScreen(
+            townId: state.pathParameters['townCategoryId'] ?? 'no-id'),
+      ),
+      GoRoute(
+        path: '/webview',
+        builder: (context, state) => const WebViewScreen(),
       ),
     ],
   );
