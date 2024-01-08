@@ -41,31 +41,33 @@ class _SectionsView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final showSectionsView = ref.watch(showTownSectionsViewProvider);
 
-    return SafeArea(
-      child: showSectionsView
-          ? Container(
+    return showSectionsView
+        ? Scaffold(
+            backgroundColor: Colors.white,
+            appBar: const CustomAppBar(showMenu: false),
+            body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              color: Colors.white,
               child: CustomScrollView(
                 slivers: [
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
                   SliverMasonryGrid.extent(
-                      maxCrossAxisExtent: 600,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childCount: TownSectionsInfo.sections.length,
-                      itemBuilder: (context, index) {
-                        return SectionCard(
-                          TownSectionsInfo.sections[index],
-                          index: index,
-                        );
-                      }),
+                    maxCrossAxisExtent: 600,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childCount: TownSectionsInfo.sections.length,
+                    itemBuilder: (context, index) {
+                      return SectionCard(
+                        TownSectionsInfo.sections[index],
+                        index: index,
+                      );
+                    },
+                  ),
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
                 ],
               ),
-            )
-          : const SizedBox(),
-    );
+            ),
+          )
+        : const SizedBox();
   }
 }
 
