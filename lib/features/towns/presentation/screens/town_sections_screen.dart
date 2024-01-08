@@ -6,23 +6,59 @@ import 'package:puebly/features/towns/presentation/providers/sections_providers.
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/post_card.dart';
+import 'package:puebly/features/towns/presentation/widgets/section_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/sections_bottom_navbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
 
-class TownSectionsScreen extends StatelessWidget {
+class TownSectionsScreen extends ConsumerWidget {
   final String townId;
+
   const TownSectionsScreen({super.key, required this.townId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final townCategoryId = int.parse(townId);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: GlobalKey<ScaffoldState>(),
-      drawer: const CustomDrawer(),
-      appBar: const CustomAppBar(),
-      body: _MainView(townCategoryId: townCategoryId),
-      bottomNavigationBar: const SectionsBottomNavBar(),
+
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Colors.white,
+          drawer: const CustomDrawer(),
+          appBar: const CustomAppBar(),
+          body: _MainView(townCategoryId: townCategoryId),
+          bottomNavigationBar: const SectionsBottomNavBar(),
+        ),
+        const _SectionsView(),
+      ],
+    );
+  }
+}
+
+class _SectionsView extends ConsumerWidget {
+  const _SectionsView();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final showSectionsView = ref.watch(showTownSectionsViewProvider);
+
+    return SafeArea(
+      child: showSectionsView
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              color: Colors.white,
+              child: MasonryGridView.count(
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  itemCount: TownSectionsInfo.sections.length,
+                  itemBuilder: (context, index) {
+                    return SectionCard(
+                      TownSectionsInfo.sections[index],
+                      index: index,
+                    );
+                  }),
+            )
+          : const SizedBox(),
     );
   }
 }
@@ -32,18 +68,32 @@ class _MainView extends ConsumerWidget {
 
   const _MainView({required this.townCategoryId});
 
+  Future<bool> willPopAction(WidgetRef ref) async {
+    final showSectionsView = ref.watch(showTownSectionsViewProvider);
+    if (!showSectionsView) {
+      ref.read(showTownSectionsViewProvider.notifier).state = true;
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return PageView.builder(
-      controller: ref.watch(sectionsPageControllerProvider),
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: TownSectionsInfo.sections.length,
-      itemBuilder: (context, index) {
-        return _SectionContent(townCategoryId, index);
+    return WillPopScope(
+      onWillPop: () async {
+        return await willPopAction(ref);
       },
-      onPageChanged: (index) {
-        ref.read(selectedSectionIndexProvider.notifier).state = index;
-      },
+      child: PageView.builder(
+        controller: ref.watch(sectionsPageControllerProvider),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: TownSectionsInfo.sections.length,
+        itemBuilder: (context, index) {
+          return _SectionContent(townCategoryId, index);
+        },
+        onPageChanged: (index) {
+          ref.read(selectedSectionIndexProvider.notifier).state = index;
+        },
+      ),
     );
   }
 }
