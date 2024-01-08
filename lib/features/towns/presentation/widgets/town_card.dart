@@ -1,15 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/town.dart';
+import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 
-class TownCard extends StatelessWidget {
+class TownCard extends ConsumerWidget {
   final Town town;
   const TownCard({super.key, required this.town});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
         if (!town.enabled) {
@@ -21,6 +23,7 @@ class TownCard extends StatelessWidget {
           );
           return;
         }
+        ref.read(showTownSectionsViewProvider.notifier).state = true;
         context.push('/town/${town.categoryId}');
       },
       child: Container(
