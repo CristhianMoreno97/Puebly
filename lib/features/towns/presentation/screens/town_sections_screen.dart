@@ -46,17 +46,23 @@ class _SectionsView extends ConsumerWidget {
           ? Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               color: Colors.white,
-              child: MasonryGridView.count(
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  itemCount: TownSectionsInfo.sections.length,
-                  itemBuilder: (context, index) {
-                    return SectionCard(
-                      TownSectionsInfo.sections[index],
-                      index: index,
-                    );
-                  }),
+              child: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  SliverMasonryGrid.extent(
+                      maxCrossAxisExtent: 600,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childCount: TownSectionsInfo.sections.length,
+                      itemBuilder: (context, index) {
+                        return SectionCard(
+                          TownSectionsInfo.sections[index],
+                          index: index,
+                        );
+                      }),
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                ],
+              ),
             )
           : const SizedBox(),
     );
