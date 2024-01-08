@@ -3,27 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
+import 'package:puebly/features/towns/utils/section_utils.dart';
 
 class SectionsBottomNavBar extends ConsumerWidget {
   const SectionsBottomNavBar({super.key});
-
-  void navigateToSection(int index, WidgetRef ref, BuildContext context) {
-    ref.read(sectionsPageControllerProvider).animateToPage(
-          index,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-    final width = MediaQuery.of(context).size.width;
-    final offset = index < 3 ? 0.0 : index * 36.0;
-    ref.read(sectionsScrollControllerProvider.notifier).update((state) {
-      state.animateTo(
-        width < 572.0 ? offset : 0.0,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeOut,
-      );
-      return state;
-    });
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,7 +29,7 @@ class SectionsBottomNavBar extends ConsumerWidget {
                 _NavBarItem(
                   sectionInfo: TownSectionsInfo.sections[index],
                   isSelected: index == selectedIndex,
-                  onTap: () => navigateToSection(index, ref, context),
+                  onTap: () => SectionUtils.navigateTo(index, ref, context),
                 ),
             ],
           ),
