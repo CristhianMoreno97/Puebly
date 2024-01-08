@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final bool showMenu;
+
+  const CustomAppBar({super.key, this.showMenu = true});
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -15,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: ColorManager.pueblyPrimary1,
       surfaceTintColor: Colors.transparent,
-      leading: Builder(
+      leading: showMenu ? Builder(
         builder: (context) => IconButton(
           icon: const Icon(
             Icons.menu,
@@ -24,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           onPressed: () => Scaffold.of(context).openDrawer(),
         ),
-      ),
+      ): const SizedBox(),
     );
   }
 }
