@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:puebly/config/theme/color_manager.dart';
-import 'package:puebly/features/home/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/welcome_view.dart';
 
