@@ -6,7 +6,7 @@ import 'package:puebly/features/home/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_card.dart';
-import 'package:puebly/features/towns/presentation/widgets/welcome_section.dart';
+import 'package:puebly/features/towns/presentation/widgets/welcome_view.dart';
 
 class TownsScreen extends StatelessWidget {
   const TownsScreen({super.key});
@@ -32,7 +32,7 @@ class _MainView extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: WelcomeSection()),
+            SliverToBoxAdapter(child: WelcomeView()),
             SliverToBoxAdapter(child: _HeaderSection()),
             _TownsSection(),
             SliverToBoxAdapter(child: SizedBox(height: 16)),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 
-class WelcomeSection extends StatelessWidget {
-  const WelcomeSection({super.key});
+class WelcomeView extends StatelessWidget {
+  const WelcomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
