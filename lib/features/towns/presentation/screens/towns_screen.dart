@@ -13,12 +13,11 @@ class TownsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
-      key: GlobalKey<ScaffoldState>(),
-      drawer: const CustomDrawer(),
-      appBar: const CustomAppBar(),
-      body: const _MainView(),
+      drawer: CustomDrawer(),
+      appBar: CustomAppBar(),
+      body: _MainView(),
     );
   }
 }
