@@ -31,7 +31,6 @@ class _PostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -39,29 +38,39 @@ class _PostView extends StatelessWidget {
         children: [
           _TitleText(post.title),
           _ImageViewer(post.featuredImgUrl),
-          HtmlWidget(
-            post.content,
-            customStylesBuilder: (element) {
-              if (element.localName == 'figure') {
-                return {
-                  'margin': '0',
-                  'padding': '0',
-                  'width': '100%',
-                  'height': 'auto',
-                };
-              }
-              return null;
-            },
-            customWidgetBuilder: (element) {
-              if (element.localName == 'img') {
-                final src = element.attributes['src'];
-                return _ImageViewer(src!);
-              }
-              return null;
-            },
-          )
+          _HtmlContent(post.content),
         ],
       ),
+    );
+  }
+}
+
+class _HtmlContent extends StatelessWidget {
+  final String htmlContent;
+  const _HtmlContent(this.htmlContent);
+
+  @override
+  Widget build(BuildContext context) {
+    return HtmlWidget(
+      htmlContent,
+      customStylesBuilder: (element) {
+        if (element.localName == 'figure') {
+          return {
+            'margin': '0',
+            'padding': '0',
+            'width': '100%',
+            'height': 'auto',
+          };
+        }
+        return null;
+      },
+      customWidgetBuilder: (element) {
+        if (element.localName == 'img') {
+          final src = element.attributes['src'];
+          return _ImageViewer(src!);
+        }
+        return null;
+      },
     );
   }
 }
