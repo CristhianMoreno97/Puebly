@@ -34,19 +34,19 @@ class _ContentView extends StatelessWidget {
     for (var i = 0; i < lineas.length; i++) {
       lineas[i] = lineas[i].trim();
 
-      if (!(i+1 < lineas.length)) {
+      if (!(i + 1 < lineas.length)) {
         break;
       }
 
       if (lineas[i].isNotEmpty) {
-        if (lineas[i+1].isNotEmpty) {
-          lineas[i] += '\n${lineas[i+1]}';
-          lineas.removeAt(i+1);
+        if (lineas[i + 1].isNotEmpty) {
+          lineas[i] += '\n${lineas[i + 1]}';
+          lineas.removeAt(i + 1);
           i--;
         }
         continue;
       }
-      
+
       if (lineas[i + 1].isNotEmpty) {
         lineas[i - 1] += '';
         lineas.removeAt(i);
@@ -74,7 +74,7 @@ class _ContentView extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (i < postContent.length && postContent[i].trim().isNotEmpty)
+                if (i < postContent.length && postContent[i].isNotEmpty)
                   Text(
                     postContent[i],
                     textAlign: TextAlign.left,
