@@ -90,10 +90,7 @@ class _TextContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Text(
         text,
-        textAlign: TextAlign.left,
-        style: const TextStyle(
-          fontSize: 16,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }
