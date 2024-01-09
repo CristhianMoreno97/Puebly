@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
@@ -115,13 +116,38 @@ class _SectionContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(townProvider(townCategoryId));
     final sectionPosts = posts.townSections[pageIndex].posts;
-    return MasonryGridView.count(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        mainAxisSpacing: 16,
-        crossAxisCount: 1,
-        itemCount: sectionPosts.length,
-        itemBuilder: (context, index) {
-          return PostCard(post: sectionPosts[index]);
-        });
+    return Stack(
+      children: [
+        MasonryGridView.count(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          mainAxisSpacing: 16,
+          crossAxisCount: 1,
+          itemCount: sectionPosts.length,
+          itemBuilder: (context, index) {
+            return PostCard(post: sectionPosts[index]);
+          },
+        ),
+        if (posts.isLoading) const _LoadingProgress(),
+      ],
+    );
+  }
+}
+
+class _LoadingProgress extends StatelessWidget {
+  const _LoadingProgress();
+
+  @override
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    return Column(
+      children: [
+        const LinearProgressIndicator(
+          color: ColorManager.colorSeed,
+          backgroundColor: Colors.white,
+        ),
+        SizedBox(height: height * 0.3),
+        Image.asset('assets/images/ph_2.jpg', height: 200),
+      ],
+    );
   }
 }
