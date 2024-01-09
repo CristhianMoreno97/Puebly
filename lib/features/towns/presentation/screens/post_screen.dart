@@ -70,18 +70,14 @@ class _ContentView extends StatelessWidget {
         children: [
           Text(post.title),
           _ImageViewer(post.featuredImgUrl),
-          for (var i = 0; i < maxLength; i++)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (i < postContent.length && postContent[i].isNotEmpty)
-                  Text(
-                    postContent[i],
-                    textAlign: TextAlign.left,
-                  ),
-                if (i < post.images.length) _ImageViewer(post.images[i]),
-              ],
-            ),
+          for (var i = 0; i < maxLength; i++) ...[
+            if (i < postContent.length && postContent[i].isNotEmpty)
+              Text(
+                postContent[i],
+                textAlign: TextAlign.left,
+              ),
+            if (i < post.images.length) _ImageViewer(post.images[i]),
+          ],
         ],
       ),
     );
