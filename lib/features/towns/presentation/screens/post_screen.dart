@@ -99,11 +99,14 @@ class _ImageViewer extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: imagePath,
         width: double.infinity,
+        height: 220,
         fit: BoxFit.cover,
         placeholder: (context, url) => Center(
-          child: ClipRRect(
-            child: Image.asset('assets/images/ph_2.jpg',
-                fit: BoxFit.cover, width: double.infinity),
+          child: Image.asset(
+            'assets/images/ph_2.jpg',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 220,
           ),
         ),
         errorWidget: (context, url, error) => const Icon(Icons.error),
