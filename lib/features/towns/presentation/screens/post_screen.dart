@@ -17,9 +17,8 @@ class PostScreen extends ConsumerWidget {
     return Scaffold(
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
-      body: post != null
-          ? _PostView(post)
-          : const Text('\n¡Post no encontrado!'),
+      body:
+          post != null ? _PostView(post) : const Text('\n¡Post no encontrado!'),
     );
   }
 }
@@ -72,13 +71,29 @@ class _PostView extends StatelessWidget {
           _ImageViewer(post.featuredImgUrl),
           for (var i = 0; i < maxLength; i++) ...[
             if (i < postContent.length && postContent[i].isNotEmpty)
-              Text(
-                postContent[i],
-                textAlign: TextAlign.left,
-              ),
+              _TextContent(postContent[i]),
             if (i < post.images.length) _ImageViewer(post.images[i]),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _TextContent extends StatelessWidget {
+  final String text;
+  const _TextContent(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Text(
+        text,
+        textAlign: TextAlign.left,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
       ),
     );
   }
@@ -90,22 +105,25 @@ class _ImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(16)),
-      child: CachedNetworkImage(
-        imageUrl: imagePath,
-        width: double.infinity,
-        height: 220,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => Center(
-          child: Image.asset(
-            'assets/images/ph_2.jpg',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: 220,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        child: CachedNetworkImage(
+          imageUrl: imagePath,
+          width: double.infinity,
+          height: 220,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Center(
+            child: Image.asset(
+              'assets/images/ph_2.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 220,
+            ),
           ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
     );
   }
