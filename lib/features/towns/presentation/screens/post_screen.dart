@@ -18,15 +18,15 @@ class PostScreen extends ConsumerWidget {
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
       body: post != null
-          ? _ContentView(post)
+          ? _PostView(post)
           : const Text('\n¡Post no encontrado!'),
     );
   }
 }
 
-class _ContentView extends StatelessWidget {
+class _PostView extends StatelessWidget {
   final Post post;
-  const _ContentView(this.post);
+  const _PostView(this.post);
 
   List<String> dividirCadena(String cadena) {
     List<String> lineas = cadena.trim().split('\n\n\n\n');
