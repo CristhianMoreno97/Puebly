@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
@@ -67,7 +68,7 @@ class _PostView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(post.title),
+          _TitleText(post.title),
           _ImageViewer(post.featuredImgUrl),
           for (var i = 0; i < maxLength; i++) ...[
             if (i < postContent.length && postContent[i].isNotEmpty)
@@ -75,6 +76,24 @@ class _PostView extends StatelessWidget {
             if (i < post.images.length) _ImageViewer(post.images[i]),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _TitleText extends StatelessWidget {
+  final String text;
+  const _TitleText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: ColorManager.colorSeed
+        ),
       ),
     );
   }
