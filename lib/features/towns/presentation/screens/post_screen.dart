@@ -71,7 +71,7 @@ class _PostView extends StatelessWidget {
           _ImageViewer(post.featuredImgUrl),
           for (var i = 0; i < maxLength; i++) ...[
             if (i < postContent.length && postContent[i].isNotEmpty)
-              _TextContent(postContent[i]),
+              _ContentText(postContent[i]),
             if (i < post.images.length) _ImageViewer(post.images[i]),
           ],
         ],
@@ -80,9 +80,9 @@ class _PostView extends StatelessWidget {
   }
 }
 
-class _TextContent extends StatelessWidget {
+class _ContentText extends StatelessWidget {
   final String text;
-  const _TextContent(this.text);
+  const _ContentText(this.text);
 
   @override
   Widget build(BuildContext context) {
