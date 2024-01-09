@@ -29,40 +29,8 @@ class _PostView extends StatelessWidget {
   final Post post;
   const _PostView(this.post);
 
-  List<String> dividirCadena(String cadena) {
-    List<String> lineas = cadena.trim().split('\n\n\n\n');
-
-    for (var i = 0; i < lineas.length; i++) {
-      lineas[i] = lineas[i].trim();
-
-      if (!(i + 1 < lineas.length)) {
-        break;
-      }
-
-      if (lineas[i].isNotEmpty) {
-        if (lineas[i + 1].isNotEmpty) {
-          lineas[i] += '\n${lineas[i + 1]}';
-          lineas.removeAt(i + 1);
-          i--;
-        }
-        continue;
-      }
-
-      if (lineas[i + 1].isNotEmpty) {
-        lineas[i - 1] += '';
-        lineas.removeAt(i);
-        i--;
-      }
-    }
-    return lineas;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final List<String> postContent = dividirCadena(post.content);
-    final maxLength = postContent.length > post.images.length
-        ? postContent.length
-        : post.images.length;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -112,22 +80,6 @@ class _TitleText extends StatelessWidget {
             .textTheme
             .titleLarge!
             .copyWith(color: ColorManager.colorSeed),
-      ),
-    );
-  }
-}
-
-class _ContentText extends StatelessWidget {
-  final String text;
-  const _ContentText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }
