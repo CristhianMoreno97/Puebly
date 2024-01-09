@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final sectionsPageControllerProvider =
     StateProvider<PageController>((ref) => PageController());
 
-final selectedSectionIndexProvider =
+final sectionIndexProvider =
     StateProvider<int>((ref) => 0);
 
 final sectionsScrollControllerProvider =

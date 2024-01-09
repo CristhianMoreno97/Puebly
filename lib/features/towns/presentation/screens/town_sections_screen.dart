@@ -99,7 +99,7 @@ class _MainView extends ConsumerWidget {
           return _SectionContent(townCategoryId, index);
         },
         onPageChanged: (index) {
-          ref.read(selectedSectionIndexProvider.notifier).state = index;
+          ref.read(sectionIndexProvider.notifier).state = index;
         },
       ),
     );

@@ -10,7 +10,7 @@ class SectionsBottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(selectedSectionIndexProvider);
+    final selectedIndex = ref.watch(sectionIndexProvider);
     return BottomAppBar(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       color: Colors.white,
