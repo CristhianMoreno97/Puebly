@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 
@@ -9,30 +10,35 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12.withOpacity(0.0),
-            spreadRadius: 4,
-            blurRadius: 8,
-            offset: const Offset(0, 0),
+    return GestureDetector(
+      onTap: () {
+        context.push('/post/${post.id}');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12.withOpacity(0.0),
+              spreadRadius: 4,
+              blurRadius: 8,
+              offset: const Offset(0, 0),
+            ),
+          ],
+          border: Border.all(
+            color: ColorManager.pueblyPrimary1.withOpacity(0.2),
+            width: 2,
+            strokeAlign: BorderSide.strokeAlignOutside,
           ),
-        ],
-        border: Border.all(
-          color: ColorManager.pueblyPrimary1.withOpacity(0.2),
-          width: 2,
-          strokeAlign: BorderSide.strokeAlignOutside,
         ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _ImageViewer(post.featuredImgUrl),
-          Expanded(child: _TextContent(post.title)),
-        ],
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _ImageViewer(post.featuredImgUrl),
+            Expanded(child: _TextContent(post.title)),
+          ],
+        ),
       ),
     );
   }
