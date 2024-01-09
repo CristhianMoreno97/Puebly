@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
@@ -70,11 +71,27 @@ class _PostView extends StatelessWidget {
         children: [
           _TitleText(post.title),
           _ImageViewer(post.featuredImgUrl),
-          for (var i = 0; i < maxLength; i++) ...[
-            if (i < postContent.length && postContent[i].isNotEmpty)
-              _ContentText(postContent[i]),
-            if (i < post.images.length) _ImageViewer(post.images[i]),
-          ],
+          HtmlWidget(
+            post.content,
+            customStylesBuilder: (element) {
+              if (element.localName == 'figure') {
+                return {
+                  'margin': '0',
+                  'padding': '0',
+                  'width': '100%',
+                  'height': 'auto',
+                };
+              }
+              return null;
+            },
+            customWidgetBuilder: (element) {
+              if (element.localName == 'img') {
+                final src = element.attributes['src'];
+                return _ImageViewer(src!);
+              }
+              return null;
+            },
+          )
         ],
       ),
     );
@@ -91,9 +108,10 @@ class _TitleText extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-          color: ColorManager.colorSeed
-        ),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge!
+            .copyWith(color: ColorManager.colorSeed),
       ),
     );
   }
