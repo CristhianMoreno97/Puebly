@@ -82,7 +82,8 @@ class _ImageViewer extends StatelessWidget {
             fit: BoxFit.cover,
             placeholder: (context, url) => Center(
               child: ClipRRect(
-                child: Image.asset('assets/images/ph_2.jpg'),
+                child: Image.asset('assets/images/ph_2.jpg',
+                    width: width, height: width, fit: BoxFit.cover),
               ),
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
