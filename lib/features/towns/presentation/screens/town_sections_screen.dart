@@ -118,10 +118,11 @@ class _SectionContent extends ConsumerWidget {
     final sectionPosts = posts.townSections[pageIndex].posts;
     return Stack(
       children: [
-        MasonryGridView.count(
+        MasonryGridView.extent(
+          maxCrossAxisExtent: 680,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           mainAxisSpacing: 16,
-          crossAxisCount: 1,
+          crossAxisSpacing: 16,
           itemCount: sectionPosts.length,
           itemBuilder: (context, index) {
             return PostCard(post: sectionPosts[index]);
