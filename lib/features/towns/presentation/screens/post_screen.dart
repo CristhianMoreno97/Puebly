@@ -40,12 +40,23 @@ class _PostView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _TitleText(post.title),
-            _ImageViewer(post.featuredImgUrl),
+            _FeaturedImage(post.featuredImgUrl, galleryImageUrls: post.images),
             _HtmlContent(post.content, imagePaths: post.images),
           ],
         ),
       ),
     );
+  }
+}
+
+class _FeaturedImage extends StatelessWidget {
+  final String imageUrl;
+  final List<String> galleryImageUrls;
+  const _FeaturedImage(this.imageUrl, {required this.galleryImageUrls});
+
+  @override
+  Widget build(BuildContext context) {
+    return _ImageViewer(imageUrl);
   }
 }
 
