@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/towns/domain/entities/town.dart';
 import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
@@ -74,9 +75,11 @@ class _TownsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final towns = ref.watch(townsProvider).towns;
+    final townsState = ref.watch(townsProvider);
+    final towns = townsState.isLoading
+        ? List.generate(2, (index) => Town.empty())
+        : townsState.towns;
     return SliverMasonryGrid.extent(
-      //crossAxisCount: 2,
       maxCrossAxisExtent: 300,
       mainAxisSpacing: 16,
       crossAxisSpacing: 8,
