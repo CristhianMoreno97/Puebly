@@ -41,7 +41,7 @@ class _PostView extends StatelessWidget {
           children: [
             _TitleText(post.title),
             _FeaturedImage(post.featuredImgUrl, galleryImageUrls: post.images),
-            _HtmlContent(post.content, imagePaths: post.images),
+            _HtmlContent(post.content, galleryImageUrls: post.images),
           ],
         ),
       ),
@@ -69,8 +69,8 @@ class _FeaturedImage extends StatelessWidget {
 
 class _HtmlContent extends StatefulWidget {
   final String htmlContent;
-  final List<String> imagePaths;
-  const _HtmlContent(this.htmlContent, {required this.imagePaths});
+  final List<String> galleryImageUrls;
+  const _HtmlContent(this.htmlContent, {required this.galleryImageUrls});
 
   @override
   State<_HtmlContent> createState() => _HtmlContentState();
@@ -102,7 +102,7 @@ class _HtmlContentState extends State<_HtmlContent> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
-                      _FullScreenImageViewer(widget.imagePaths, index: currentIndex),
+                      _FullScreenImageViewer(widget.galleryImageUrls, index: currentIndex),
                 ));
               },
               child: _ImageViewer(src!));
