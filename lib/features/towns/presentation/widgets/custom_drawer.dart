@@ -12,6 +12,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
+      left: false,
       child: Drawer(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
