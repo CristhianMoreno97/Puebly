@@ -31,15 +31,17 @@ class _PostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _TitleText(post.title),
-          _ImageViewer(post.featuredImgUrl),
-          _HtmlContent(post.content),
-        ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _TitleText(post.title),
+            _ImageViewer(post.featuredImgUrl),
+            _HtmlContent(post.content),
+          ],
+        ),
       ),
     );
   }

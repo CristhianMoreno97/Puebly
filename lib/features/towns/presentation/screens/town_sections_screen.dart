@@ -46,25 +46,27 @@ class _SectionsView extends ConsumerWidget {
         ? Scaffold(
             backgroundColor: Colors.white,
             appBar: const CustomAppBar(showMenu: false),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                  SliverMasonryGrid.extent(
-                    maxCrossAxisExtent: 600,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childCount: TownSectionsInfo.sections.length,
-                    itemBuilder: (context, index) {
-                      return SectionCard(
-                        TownSectionsInfo.sections[index],
-                        index: index,
-                      );
-                    },
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                ],
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CustomScrollView(
+                  slivers: [
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                    SliverMasonryGrid.extent(
+                      maxCrossAxisExtent: 600,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childCount: TownSectionsInfo.sections.length,
+                      itemBuilder: (context, index) {
+                        return SectionCard(
+                          TownSectionsInfo.sections[index],
+                          index: index,
+                        );
+                      },
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  ],
+                ),
               ),
             ),
           )
@@ -92,16 +94,18 @@ class _MainView extends ConsumerWidget {
       onWillPop: () async {
         return await willPopAction(ref);
       },
-      child: PageView.builder(
-        controller: ref.watch(sectionsPageControllerProvider),
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: TownSectionsInfo.sections.length,
-        itemBuilder: (context, index) {
-          return _SectionContent(townCategoryId, index);
-        },
-        onPageChanged: (index) {
-          ref.read(sectionIndexProvider.notifier).state = index;
-        },
+      child: SafeArea(
+        child: PageView.builder(
+          controller: ref.watch(sectionsPageControllerProvider),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: TownSectionsInfo.sections.length,
+          itemBuilder: (context, index) {
+            return _SectionContent(townCategoryId, index);
+          },
+          onPageChanged: (index) {
+            ref.read(sectionIndexProvider.notifier).state = index;
+          },
+        ),
       ),
     );
   }
