@@ -105,28 +105,22 @@ class _ImageViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => _FullScreenImageViewer(imagePath)));
-        },
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: CachedNetworkImage(
-            imageUrl: imagePath,
-            width: double.infinity,
-            height: 220,
-            fit: BoxFit.cover,
-            placeholder: (context, url) => Center(
-              child: Image.asset(
-                'assets/images/ph_2.jpg',
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: 220,
-              ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        child: CachedNetworkImage(
+          imageUrl: imagePath,
+          width: double.infinity,
+          height: 220,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Center(
+            child: Image.asset(
+              'assets/images/ph_2.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 220,
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
     );
@@ -134,14 +128,25 @@ class _ImageViewer extends StatelessWidget {
 }
 
 class _FullScreenImageViewer extends StatelessWidget {
-  final String imagePath;
-  const _FullScreenImageViewer(this.imagePath);
+  final List<String> imagePaths;
+  final int index;
+  const _FullScreenImageViewer(this.imagePaths, {required this.index});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-          PhotoView.customChild(child: CachedNetworkImage(imageUrl: imagePath)),
+      body: PhotoViewGallery.builder(
+        itemCount: imagePaths.length,
+        builder: (context, index) {
+          return PhotoViewGalleryPageOptions(
+            imageProvider: CachedNetworkImageProvider(imagePaths[index]),
+            initialScale: PhotoViewComputedScale.contained * 1,
+            minScale: PhotoViewComputedScale.contained * 1,
+            maxScale: PhotoViewComputedScale.covered * 2,
+          );
+        },
+        pageController: PageController(initialPage: index),
+      ),
     );
   }
 }
