@@ -56,7 +56,6 @@ class _LoadingProgress extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(webViewIsLoadingProvider);
-    final height = MediaQuery.of(context).size.height;
     return isLoading
         ? Column(
             children: [
@@ -64,8 +63,13 @@ class _LoadingProgress extends ConsumerWidget {
                 color: ColorManager.colorSeed,
                 backgroundColor: Colors.white,
               ),
-              SizedBox(height: height * 0.3),
-              Image.asset('assets/images/ph_2.jpg', height: 200),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Image.asset('assets/images/placeholder_2.png',
+                      height: 200),
+                ),
+              ),
             ],
           )
         : const SizedBox();

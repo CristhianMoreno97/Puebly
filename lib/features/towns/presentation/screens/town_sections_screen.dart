@@ -139,15 +139,18 @@ class _LoadingProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Column(
       children: [
         const LinearProgressIndicator(
           color: ColorManager.colorSeed,
           backgroundColor: Colors.white,
         ),
-        SizedBox(height: height * 0.3),
-        Image.asset('assets/images/ph_2.jpg', height: 200),
+        Expanded(
+          child: Align(
+            alignment: Alignment.center,
+            child: Image.asset('assets/images/placeholder_2.png', height: 200),
+          ),
+        ),
       ],
     );
   }
