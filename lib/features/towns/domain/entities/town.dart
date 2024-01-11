@@ -37,5 +37,17 @@ class Town {
       enabled: enabled ?? this.enabled,
       sections: sections ?? this.sections,
     );
-  }  
+  }
+
+  static Town empty() {
+    return Town(
+      id: 0,
+      name: '',
+      description: '',
+      featuredImgUrl: '',
+      categoryId: 0,
+      enabled: false,
+      sections: [],
+    );
+  }
 }
