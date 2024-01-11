@@ -41,7 +41,7 @@ class _PostView extends StatelessWidget {
           children: [
             _TitleText(post.title),
             _ImageViewer(post.featuredImgUrl),
-            _HtmlContent(post.content),
+            _HtmlContent(post.content, imagePaths: post.images),
           ],
         ),
       ),
@@ -49,14 +49,21 @@ class _PostView extends StatelessWidget {
   }
 }
 
-class _HtmlContent extends StatelessWidget {
+class _HtmlContent extends StatefulWidget {
   final String htmlContent;
-  const _HtmlContent(this.htmlContent);
+  final List<String> imagePaths;
+  const _HtmlContent(this.htmlContent, {required this.imagePaths});
 
+  @override
+  State<_HtmlContent> createState() => _HtmlContentState();
+}
+
+class _HtmlContentState extends State<_HtmlContent> {
+  var imageIndex = 0;
   @override
   Widget build(BuildContext context) {
     return HtmlWidget(
-      htmlContent,
+      widget.htmlContent,
       customStylesBuilder: (element) {
         if (element.localName == 'figure') {
           return {
@@ -71,7 +78,16 @@ class _HtmlContent extends StatelessWidget {
       customWidgetBuilder: (element) {
         if (element.localName == 'img') {
           final src = element.attributes['src'];
-          return _ImageViewer(src!);
+          imageIndex++;
+          final currentIndex = imageIndex;
+          return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      _FullScreenImageViewer(widget.imagePaths, index: currentIndex),
+                ));
+              },
+              child: _ImageViewer(src!));
         }
         return null;
       },
