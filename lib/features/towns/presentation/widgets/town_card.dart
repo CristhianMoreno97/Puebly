@@ -70,6 +70,18 @@ class _ImageViewer extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final width = constraints.maxWidth;
+
+        if (imagePath == '') {
+          return ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(16),
+              bottomLeft: Radius.circular(16),
+            ),
+            child: Image.asset('assets/images/ph_2.jpg',
+                width: width, height: width, fit: BoxFit.cover),
+          );
+        }
+
         return ClipRRect(
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(16),
