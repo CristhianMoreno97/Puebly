@@ -149,7 +149,7 @@ class _ImageViewer extends StatelessWidget {
           fit: BoxFit.cover,
           placeholder: (context, url) => Center(
             child: Image.asset(
-              'assets/images/ph_2.jpg',
+              'assets/images/puebly-loader.gif',
               fit: BoxFit.cover,
               width: double.infinity,
               height: 220,

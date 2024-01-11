@@ -77,7 +77,7 @@ class _ImageViewer extends StatelessWidget {
               topRight: Radius.circular(16),
               bottomLeft: Radius.circular(16),
             ),
-            child: Image.asset('assets/images/ph_2.jpg',
+            child: Image.asset('assets/images/puebly-loader.gif',
                 width: width, height: width, fit: BoxFit.cover),
           );
         }
@@ -94,7 +94,7 @@ class _ImageViewer extends StatelessWidget {
             fit: BoxFit.cover,
             placeholder: (context, url) => Center(
               child: ClipRRect(
-                child: Image.asset('assets/images/ph_2.jpg',
+                child: Image.asset('assets/images/puebly-loader.gif',
                     width: width, height: width, fit: BoxFit.cover),
               ),
             ),

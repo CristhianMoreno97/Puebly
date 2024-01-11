@@ -65,7 +65,7 @@ class _ImageViewer extends StatelessWidget {
         fit: BoxFit.cover,
         placeholder: (context, url) => Center(
           child: ClipRRect(
-            child: Image.asset('assets/images/ph_2.jpg',
+            child: Image.asset('assets/images/puebly-loader.gif',
                 fit: BoxFit.cover, width: 120, height: 120),
           ),
         ),

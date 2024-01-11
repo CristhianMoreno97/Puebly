@@ -152,7 +152,7 @@ class _LoadingProgress extends StatelessWidget {
         Expanded(
           child: Align(
             alignment: Alignment.center,
-            child: Image.asset('assets/images/placeholder_2.png', height: 200),
+            child: Image.asset('assets/images/puebly-loader.gif', height: 200),
           ),
         ),
       ],
