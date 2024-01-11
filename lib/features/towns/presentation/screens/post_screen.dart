@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
@@ -104,24 +105,43 @@ class _ImageViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        child: CachedNetworkImage(
-          imageUrl: imagePath,
-          width: double.infinity,
-          height: 220,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => Center(
-            child: Image.asset(
-              'assets/images/ph_2.jpg',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 220,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => _FullScreenImageViewer(imagePath)));
+        },
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          child: CachedNetworkImage(
+            imageUrl: imagePath,
+            width: double.infinity,
+            height: 220,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Center(
+              child: Image.asset(
+                'assets/images/ph_2.jpg',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 220,
+              ),
             ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
+    );
+  }
+}
+
+class _FullScreenImageViewer extends StatelessWidget {
+  final String imagePath;
+  const _FullScreenImageViewer(this.imagePath);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:
+          PhotoView.customChild(child: CachedNetworkImage(imageUrl: imagePath)),
     );
   }
 }
