@@ -56,7 +56,14 @@ class _FeaturedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _ImageViewer(imageUrl);
+    return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                _FullScreenImageViewer(galleryImageUrls, index: 0),
+          ));
+        },
+        child: _ImageViewer(imageUrl));
   }
 }
 
