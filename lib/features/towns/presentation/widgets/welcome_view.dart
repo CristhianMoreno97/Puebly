@@ -7,13 +7,14 @@ class WelcomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final vPadding = width > 480 ? 32.0 : 16.0;
+    final vPadding = width > 520 ? 40.0 : 16.0;
+    final vPadding2 = width > 430 ? 32.0 : 16.0;
     return Stack(
       children: [
         Column(
           children: [
             SizedBox(
-              height: vPadding * 3.2,
+              height: vPadding2 * 3.2,
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: vPadding),
@@ -27,7 +28,7 @@ class WelcomeView extends StatelessWidget {
                   const Flexible(child: _WelcomeText()),
                   Container(
                       width: width * 0.36,
-                      constraints: const BoxConstraints(maxWidth: 260)),
+                      constraints: const BoxConstraints(maxWidth: 280)),
                 ],
               ),
             ),
