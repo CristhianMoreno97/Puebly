@@ -94,6 +94,8 @@ class _DrawerView extends StatelessWidget {
       //padding: const EdgeInsets.all(24),
       color: Colors.black,
       child: ListView(
+        physics: const BouncingScrollPhysics(
+            decelerationRate: ScrollDecelerationRate.fast),
         padding: const EdgeInsets.all(24),
         children: [
           const _DrawerHeader(),
