@@ -18,7 +18,8 @@ class SectionsBottomNavBar extends ConsumerWidget {
       elevation: 0,
       child: Center(
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(
+              decelerationRate: ScrollDecelerationRate.fast),
           scrollDirection: Axis.horizontal,
           controller: ref.watch(sectionsScrollControllerProvider),
           child: Row(
