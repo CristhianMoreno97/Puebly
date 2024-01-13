@@ -25,7 +25,9 @@ class WelcomeView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const Flexible(child: _WelcomeText()),
-                  SizedBox(width: width * 0.36),
+                  Container(
+                      width: width * 0.36,
+                      constraints: const BoxConstraints(maxWidth: 260)),
                 ],
               ),
             ),
@@ -37,7 +39,7 @@ class WelcomeView extends StatelessWidget {
           width: width * 0.4,
           child: Image.asset(
             'assets/images/traveler-woman-lowr.png',
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomRight,
           ),
         ),
       ],
