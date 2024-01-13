@@ -38,13 +38,18 @@ class _PostView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         physics: const BouncingScrollPhysics(
             decelerationRate: ScrollDecelerationRate.fast),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _TitleText(post.title),
-            _FeaturedImage(post.featuredImgUrl, galleryImageUrls: post.images),
-            _HtmlContent(post.content, galleryImageUrls: post.images),
-          ],
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _TitleText(post.title),
+                _FeaturedImage(post.featuredImgUrl, galleryImageUrls: post.images),
+                _HtmlContent(post.content, galleryImageUrls: post.images),
+              ],
+            ),
+          ),
         ),
       ),
     );
