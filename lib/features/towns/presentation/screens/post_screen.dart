@@ -45,7 +45,8 @@ class _PostView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _TitleText(post.title),
-                _FeaturedImage(post.featuredImgUrl, galleryImageUrls: post.images),
+                _FeaturedImage(post.featuredImgUrl,
+                    galleryImageUrls: post.images),
                 _HtmlContent(post.content, galleryImageUrls: post.images),
               ],
             ),
@@ -146,6 +147,8 @@ class _ImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = width > 800 ? 340.0 : 220.0;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
       child: ClipRRect(
@@ -153,14 +156,14 @@ class _ImageViewer extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imagePath,
           width: double.infinity,
-          height: 220,
+          height: height,
           fit: BoxFit.cover,
           placeholder: (context, url) => Center(
             child: Image.asset(
               'assets/images/puebly-loader.gif',
               fit: BoxFit.cover,
               width: double.infinity,
-              height: 220,
+              height: height,
             ),
           ),
           errorWidget: (context, url, error) => const Icon(Icons.error),
