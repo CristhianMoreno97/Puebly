@@ -66,8 +66,10 @@ class _LoadingProgress extends ConsumerWidget {
               Expanded(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Image.asset('assets/images/placeholder_2.png',
-                      height: 200),
+                  child: Image.asset(
+                    'assets/images/puebly-loader.gif',
+                    width: double.infinity,
+                  ),
                 ),
               ),
             ],
