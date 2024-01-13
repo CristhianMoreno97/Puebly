@@ -28,20 +28,23 @@ class _MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: CustomScrollView(
-          physics: BouncingScrollPhysics(
-              decelerationRate: ScrollDecelerationRate.fast),
-          slivers: [
-            SliverToBoxAdapter(child: WelcomeView()),
-            SliverToBoxAdapter(child: _HeaderView()),
-            _TownsView(),
-            SliverToBoxAdapter(child: SizedBox(height: 16)),
-            SliverToBoxAdapter(child: _FooterView()),
-            SliverToBoxAdapter(child: SizedBox(height: 16)),
-          ],
+    return SafeArea(
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 800),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: const CustomScrollView(
+            physics: BouncingScrollPhysics(
+                decelerationRate: ScrollDecelerationRate.fast),
+            slivers: [
+              SliverToBoxAdapter(child: WelcomeView()),
+              SliverToBoxAdapter(child: _HeaderView()),
+              _TownsView(),
+              SliverToBoxAdapter(child: SizedBox(height: 16)),
+              SliverToBoxAdapter(child: _FooterView()),
+              SliverToBoxAdapter(child: SizedBox(height: 16)),
+            ],
+          ),
         ),
       ),
     );
