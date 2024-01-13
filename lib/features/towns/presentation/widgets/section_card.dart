@@ -53,8 +53,8 @@ class _FeaturedImage extends StatelessWidget {
       borderRadius: BorderRadius.circular(500),
       child: Image.asset(
         imagePath,
-        width: 48,
-        height: 48,
+        width: 80,
+        height: 80,
       ),
     );
   }
