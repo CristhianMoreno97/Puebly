@@ -32,6 +32,8 @@ class _MainView extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: CustomScrollView(
+          physics: BouncingScrollPhysics(
+              decelerationRate: ScrollDecelerationRate.fast),
           slivers: [
             SliverToBoxAdapter(child: WelcomeView()),
             SliverToBoxAdapter(child: _HeaderView()),

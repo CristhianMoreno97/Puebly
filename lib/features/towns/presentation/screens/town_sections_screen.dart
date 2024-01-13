@@ -50,6 +50,8 @@ class _SectionsView extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(
+                      decelerationRate: ScrollDecelerationRate.fast),
                   slivers: [
                     const SliverToBoxAdapter(child: SizedBox(height: 16)),
                     SliverMasonryGrid.extent(
@@ -123,6 +125,8 @@ class _SectionContent extends ConsumerWidget {
     return Stack(
       children: [
         MasonryGridView.extent(
+          physics: const BouncingScrollPhysics(
+              decelerationRate: ScrollDecelerationRate.fast),
           maxCrossAxisExtent: 680,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           mainAxisSpacing: 16,

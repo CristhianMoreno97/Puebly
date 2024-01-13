@@ -36,6 +36,8 @@ class _PostView extends StatelessWidget {
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
+        physics: const BouncingScrollPhysics(
+            decelerationRate: ScrollDecelerationRate.fast),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -101,8 +103,9 @@ class _HtmlContentState extends State<_HtmlContent> {
           return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      _FullScreenImageViewer(widget.galleryImageUrls, index: currentIndex),
+                  builder: (context) => _FullScreenImageViewer(
+                      widget.galleryImageUrls,
+                      index: currentIndex),
                 ));
               },
               child: _ImageViewer(src!));
