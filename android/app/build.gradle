@@ -79,6 +79,7 @@ android {
             minifyEnabled = true
         }
     }
+    namespace 'com.puebly.puebly'
 }
 
 flutter {
