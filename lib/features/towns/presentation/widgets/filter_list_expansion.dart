@@ -136,7 +136,7 @@ class _FilterList extends StatelessWidget {
       ),
       child: Container(
         height: 160,
-        color: Colors.grey[100],
+        color: Colors.grey[200],
         child: FilterListWidget(
           listData: userList,
           hideSelectedTextCount: true,
@@ -185,9 +185,9 @@ class _FilterList extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.grey.withOpacity(0.5),
               spreadRadius: -2,
-              blurRadius: 8,
+              blurRadius: 10,
               offset: const Offset(0, 4), // changes position of shadow
             ),
           ],
