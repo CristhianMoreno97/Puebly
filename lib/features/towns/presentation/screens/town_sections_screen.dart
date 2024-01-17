@@ -104,7 +104,7 @@ class _MainView extends ConsumerWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: TownSectionsInfo.sections.length,
           itemBuilder: (context, index) {
-            return _SectionContent(townCategoryId, index);
+            return _SectionView(townCategoryId, index);
           },
           onPageChanged: (index) {
             ref.read(sectionIndexProvider.notifier).state = index;
@@ -115,47 +115,26 @@ class _MainView extends ConsumerWidget {
   }
 }
 
-class _SectionContent extends ConsumerWidget {
+class _SectionView extends ConsumerWidget {
   final int townCategoryId;
   final int pageIndex;
-  const _SectionContent(this.townCategoryId, this.pageIndex);
+  const _SectionView(this.townCategoryId, this.pageIndex);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(townProvider(townCategoryId));
-    final sectionPosts = posts.townSections[pageIndex].posts;
     return Stack(
       children: [
         CustomScrollView(
           slivers: [
             const SliverToBoxAdapter(child: _SectionHeader()),
-            SliverPadding(
-              padding: const EdgeInsets.all(16),
-              sliver: SliverMasonryGrid.extent(
-                //physics: const BouncingScrollPhysics(
-                //    decelerationRate: ScrollDecelerationRate.fast),
-                maxCrossAxisExtent: 680,
-                //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childCount: sectionPosts.length,
-                itemBuilder: (context, index) {
-                  return PostCard(post: sectionPosts[index]);
-                },
-              ),
-            )
+            _SectionContent(townCategoryId, pageIndex),
           ],
         ),
         if (posts.isLoading) const _LoadingProgress(),
       ],
     );
   }
-}
-
-class User {
-  final String? name;
-  final String? avatar;
-  User({this.name, this.avatar});
 }
 
 class _SectionHeader extends StatelessWidget {
@@ -166,13 +145,41 @@ class _SectionHeader extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.all(16.0),
       child: FilterListExpansion(
-       //title: 'Tipos de comercios',
-       //title: 'Buscar comercios',
-       title: 'Filtrar comercios'
+          //title: 'Tipos de comercios',
+          //title: 'Buscar comercios',
+          title: 'Filtrar comercios'),
+    );
+  }
+}
+
+class _SectionContent extends ConsumerWidget {
+  final int townCategoryId;
+  final int pageIndex;
+
+  const _SectionContent(this.townCategoryId, this.pageIndex);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(townProvider(townCategoryId));
+    final sectionPosts = posts.townSections[pageIndex].posts;
+
+    return SliverPadding(
+      padding: const EdgeInsets.all(16),
+      sliver: SliverMasonryGrid.extent(
+        // physics: const BouncingScrollPhysics(
+        //     decelerationRate: ScrollDecelerationRate.fast),
+        maxCrossAxisExtent: 680,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childCount: sectionPosts.length,
+        itemBuilder: (context, index) {
+          return PostCard(post: sectionPosts[index]);
+        },
       ),
     );
   }
 }
+
 class _LoadingProgress extends StatelessWidget {
   const _LoadingProgress();
 
