@@ -137,7 +137,7 @@ class _FilterList extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(0),
         height: 156,
-        color: Colors.grey[200],
+        color: Colors.grey[100],
         child: FilterListWidget(          
           listData: userList,
           hideSelectedTextCount: true,
