@@ -32,6 +32,15 @@ class ColorManager {
   static const Color magentaTint1 = Color(0xffFFCCEB);
   static const Color magentaTint2 = Color(0xffFFE6F5);
   static const Color magentaTint3 = Color(0xffFF99D6);
+  static const Color magentaShade1 = Color(0xffCC007A);
+
+  // Gradients
+  static const LinearGradient magentaGradient = LinearGradient(
+    colors: [
+      magentaShade1,
+      magenta,
+    ],
+  );
 }
 
 class ColorPalette1 {
