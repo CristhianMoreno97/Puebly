@@ -1,4 +1,5 @@
 import 'package:puebly/features/towns/domain/datasources/towns_datasource.dart';
+import 'package:puebly/features/towns/domain/entities/category.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/domain/entities/town.dart';
 import 'package:puebly/features/towns/domain/repositories/towns_repository.dart';
@@ -42,5 +43,11 @@ class TownsRepositoryImpl extends TownsRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<Map<int, List<Category>>> getSectionChildCategories(int townCategoryId) {
+    // TODO: implement getSectionChildCategories
+    throw UnimplementedError();
   }
 }
