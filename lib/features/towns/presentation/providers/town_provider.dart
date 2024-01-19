@@ -47,6 +47,26 @@ class TownNotifier extends StateNotifier<TownState> {
               ]))
           .toList(),
     );
+
+    getSectionChildCategories();
+  }
+
+  Future getSectionChildCategories() async {
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true);
+
+    final childCategories =
+        await _townsRepository.getSectionChildCategories(townCategoryId);
+
+    state = state.copyWith(
+      isLoading: false,
+      townSections: state.townSections
+          .map((section) => section.copyWith(
+                childCategories: childCategories[section.info.categoryId],
+              ))
+          .toList(),
+    );
   }
 }
 
