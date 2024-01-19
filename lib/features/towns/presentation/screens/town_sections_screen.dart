@@ -127,7 +127,8 @@ class _SectionView extends ConsumerWidget {
       children: [
         CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(child: _SectionHeader()),
+            SliverToBoxAdapter(
+                child: _SectionHeader(townCategoryId, pageIndex)),
             _SectionContent(townCategoryId, pageIndex),
           ],
         ),
@@ -137,17 +138,25 @@ class _SectionView extends ConsumerWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader();
+class _SectionHeader extends ConsumerWidget {
+  final int townCategoryId;
+  final int pageIndex;
+  const _SectionHeader(this.townCategoryId, this.pageIndex);
 
   @override
-  Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final childCategories = ref
+        .watch(townProvider(townCategoryId))
+        .townSections[pageIndex]
+        .childCategories;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: FilterListExpansion(
-          //title: 'Tipos de comercios',
-          //title: 'Buscar comercios',
-          title: 'Filtrar comercios'),
+        //title: 'Tipos de comercios',
+        //title: 'Buscar comercios',
+        title: 'Filtrar comercios',
+        filters: childCategories,
+      ),
     );
   }
 }
