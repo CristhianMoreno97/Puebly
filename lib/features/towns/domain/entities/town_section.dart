@@ -5,23 +5,23 @@ import 'package:puebly/features/towns/presentation/widgets/town_sections_info.da
 class TownSection {
   final SectionInfo info;
   final List<Post> posts;
-  final List<Category> categories;
+  final List<Category> childCategories;
 
   TownSection({
     required this.info,
     this.posts = const [],
-    this.categories = const [],
+    this.childCategories = const [],
   });
 
   TownSection copyWith({
     SectionInfo? info,
     List<Post>? posts,
-    List<Category>? categories,
+    List<Category>? childCategories,
   }) {
     return TownSection(
       info: info ?? this.info,
       posts: posts ?? this.posts,
-      categories: categories ?? this.categories,
+      childCategories: childCategories ?? this.childCategories,
     );
   }
 }
