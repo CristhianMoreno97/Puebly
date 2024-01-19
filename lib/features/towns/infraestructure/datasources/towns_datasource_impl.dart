@@ -3,6 +3,7 @@ import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/features/towns/domain/datasources/towns_datasource.dart';
 import 'package:puebly/features/towns/infraestructure/mappers/post_model_mapper.dart';
 import 'package:puebly/features/towns/infraestructure/mappers/town_model_mapper.dart';
+import 'package:puebly/features/towns/infraestructure/models/category_model.dart';
 import 'package:puebly/features/towns/infraestructure/models/post_model.dart';
 import 'package:puebly/features/towns/infraestructure/models/town_model.dart';
 
@@ -38,5 +39,11 @@ class TownsDataSourceImpl extends TownsDataSource {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<List<CategoryModel>> getSectionChildCategories(int townCategoryId) {
+    // TODO: implement getSectionChildCategories
+    throw UnimplementedError();
   }
 }
