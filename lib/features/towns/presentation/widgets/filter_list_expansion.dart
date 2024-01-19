@@ -1,5 +1,6 @@
 import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/category.dart';
 
@@ -83,13 +84,15 @@ class _TitleText extends StatelessWidget {
   }
 }
 
-class _FilterList extends StatelessWidget {
+class _FilterList extends ConsumerWidget {
   final List<Category> filters;
   const _FilterList(this.filters);
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedData = ref.watch(selectedDataProvider);
+    final List<Category> selectedListData =
+        selectedData.values.expand((e) => e).toList();
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(8),
@@ -101,14 +104,26 @@ class _FilterList extends StatelessWidget {
         color: Colors.grey[100],
         child: FilterListWidget(
           listData: filters,
+          selectedListData: selectedListData,
           hideSelectedTextCount: true,
           hideHeader: true,
           allButtonText: "Todos",
           resetButtonText: "Ninguno",
           applyButtonText: "Buscar",
           themeData: _filterListThemeData(context),
+          onApplyButtonClick: (list) {
+            ref.read(selectedDataProvider.notifier).update((state) {
+              state.clear();
+              if (list != null) {
+                for (final element in list) {
+                  state[element.id] = [element];
+                }
+              }
+              return state;
+            });
+          },
           validateSelectedItem: (list, item) {
-            if (list == null || list.isEmpty) return false;
+            if (list == null) return false;
             return list.contains(item);
           },
           choiceChipLabel: (item) {
@@ -117,8 +132,10 @@ class _FilterList extends StatelessWidget {
           onItemSearch: (item, query) {
             return item.name.toLowerCase().contains(query.toLowerCase());
           },
-          choiceChipBuilder: (context, item, isSelected) =>
-              _ChoiceChip(item: item, isSelected: isSelected),
+          choiceChipBuilder: (context, item, isSelected) => _ChoiceChip(
+            item: item,
+            isSelected: isSelected ?? false,
+          ),
         ),
       ),
     );
@@ -184,5 +201,5 @@ class _ChoiceChip extends StatelessWidget {
   }
 }
 
-  }
-}
+final selectedDataProvider =
+    StateProvider<Map<int, List<Category>>>((ref) => {});
