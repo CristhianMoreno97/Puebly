@@ -129,7 +129,7 @@ class _FilterList extends StatelessWidget {
       borderRadius: 0,
       wrapAlignment: WrapAlignment.start,
       wrapCrossAxisAlignment: WrapCrossAlignment.start,
-      wrapSpacing: -8,
+      wrapSpacing: 0,
       backgroundColor: Colors.transparent,
       headerTheme: const HeaderThemeData(),
       choiceChipTheme: const ChoiceChipThemeData(),
@@ -160,37 +160,29 @@ class _FilterList extends StatelessWidget {
 }
 
 class _ChoiceChip extends StatelessWidget {
-  final Category? item;
-  final bool? isSelected;
+  final Category item;
+  final bool isSelected;
   const _ChoiceChip({
-    this.item,
-    this.isSelected,
+    required this.item,
+    required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-      child: ChoiceChip(
-        iconTheme: null,
-        avatar: null,
-        showCheckmark: false,
-        selectedColor: ColorManager.magentaTint2,
-        backgroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        shape: const RoundedRectangleBorder(
-          side: BorderSide(color: ColorManager.magentaTint1, width: 1),
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      decoration: BoxDecoration(
+        color: isSelected ? ColorManager.magentaTint2 : Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: ColorManager.magentaTint1,
         ),
-        label: Text(
-          item!.name!,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        selected: isSelected ?? false,
-        onSelected: (selected) {
-          print(selected);
-        },
       ),
+      child: Text(item.name),
     );
+  }
+}
+
   }
 }
