@@ -1,10 +1,12 @@
 import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/towns/domain/entities/category.dart';
 
 class FilterListExpansion extends StatefulWidget {
   final String title;
-  const FilterListExpansion({super.key, required this.title});
+  final List<Category> filters;
+  const FilterListExpansion({super.key, required this.title, required this.filters});
 
   @override
   State<FilterListExpansion> createState() => _FilterListExpansionState();
@@ -43,8 +45,8 @@ class _FilterListExpansionState extends State<FilterListExpansion> {
               _isExpanded = isExpanded;
             });
           },
-          children: const [
-            _FilterList(),
+          children: [
+            _FilterList(widget.filters),
           ],
         ),
       ),
@@ -82,52 +84,11 @@ class _TitleText extends StatelessWidget {
 }
 
 class _FilterList extends StatelessWidget {
-  const _FilterList();
+  final List<Category> filters;
+  const _FilterList(this.filters);
 
   @override
   Widget build(BuildContext context) {
-    List<User> userList = [
-      User(name: "Abigail", avatar: "user.png"),
-      User(name: "Audrey", avatar: "user.png"),
-      User(name: "Ava", avatar: "user.png"),
-      User(name: "Bella", avatar: "user.png"),
-      User(name: "Bernadette", avatar: "user.png"),
-      User(name: "Carol", avatar: "user.png"),
-      User(name: "Claire", avatar: "user.png"),
-      User(name: "Deirdre", avatar: "user.png"),
-      User(name: "Donna", avatar: "user.png"),
-      User(name: "Dorothy", avatar: "user.png"),
-      User(name: "Faith", avatar: "user.png"),
-      User(name: "Gabrielle", avatar: "user.png"),
-      User(name: "Grace", avatar: "user.png"),
-      User(name: "Hannah", avatar: "user.png"),
-      User(name: "Heather", avatar: "user.png"),
-      User(name: "Irene", avatar: "user.png"),
-      User(name: "Jan", avatar: "user.png"),
-      User(name: "Jane", avatar: "user.png"),
-      User(name: "Julia", avatar: "user.png"),
-      User(name: "Kylie", avatar: "user.png"),
-      User(name: "Lauren", avatar: "user.png"),
-      User(name: "Leah", avatar: "user.png"),
-      User(name: "Lisa", avatar: "user.png"),
-      User(name: "Melanie", avatar: "user.png"),
-      User(name: "Natalie", avatar: "user.png"),
-      User(name: "Olivia", avatar: "user.png"),
-      User(name: "Penelope", avatar: "user.png"),
-      User(name: "Rachel", avatar: "user.png"),
-      User(name: "Ruth", avatar: "user.png"),
-      User(name: "Sally", avatar: "user.png"),
-      User(name: "Samantha", avatar: "user.png"),
-      User(name: "Sarah", avatar: "user.png"),
-      User(name: "Theresa", avatar: "user.png"),
-      User(name: "Una", avatar: "user.png"),
-      User(name: "Vanessa", avatar: "user.png"),
-      User(name: "Victoria", avatar: "user.png"),
-      User(name: "Wanda", avatar: "user.png"),
-      User(name: "Wendy", avatar: "user.png"),
-      User(name: "Yvonne", avatar: "user.png"),
-      User(name: "Zoe", avatar: "user.png"),
-    ];
 
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -138,8 +99,8 @@ class _FilterList extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         height: 156,
         color: Colors.grey[100],
-        child: FilterListWidget(          
-          listData: userList,
+        child: FilterListWidget(
+          listData: filters,
           hideSelectedTextCount: true,
           hideHeader: true,
           allButtonText: "Todos",
@@ -154,7 +115,7 @@ class _FilterList extends StatelessWidget {
             return item!.name;
           },
           onItemSearch: (item, query) {
-            return item.name!.toLowerCase().contains(query.toLowerCase());
+            return item.name.toLowerCase().contains(query.toLowerCase());
           },
           choiceChipBuilder: (context, item, isSelected) =>
               _ChoiceChip(item: item, isSelected: isSelected),
@@ -199,7 +160,7 @@ class _FilterList extends StatelessWidget {
 }
 
 class _ChoiceChip extends StatelessWidget {
-  final User? item;
+  final Category? item;
   final bool? isSelected;
   const _ChoiceChip({
     this.item,
@@ -232,10 +193,4 @@ class _ChoiceChip extends StatelessWidget {
       ),
     );
   }
-}
-
-class User {
-  final String? name;
-  final String? avatar;
-  User({this.name, this.avatar});
 }
