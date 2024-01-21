@@ -30,9 +30,12 @@ class TownsDataSourceImpl extends TownsDataSource {
   }
 
   @override
-  Future<List<PostModel>> getNewerPosts(int townCategoryId, int page) async {
+  Future<List<PostModel>> getNewerPosts(int townCategoryId, int page,
+      {int? section, List<int>? sectionChilds}) async {
     try {
-      final response = await _dio.get('/wp-json/api/v1/newer-post?t=$townCategoryId&p=$page');
+      final path =
+          '/wp-json/api/v1/newer-post?t=$townCategoryId&p=$page&s=${section ?? ''}&sc=${sectionChilds?.join(',') ?? ''}';
+      final response = await _dio.get(path);
       final List<PostModel> posts = (response.data as List)
           .map((post) => PostModelMapper.fromJson(post))
           .toList();
