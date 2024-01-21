@@ -41,10 +41,15 @@ class TownNotifier extends StateNotifier<TownState> {
       isLoading: false,
       page: state.page.map((e) => e + 1).toList(),
       townSections: state.townSections
-          .map((section) => section.copyWith(posts: [
-                ...section.posts,
-                ...newerPostByCategory[section.info.categoryId] ?? []
-              ]))
+          .map((section) => section.copyWith(
+                posts: [
+                  ...section.posts,
+                  ...newerPostByCategory[section.info.categoryId] ?? []
+                ],
+                isLoading: false,
+                isLastPage: false,
+                page: section.page + 1,
+              ))
           .toList(),
     );
 
