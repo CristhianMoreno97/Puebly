@@ -26,9 +26,12 @@ class TownsRepositoryImpl extends TownsRepository {
   }
 
   @override
-  Future<Map<int, List<Post>>> getNewerPosts(int townCategoryId, int page) async {
+  Future<Map<int, List<Post>>> getNewerPosts(int townCategoryId, int page,
+      {int? section, List<int>? sectionChilds}) async {
     try {
-      final postModels = await _townsDataSource.getNewerPosts(townCategoryId, page);
+      final postModels = await _townsDataSource.getNewerPosts(
+          townCategoryId, page,
+          section: section, sectionChilds: sectionChilds);
       final newerPostByCategory = <int, List<Post>>{};
       for (final postModel in postModels) {
         final categoryId = postModel.sectionCategoryId;
