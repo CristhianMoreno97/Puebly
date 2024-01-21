@@ -56,6 +56,22 @@ class TownNotifier extends StateNotifier<TownState> {
     getSectionChildCategories();
   }
 
+  void resetSection(int categoryId) {
+    state = state.copyWith(
+      townSections: state.townSections.map((section) {
+        if (section.info.categoryId == categoryId) {
+          return section.copyWith(
+            posts: [],
+            page: 1,
+            isLastPage: false,
+            isLoading: false,
+          );
+        }
+        return section;
+      }).toList(),
+    );
+  }
+
   Future getSectionChildCategories() async {
     if (state.isLoading) return;
 
