@@ -41,10 +41,99 @@ class TownNotifier extends StateNotifier<TownState> {
       isLoading: false,
       page: state.page.map((e) => e + 1).toList(),
       townSections: state.townSections
-          .map((section) => section.copyWith(posts: [
-                ...section.posts,
-                ...newerPostByCategory[section.info.categoryId] ?? []
-              ]))
+          .map((section) => section.copyWith(
+                posts: [
+                  ...section.posts,
+                  ...newerPostByCategory[section.info.categoryId] ?? []
+                ],
+                isLoading: false,
+                isLastPage: false,
+                page: section.page + 1,
+              ))
+          .toList(),
+    );
+
+    getSectionChildCategories();
+  }
+
+  Future getPostsByCategory(int categoryId,
+      {List<int>? childCategories}) async {
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true);
+
+    // TODO isloading by category
+
+    final page = state.townSections
+        .firstWhere((section) => section.info.categoryId == categoryId)
+        .page;
+
+    final postsByCategory = await _townsRepository.getNewerPosts(
+      townCategoryId,
+      page,
+      section: categoryId,
+      sectionChilds: childCategories,
+    );
+
+    if (postsByCategory.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        townSections: state.townSections.map((section) {
+          if (section.info.categoryId == categoryId) {
+            return section.copyWith(isLastPage: true, isLoading: false);
+          }
+          return section;
+        }).toList(),
+      );
+      return;
+    }
+
+    state = state.copyWith(
+      isLoading: false,
+      townSections: state.townSections.map((section) {
+        if (section.info.categoryId == categoryId) {
+          return section.copyWith(
+            posts: [...section.posts, ...postsByCategory[section.info.categoryId] ?? []],
+            isLoading: false,
+            isLastPage: false,
+            page: section.page + 1,
+          );
+        }
+        return section;
+      }).toList(),
+    );
+  }
+
+  void resetSection(int categoryId) {
+    state = state.copyWith(
+      townSections: state.townSections.map((section) {
+        if (section.info.categoryId == categoryId) {
+          return section.copyWith(
+            posts: [],
+            page: 1,
+            isLastPage: false,
+            isLoading: false,
+          );
+        }
+        return section;
+      }).toList(),
+    );
+  }
+
+  Future getSectionChildCategories() async {
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true);
+
+    final childCategories =
+        await _townsRepository.getSectionChildCategories(townCategoryId);
+
+    state = state.copyWith(
+      isLoading: false,
+      townSections: state.townSections
+          .map((section) => section.copyWith(
+                childCategories: childCategories[section.info.categoryId],
+              ))
           .toList(),
     );
   }

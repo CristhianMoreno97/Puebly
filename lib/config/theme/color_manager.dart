@@ -15,6 +15,7 @@ class ColorManager {
   static const Color pueblySecundary1 = Color(0xffFF9E00);
   static const Color pueblySecundary1a = Color(0xffFFE2B3);
   static const Color pueblySecundary2 = Color(0xffFECB00);
+
   /// inputs
   static const Color inputFill = Color(0xffFFFFFF);
   static const Color inputFocusBorder = Color(0xffFFA51B);
@@ -23,6 +24,23 @@ class ColorManager {
 
   // others
   static const Color whastapp = Color(0xff25D366);
+
+  // customs
+  static const Color malachite = Color(0xff00C417);
+  static const Color malachiteTint1 = Color(0xffCCF3D1);
+  static const Color magenta = Color(0xffFF0099);
+  static const Color magentaTint1 = Color(0xffFFCCEB);
+  static const Color magentaTint2 = Color(0xffFFE6F5);
+  static const Color magentaTint3 = Color(0xffFF99D6);
+  static const Color magentaShade1 = Color(0xffCC007A);
+
+  // Gradients
+  static const LinearGradient magentaGradient = LinearGradient(
+    colors: [
+      magentaShade1,
+      magenta,
+    ],
+  );
 }
 
 class ColorPalette1 {

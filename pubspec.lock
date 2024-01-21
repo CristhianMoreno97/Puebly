@@ -122,7 +122,7 @@ packages:
     source: hosted
     version: "1.1.1"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
@@ -201,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  filter_list:
+    dependency: "direct main"
+    description:
+      name: filter_list
+      sha256: "2d80d6d19beb7847c1176e8bf6fe06d302b23eb7d1bf48c231dd730409ff9b4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   fixnum:
     dependency: transitive
     description:

@@ -29,8 +29,10 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cached_network_image: ^3.3.1
+  collection: ^1.18.0
   cupertino_icons: ^1.0.2
   dio: ^5.3.3
+  filter_list: ^1.0.2
   flutter:
     sdk: flutter
   flutter_custom_clippers: ^2.1.0

@@ -1,3 +1,4 @@
+import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -6,6 +7,7 @@ import 'package:puebly/features/towns/presentation/providers/sections_providers.
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
+import 'package:puebly/features/towns/presentation/widgets/filter_list_expansion.dart';
 import 'package:puebly/features/towns/presentation/widgets/post_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/section_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/sections_bottom_navbar.dart';
@@ -102,7 +104,7 @@ class _MainView extends ConsumerWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: TownSectionsInfo.sections.length,
           itemBuilder: (context, index) {
-            return _SectionContent(townCategoryId, index);
+            return _SectionView(townCategoryId, index);
           },
           onPageChanged: (index) {
             ref.read(sectionIndexProvider.notifier).state = index;
@@ -113,31 +115,82 @@ class _MainView extends ConsumerWidget {
   }
 }
 
+class _SectionView extends ConsumerWidget {
+  final int townCategoryId;
+  final int pageIndex;
+  const _SectionView(this.townCategoryId, this.pageIndex);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(townProvider(townCategoryId));
+    return Stack(
+      children: [
+        CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+                child: _SectionHeader(townCategoryId, pageIndex)),
+            _SectionContent(townCategoryId, pageIndex),
+          ],
+        ),
+        if (posts.isLoading) const _LoadingProgress(),
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends ConsumerWidget {
+  final int townCategoryId;
+  final int pageIndex;
+  const _SectionHeader(this.townCategoryId, this.pageIndex);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final childCategories = ref
+        .watch(townProvider(townCategoryId))
+        .townSections[pageIndex]
+        .childCategories;
+    final sectionId = ref
+        .watch(townProvider(townCategoryId))
+        .townSections[pageIndex]
+        .info.categoryId;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: FilterListExpansion(
+        //title: 'Tipos de comercios',
+        //title: 'Buscar comercios',
+        title: 'Filtrar comercios',
+        filters: childCategories,
+        townCategoryId: townCategoryId,
+        sectionId: sectionId,
+      ),
+    );
+  }
+}
+
 class _SectionContent extends ConsumerWidget {
   final int townCategoryId;
   final int pageIndex;
+
   const _SectionContent(this.townCategoryId, this.pageIndex);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(townProvider(townCategoryId));
     final sectionPosts = posts.townSections[pageIndex].posts;
-    return Stack(
-      children: [
-        MasonryGridView.extent(
-          physics: const BouncingScrollPhysics(
-              decelerationRate: ScrollDecelerationRate.fast),
-          maxCrossAxisExtent: 680,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          itemCount: sectionPosts.length,
-          itemBuilder: (context, index) {
-            return PostCard(post: sectionPosts[index]);
-          },
-        ),
-        if (posts.isLoading) const _LoadingProgress(),
-      ],
+
+    return SliverPadding(
+      padding: const EdgeInsets.all(16),
+      sliver: SliverMasonryGrid.extent(
+        // physics: const BouncingScrollPhysics(
+        //     decelerationRate: ScrollDecelerationRate.fast),
+        maxCrossAxisExtent: 680,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childCount: sectionPosts.length,
+        itemBuilder: (context, index) {
+          return PostCard(post: sectionPosts[index]);
+        },
+      ),
     );
   }
 }

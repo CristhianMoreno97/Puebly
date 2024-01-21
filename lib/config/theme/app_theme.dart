@@ -9,7 +9,7 @@ class AppTheme {
 
   ThemeData getTheme() => ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: ColorManager.colorSeed,
+        colorSchemeSeed: ColorManager.magenta,
         brightness: isDarkMode ? Brightness.dark : Brightness.light,
 
         /// drawer
