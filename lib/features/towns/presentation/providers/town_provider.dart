@@ -56,6 +56,54 @@ class TownNotifier extends StateNotifier<TownState> {
     getSectionChildCategories();
   }
 
+  Future getPostsByCategory(int categoryId,
+      {List<int>? childCategories}) async {
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true);
+
+    // TODO isloading by category
+
+    final page = state.townSections
+        .firstWhere((section) => section.info.categoryId == categoryId)
+        .page;
+
+    final postsByCategory = await _townsRepository.getNewerPosts(
+      townCategoryId,
+      page,
+      section: categoryId,
+      sectionChilds: childCategories,
+    );
+
+    if (postsByCategory.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        townSections: state.townSections.map((section) {
+          if (section.info.categoryId == categoryId) {
+            return section.copyWith(isLastPage: true, isLoading: false);
+          }
+          return section;
+        }).toList(),
+      );
+      return;
+    }
+
+    state = state.copyWith(
+      isLoading: false,
+      townSections: state.townSections.map((section) {
+        if (section.info.categoryId == categoryId) {
+          return section.copyWith(
+            posts: [...section.posts, ...postsByCategory[section.info.categoryId] ?? []],
+            isLoading: false,
+            isLastPage: false,
+            page: section.page + 1,
+          );
+        }
+        return section;
+      }).toList(),
+    );
+  }
+
   void resetSection(int categoryId) {
     state = state.copyWith(
       townSections: state.townSections.map((section) {
