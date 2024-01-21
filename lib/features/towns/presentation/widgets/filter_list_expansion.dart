@@ -3,11 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/category.dart';
+import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 
 class FilterListExpansion extends StatefulWidget {
   final String title;
   final List<Category> filters;
-  const FilterListExpansion({super.key, required this.title, required this.filters});
+  final int townCategoryId;
+  final int sectionId;
+  const FilterListExpansion({
+    super.key,
+    required this.title,
+    required this.filters,
+    required this.townCategoryId,
+    required this.sectionId,
+  });
 
   @override
   State<FilterListExpansion> createState() => _FilterListExpansionState();
@@ -47,7 +56,8 @@ class _FilterListExpansionState extends State<FilterListExpansion> {
             });
           },
           children: [
-            _FilterList(widget.filters),
+            _FilterList(
+                widget.filters, widget.townCategoryId, widget.sectionId),
           ],
         ),
       ),
@@ -86,7 +96,9 @@ class _TitleText extends StatelessWidget {
 
 class _FilterList extends ConsumerWidget {
   final List<Category> filters;
-  const _FilterList(this.filters);
+  final int townCategoryId;
+  final int sectionId;
+  const _FilterList(this.filters, this.townCategoryId, this.sectionId);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -121,6 +133,13 @@ class _FilterList extends ConsumerWidget {
               }
               return state;
             });
+            ref
+                .read(townProvider(townCategoryId).notifier)
+                .resetSection(sectionId);
+            ref.read(townProvider(townCategoryId).notifier).getPostsByCategory(
+                  sectionId,
+                  childCategories: list?.map((e) => e.id).toList(),
+                );
           },
           validateSelectedItem: (list, item) {
             if (list == null) return false;
