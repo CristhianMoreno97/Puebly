@@ -149,19 +149,19 @@ class _SectionHeader extends ConsumerWidget {
         .watch(townProvider(townCategoryId))
         .townSections[pageIndex]
         .childCategories;
-    final sectionId = ref
+    final sectionInfo = ref
         .watch(townProvider(townCategoryId))
         .townSections[pageIndex]
-        .info.categoryId;
+        .info;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: FilterListExpansion(
         //title: 'Tipos de comercios',
         //title: 'Buscar comercios',
-        title: 'Filtrar comercios',
+        title: sectionInfo.filterTitle,
         filters: childCategories,
         townCategoryId: townCategoryId,
-        sectionId: sectionId,
+        sectionId: sectionInfo.categoryId,
       ),
     );
   }
