@@ -121,15 +121,15 @@ class TownNotifier extends StateNotifier<TownState> {
   }
 
   Future getSectionChildCategories() async {
-    if (state.isLoading) return;
+    if (state.isChildCategoriesLoading) return;
 
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isChildCategoriesLoading: true);
 
     final childCategories =
         await _townsRepository.getSectionChildCategories(townCategoryId);
 
     state = state.copyWith(
-      isLoading: false,
+      isChildCategoriesLoading: false,
       townSections: state.townSections
           .map((section) => section.copyWith(
                 childCategories: childCategories[section.info.categoryId],
@@ -141,12 +141,14 @@ class TownNotifier extends StateNotifier<TownState> {
 
 class TownState {
   final bool isLoading;
+  final bool isChildCategoriesLoading;
   final bool isLastPage;
   final List<int> page;
   final List<TownSection> townSections;
 
   TownState({
     this.isLoading = false,
+    this.isChildCategoriesLoading = false,
     this.isLastPage = false,
     this.page = const [],
     this.townSections = const [],
@@ -154,12 +156,14 @@ class TownState {
 
   TownState copyWith({
     bool? isLoading,
+    bool? isChildCategoriesLoading,
     bool? isLastPage,
     List<int>? page,
     List<TownSection>? townSections,
   }) {
     return TownState(
       isLoading: isLoading ?? this.isLoading,
+      isChildCategoriesLoading: isChildCategoriesLoading ?? this.isChildCategoriesLoading,
       isLastPage: isLastPage ?? this.isLastPage,
       page: page ?? this.page,
       townSections: townSections ?? this.townSections,
