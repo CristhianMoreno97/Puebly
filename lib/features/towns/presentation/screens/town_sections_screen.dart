@@ -207,9 +207,15 @@ class _LoadingProgress extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         Expanded(
-          child: Align(
-            alignment: Alignment.center,
-            child: Image.asset('assets/images/puebly-loader.gif', height: 200),
+          child: Container(
+            color: Colors.white,
+            child: Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/images/puebly-loader.gif',
+                width: double.infinity,
+              ),
+            ),
           ),
         ),
       ],
