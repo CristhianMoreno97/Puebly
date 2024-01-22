@@ -105,6 +105,9 @@ class _FilterList extends ConsumerWidget {
     final selectedData = ref.watch(selectedDataProvider);
     final List<Category> selectedListData =
         selectedData.values.expand((e) => e).toList();
+    final bool isLoading =
+        ref.watch(townProvider(townCategoryId)).isChildCategoriesLoading;
+
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(8),
@@ -114,47 +117,54 @@ class _FilterList extends ConsumerWidget {
         padding: const EdgeInsets.all(0),
         height: 156,
         color: Colors.grey[100],
-        child: FilterListWidget(
-          listData: filters,
-          selectedListData: selectedListData,
-          hideSelectedTextCount: true,
-          hideHeader: true,
-          allButtonText: "Todos",
-          resetButtonText: "Ninguno",
-          applyButtonText: "Buscar",
-          themeData: _filterListThemeData(context),
-          onApplyButtonClick: (list) {
-            ref.read(selectedDataProvider.notifier).update((state) {
-              state.clear();
-              if (list != null) {
-                for (final element in list) {
-                  state[element.id] = [element];
-                }
-              }
-              return state;
-            });
-            ref
-                .read(townProvider(townCategoryId).notifier)
-                .resetSection(sectionId);
-            ref.read(townProvider(townCategoryId).notifier).getPostsByCategory(
-                  sectionId,
-                  childCategories: list?.map((e) => e.id).toList(),
-                );
-          },
-          validateSelectedItem: (list, item) {
-            if (list == null) return false;
-            return list.contains(item);
-          },
-          choiceChipLabel: (item) {
-            return item!.name;
-          },
-          onItemSearch: (item, query) {
-            return item.name.toLowerCase().contains(query.toLowerCase());
-          },
-          choiceChipBuilder: (context, item, isSelected) => _ChoiceChip(
-            item: item,
-            isSelected: isSelected ?? false,
-          ),
+        child: Stack(
+          children: [
+            FilterListWidget(
+              listData: filters,
+              selectedListData: selectedListData,
+              hideSelectedTextCount: true,
+              hideHeader: true,
+              allButtonText: "Todos",
+              resetButtonText: "Ninguno",
+              applyButtonText: "Buscar",
+              themeData: _filterListThemeData(context),
+              onApplyButtonClick: (list) {
+                ref.read(selectedDataProvider.notifier).update((state) {
+                  state.clear();
+                  if (list != null) {
+                    for (final element in list) {
+                      state[element.id] = [element];
+                    }
+                  }
+                  return state;
+                });
+                ref
+                    .read(townProvider(townCategoryId).notifier)
+                    .resetSection(sectionId);
+                ref
+                    .read(townProvider(townCategoryId).notifier)
+                    .getPostsByCategory(
+                      sectionId,
+                      childCategories: list?.map((e) => e.id).toList(),
+                    );
+              },
+              validateSelectedItem: (list, item) {
+                if (list == null) return false;
+                return list.contains(item);
+              },
+              choiceChipLabel: (item) {
+                return item!.name;
+              },
+              onItemSearch: (item, query) {
+                return item.name.toLowerCase().contains(query.toLowerCase());
+              },
+              choiceChipBuilder: (context, item, isSelected) => _ChoiceChip(
+                item: item,
+                isSelected: isSelected ?? false,
+              ),
+            ),
+            if (isLoading) const _LoadingProgress(),
+          ],
         ),
       ),
     );
@@ -222,3 +232,31 @@ class _ChoiceChip extends StatelessWidget {
 
 final selectedDataProvider =
     StateProvider<Map<int, List<Category>>>((ref) => {});
+
+class _LoadingProgress extends StatelessWidget {
+  const _LoadingProgress();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const LinearProgressIndicator(
+          color: ColorManager.colorSeed,
+          backgroundColor: Colors.white,
+        ),
+        Expanded(
+          child: Container(
+            color: Colors.white,
+            child: Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/images/puebly-loader.gif',
+                width: double.infinity,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
