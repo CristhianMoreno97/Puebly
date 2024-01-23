@@ -47,7 +47,7 @@ class TownNotifier extends StateNotifier<TownState> {
                   ...newerPostByCategory[section.info.categoryId] ?? []
                 ],
                 isLoading: false,
-                isLastPage: false,
+                isLastPage: newerPostByCategory[section.info.categoryId]!.length < 10,
                 page: section.page + 1,
               ))
           .toList(),
@@ -103,7 +103,7 @@ class TownNotifier extends StateNotifier<TownState> {
               ...postsByCategory[section.info.categoryId] ?? []
             ],
             isLoading: false,
-            isLastPage: false,
+            isLastPage: postsByCategory[section.info.categoryId]!.length < 10,
             page: section.page + 1,
           );
         }
