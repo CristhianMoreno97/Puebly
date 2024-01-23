@@ -59,13 +59,16 @@ class TownNotifier extends StateNotifier<TownState> {
   Future getSectionPosts(int sectionIndex, {List<int>? childCategories}) async {
     final targetSection = state.townSections[sectionIndex];
 
-    state = state.copyWith(isLoading: true);
+    if (targetSection.isLoading || targetSection.isLoading) return;
 
-    // TODO isloading by category
-
-    final page = state.townSections
-        .firstWhere((section) => section.info.categoryId == categoryId)
-        .page;
+    state = state.copyWith(
+      townSections: state.townSections.map((section) {
+        if (section.info.categoryId == targetSection.info.categoryId) {
+          return section.copyWith(isLoading: true);
+        }
+        return section;
+      }).toList(),
+    );
 
     final postsByCategory = await _townsRepository.getNewerPosts(
       townCategoryId,
