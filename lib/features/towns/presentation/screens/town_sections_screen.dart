@@ -115,21 +115,49 @@ class _MainView extends ConsumerWidget {
   }
 }
 
-class _SectionView extends ConsumerWidget {
+class _SectionView extends ConsumerStatefulWidget {
   final int townCategoryId;
   final int pageIndex;
   const _SectionView(this.townCategoryId, this.pageIndex);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(townProvider(townCategoryId));
+  _SectionViewState createState() => _SectionViewState();
+}
+
+class _SectionViewState extends ConsumerState<_SectionView> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if ((scrollController.position.pixels + 600) >=
+          scrollController.position.maxScrollExtent) {
+        ref
+            .read(townProvider(widget.townCategoryId).notifier)
+            .getSectionPosts(widget.pageIndex);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final posts = ref.watch(townProvider(widget.townCategoryId));
     return Stack(
       children: [
         CustomScrollView(
+          controller: scrollController,
           slivers: [
             SliverToBoxAdapter(
-                child: _SectionHeader(townCategoryId, pageIndex)),
-            _SectionContent(townCategoryId, pageIndex),
+                child: _SectionHeader(widget.townCategoryId, widget.pageIndex)),
+            _SectionContent(widget.townCategoryId, widget.pageIndex),
           ],
         ),
         if (posts.isLoading) const _LoadingProgress(),
