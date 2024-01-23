@@ -235,23 +235,11 @@ class _LoadingProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const LinearProgressIndicator(
+        LinearProgressIndicator(
           color: ColorManager.colorSeed,
           backgroundColor: Colors.white,
-        ),
-        Expanded(
-          child: Container(
-            color: Colors.white,
-            child: Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/images/puebly-loader.gif',
-                width: double.infinity,
-              ),
-            ),
-          ),
         ),
       ],
     );
