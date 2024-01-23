@@ -161,7 +161,7 @@ class _SectionHeader extends ConsumerWidget {
         title: sectionInfo.filterTitle,
         filters: childCategories,
         townCategoryId: townCategoryId,
-        sectionId: sectionInfo.categoryId,
+        sectionIndex: pageIndex,
       ),
     );
   }

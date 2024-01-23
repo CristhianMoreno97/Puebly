@@ -56,9 +56,8 @@ class TownNotifier extends StateNotifier<TownState> {
     getSectionChildCategories();
   }
 
-  Future getPostsByCategory(int categoryId,
-      {List<int>? childCategories}) async {
-    if (state.isLoading) return;
+  Future getSectionPosts(int sectionIndex, {List<int>? childCategories}) async {
+    final targetSection = state.townSections[sectionIndex];
 
     state = state.copyWith(isLoading: true);
 
@@ -70,8 +69,8 @@ class TownNotifier extends StateNotifier<TownState> {
 
     final postsByCategory = await _townsRepository.getNewerPosts(
       townCategoryId,
-      page,
-      section: categoryId,
+      targetSection.page,
+      section: targetSection.info.categoryId,
       sectionChilds: childCategories,
     );
 
@@ -79,8 +78,11 @@ class TownNotifier extends StateNotifier<TownState> {
       state = state.copyWith(
         isLoading: false,
         townSections: state.townSections.map((section) {
-          if (section.info.categoryId == categoryId) {
-            return section.copyWith(isLastPage: true, isLoading: false);
+          if (section.info.categoryId == targetSection.info.categoryId) {
+            return section.copyWith(
+              isLastPage: true,
+              isLoading: false,
+            );
           }
           return section;
         }).toList(),
@@ -91,9 +93,12 @@ class TownNotifier extends StateNotifier<TownState> {
     state = state.copyWith(
       isLoading: false,
       townSections: state.townSections.map((section) {
-        if (section.info.categoryId == categoryId) {
+        if (section.info.categoryId == targetSection.info.categoryId) {
           return section.copyWith(
-            posts: [...section.posts, ...postsByCategory[section.info.categoryId] ?? []],
+            posts: [
+              ...section.posts,
+              ...postsByCategory[section.info.categoryId] ?? []
+            ],
             isLoading: false,
             isLastPage: false,
             page: section.page + 1,
@@ -104,7 +109,8 @@ class TownNotifier extends StateNotifier<TownState> {
     );
   }
 
-  void resetSection(int categoryId) {
+  void resetSection(int sectionIndex) {
+    final categoryId = state.townSections[sectionIndex].info.categoryId;
     state = state.copyWith(
       townSections: state.townSections.map((section) {
         if (section.info.categoryId == categoryId) {

@@ -9,13 +9,13 @@ class FilterListExpansion extends StatefulWidget {
   final String title;
   final List<Category> filters;
   final int townCategoryId;
-  final int sectionId;
+  final int sectionIndex;
   const FilterListExpansion({
     super.key,
     required this.title,
     required this.filters,
     required this.townCategoryId,
-    required this.sectionId,
+    required this.sectionIndex,
   });
 
   @override
@@ -57,7 +57,7 @@ class _FilterListExpansionState extends State<FilterListExpansion> {
           },
           children: [
             _FilterList(
-                widget.filters, widget.townCategoryId, widget.sectionId),
+                widget.filters, widget.townCategoryId, widget.sectionIndex),
           ],
         ),
       ),
@@ -97,8 +97,8 @@ class _TitleText extends StatelessWidget {
 class _FilterList extends ConsumerWidget {
   final List<Category> filters;
   final int townCategoryId;
-  final int sectionId;
-  const _FilterList(this.filters, this.townCategoryId, this.sectionId);
+  final int sectionIndex;
+  const _FilterList(this.filters, this.townCategoryId, this.sectionIndex);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -140,11 +140,11 @@ class _FilterList extends ConsumerWidget {
                 });
                 ref
                     .read(townProvider(townCategoryId).notifier)
-                    .resetSection(sectionId);
+                    .resetSection(sectionIndex);
                 ref
                     .read(townProvider(townCategoryId).notifier)
-                    .getPostsByCategory(
-                      sectionId,
+                    .getSectionPosts(
+                      sectionIndex,
                       childCategories: list?.map((e) => e.id).toList(),
                     );
               },
