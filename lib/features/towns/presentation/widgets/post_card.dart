@@ -7,15 +7,16 @@ import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 
 class PostCard extends ConsumerWidget {
-  final Post post;
-  const PostCard({super.key, required this.post});
+  final Post? post;
+  const PostCard({super.key, this.post});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        if (post == null) return;
         ref.read(postProvider.notifier).state = post;
-        context.push('/post/${post.id}');
+        context.push('/post/${post!.id}');
       },
       child: Container(
         decoration: BoxDecoration(
@@ -38,8 +39,8 @@ class PostCard extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _ImageViewer(post.featuredImgUrl),
-            Expanded(child: _TextContent(post.title)),
+            _ImageViewer(post?.featuredImgUrl),
+            Expanded(child: _TextContent(post?.title)),
           ],
         ),
       ),
@@ -48,18 +49,33 @@ class PostCard extends ConsumerWidget {
 }
 
 class _ImageViewer extends StatelessWidget {
-  final String imagePath;
+  final String? imagePath;
   const _ImageViewer(this.imagePath);
 
   @override
   Widget build(BuildContext context) {
+    if (imagePath == null) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          bottomLeft: Radius.circular(16),
+        ),
+        child: Image.asset(
+          'assets/images/puebly-loader.gif',
+          fit: BoxFit.cover,
+          width: 120,
+          height: 120,
+        ),
+      );
+    }
+
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(16),
         bottomLeft: Radius.circular(16),
       ),
       child: CachedNetworkImage(
-        imageUrl: imagePath,
+        imageUrl: imagePath ?? '',
         width: 120,
         height: 120,
         fit: BoxFit.cover,
@@ -76,7 +92,7 @@ class _ImageViewer extends StatelessWidget {
 }
 
 class _TextContent extends StatelessWidget {
-  final String text;
+  final String? text;
   const _TextContent(this.text);
 
   @override
@@ -84,7 +100,7 @@ class _TextContent extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Text(
-        text,
+        text ?? '',
         style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
