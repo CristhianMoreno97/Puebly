@@ -157,7 +157,16 @@ class _SectionViewState extends ConsumerState<_SectionView> {
           slivers: [
             SliverToBoxAdapter(
                 child: _SectionHeader(widget.townCategoryId, widget.pageIndex)),
-            _SectionContent(widget.townCategoryId, widget.pageIndex),
+            if (posts.townSections[widget.pageIndex].posts.isNotEmpty)
+              _SectionContent(widget.townCategoryId, widget.pageIndex),
+            if (!posts.townSections[widget.pageIndex].isLastPage)
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: PostCard(),
+                ),
+              ),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
           ],
         ),
         if (posts.isLoading) const _LoadingProgress(),
@@ -177,12 +186,10 @@ class _SectionHeader extends ConsumerWidget {
         .watch(townProvider(townCategoryId))
         .townSections[pageIndex]
         .childCategories;
-    final sectionInfo = ref
-        .watch(townProvider(townCategoryId))
-        .townSections[pageIndex]
-        .info;
+    final sectionInfo =
+        ref.watch(townProvider(townCategoryId)).townSections[pageIndex].info;
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
       child: FilterListExpansion(
         //title: 'Tipos de comercios',
         //title: 'Buscar comercios',
@@ -207,7 +214,7 @@ class _SectionContent extends ConsumerWidget {
     final sectionPosts = posts.townSections[pageIndex].posts;
 
     return SliverPadding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
       sliver: SliverMasonryGrid.extent(
         // physics: const BouncingScrollPhysics(
         //     decelerationRate: ScrollDecelerationRate.fast),
