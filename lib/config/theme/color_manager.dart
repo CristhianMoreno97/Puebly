@@ -13,6 +13,7 @@ class ColorManager {
   static const Color pueblyPrimary2b = Color(0xff808080);
   static const Color pueblyPrimary2c = Color(0xffB3B3B3);
   static const Color pueblySecundary1 = Color(0xffFF9E00);
+  static const Color pueblySecundary1b = Color(0xffCC7E00);
   static const Color pueblySecundary1a = Color(0xffFFE2B3);
   static const Color pueblySecundary2 = Color(0xffFECB00);
 
@@ -33,12 +34,28 @@ class ColorManager {
   static const Color magentaTint2 = Color(0xffFFE6F5);
   static const Color magentaTint3 = Color(0xffFF99D6);
   static const Color magentaShade1 = Color(0xffCC007A);
-
+  static const Color orangePeel = Color(0xffFF9E00);
+  static const Color orangePeelTint1 = Color(0xffFFB133);
+  static const Color blueShade2 = Color(0xff1352B3);
   // Gradients
   static const LinearGradient magentaGradient = LinearGradient(
     colors: [
       magentaShade1,
       magenta,
+    ],
+  );
+
+  static const LinearGradient pueblyGradient = LinearGradient(
+    colors: [
+      pueblyPrimary1,
+      pueblyPrimary2,
+    ],
+  );
+
+  static const LinearGradient orangePeelGradient = LinearGradient(
+    colors: [
+      orangePeel,
+      orangePeelTint1,
     ],
   );
 }
