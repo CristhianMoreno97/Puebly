@@ -9,5 +9,6 @@ class PostModelMapper {
         sectionCategoryId: json['section_category_id'],
         categories: (json['categories'] as List?)?.cast<Map<String, dynamic>>() ?? [],
         images: (json['images'] as List?)?.cast<String>() ?? [],
+        customFields: (json['custom_fields'] as Map?)?.cast<String, String>() ?? {},
       );
 }

@@ -6,6 +6,7 @@ class PostModel {
   final List<String> images;
   final List<Map<String, dynamic>> categories;
   final int sectionCategoryId;
+  final Map<String, String> customFields;
 
   PostModel({
     required this.id,
@@ -15,6 +16,7 @@ class PostModel {
     required this.images,
     required this.categories,
     required this.sectionCategoryId,
+    required this.customFields,
   });
 
   PostModel copyWith({
@@ -25,6 +27,7 @@ class PostModel {
     List<String>? images,
     List<Map<String, dynamic>>? categories,
     int? sectionCategoryId,
+    Map<String, String>? customFields,
   }) {
     return PostModel(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class PostModel {
       images: images ?? this.images,
       categories: categories ?? this.categories,
       sectionCategoryId: sectionCategoryId ?? this.sectionCategoryId,
+      customFields: customFields ?? this.customFields,
     );
   }
 }

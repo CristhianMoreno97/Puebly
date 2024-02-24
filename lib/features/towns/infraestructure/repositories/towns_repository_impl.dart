@@ -42,7 +42,13 @@ class TownsRepositoryImpl extends TownsRepository {
             content: postModel.content,
             featuredImgUrl: postModel.featuredImgUrl,
             images: postModel.images,
-            categories: postModel.categories));
+            categories: postModel.categories,
+            contactInfo: {
+              'phone': postModel.customFields['phone'] ?? '',
+              'whatsapp': postModel.customFields['whatsapp'] ?? '',
+              'location': postModel.customFields['location'] ?? '',
+            },  
+          ));
       }
       return newerPostByCategory;
     } catch (e) {
