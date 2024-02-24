@@ -2,12 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
+import 'package:puebly/features/towns/presentation/widgets/launch_button.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
 
 class PostScreen extends ConsumerWidget {
@@ -48,11 +50,70 @@ class _PostView extends StatelessWidget {
                 _FeaturedImage(post.featuredImgUrl,
                     galleryImageUrls: post.images),
                 _HtmlContent(post.content, galleryImageUrls: post.images),
+                _ContactInfo(post.contactInfo),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ContactInfo extends StatelessWidget {
+  final Map<String, String> contactInfo;
+
+  const _ContactInfo(this.contactInfo);
+
+  @override
+  Widget build(BuildContext context) {
+    const defaultWhatsAppMessage = 'Hola, vi tu publicación en Puebly...\n';
+    final whatsappNumber = '+57${contactInfo['whatsapp']}';
+
+    // Lista de botones
+    final List<Widget> items = [
+      LaunchButton(
+        text: 'WhatsApp',
+        icon: FontAwesomeIcons.whatsapp,
+        uri: Uri.parse(
+            'whatsapp://send?phone=$whatsappNumber&text=$defaultWhatsAppMessage'),
+      ),
+      const SizedBox(width: 8, height: 8),
+      LaunchButton(
+        text: 'Llamar',
+        icon: Icons.phone,
+        uri: Uri.parse('tel:${contactInfo['phone']}'),
+        color: ColorManager.blueShade2,
+      ),
+      const SizedBox(width: 8, height: 8),
+      LaunchButton(
+        text: 'Ubicación',
+        icon: Icons.location_on,
+        uri: Uri.parse(contactInfo['location'] ?? ''),
+        color: ColorManager.colorSeed,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 480) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: items
+                .map((item) =>
+                    item is LaunchButton ? Expanded(child: item) : item)
+                .toList(),
+          );
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...items,
+            ],
+          );
+        }
+      },
     );
   }
 }
