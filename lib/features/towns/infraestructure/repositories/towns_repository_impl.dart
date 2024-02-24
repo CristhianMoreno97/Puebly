@@ -26,11 +26,20 @@ class TownsRepositoryImpl extends TownsRepository {
   }
 
   @override
-
   /// Retrieves newer posts from the specified town category and page number.
   ///
   /// Returns a map where keys are section category IDs and values are lists
   /// of corresponding posts.
+  /// 
+  /// Parameters:
+  /// - townCategoryId: The ID of the town category from which to retrieve posts.
+  /// - page: The page number from which to retrieve posts.
+  /// - section: The section category ID from which to retrieve posts.
+  /// - sectionChilds: The child section category IDs from which to retrieve posts.
+  ///  
+  /// Returns:
+  ///  A [Future] that completes with a [Map] containing the posts grouped by section category ID.
+  /// 
   Future<Map<int, List<Post>>> getNewerPosts(int townCategoryId, int page,
       {int? section, List<int>? sectionChilds}) async {
     try {
@@ -64,6 +73,18 @@ class TownsRepositoryImpl extends TownsRepository {
   }
 
   @override
+  /// Retrieves the child categories of a given town category.
+  ///
+  /// This method fetches the child categories of a specified town category from the data source.
+  /// It groups the retrieved category models by their parent IDs and maps them to a map where
+  /// the keys are the parent IDs and the values are lists of corresponding categories.
+  ///
+  /// Parameters:
+  ///   - townCategoryId: The ID of the town category whose child categories are to be retrieved.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a [Map] containing the child categories grouped by parent ID.
+  ///
   Future<Map<int, List<Category>>> getSectionChildCategories(
       int townCategoryId) async {
     try {
