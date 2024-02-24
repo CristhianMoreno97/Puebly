@@ -131,12 +131,14 @@ class _SectionViewState extends ConsumerState<_SectionView> {
   void initState() {
     super.initState();
 
-    scrollController.addListener(() {
-      if ((scrollController.position.pixels + 600) >=
-          scrollController.position.maxScrollExtent) {
-        ref
+    scrollController.addListener(() async {
+      if ((scrollController.position.pixels + 600) >= scrollController.position.maxScrollExtent) {
+        final selectedFilters = ref.read(selectedFiltersProvider);
+        final List<int> childCategoryIds =  selectedFilters.keys.toList();
+
+        await ref
             .read(townProvider(widget.townCategoryId).notifier)
-            .getSectionPosts(widget.pageIndex);
+            .getSectionPosts(widget.pageIndex, childCategories: childCategoryIds);
       }
     });
   }
