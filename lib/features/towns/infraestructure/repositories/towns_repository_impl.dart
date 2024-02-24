@@ -26,31 +26,35 @@ class TownsRepositoryImpl extends TownsRepository {
   }
 
   @override
+  /// Retrieves newer posts from the specified town category and page number.
+  ///
+  /// Returns a map where keys are section category IDs and values are lists
+  /// of corresponding posts.
   Future<Map<int, List<Post>>> getNewerPosts(int townCategoryId, int page,
       {int? section, List<int>? sectionChilds}) async {
     try {
       final postModels = await _townsDataSource.getNewerPosts(
           townCategoryId, page,
           section: section, sectionChilds: sectionChilds);
-      final newerPostByCategory = <int, List<Post>>{};
-      for (final postModel in postModels) {
+
+      return postModels.fold<Map<int, List<Post>>>({}, (map, postModel) {
         final categoryId = postModel.sectionCategoryId;
-        newerPostByCategory[categoryId] ??= [];
-        newerPostByCategory[categoryId]!.add(Post(
-            id: postModel.id,
-            title: postModel.title,
-            content: postModel.content,
-            featuredImgUrl: postModel.featuredImgUrl,
-            images: postModel.images,
-            categories: postModel.categories,
-            contactInfo: {
-              'phone': postModel.customFields['phone'] ?? '',
-              'whatsapp': postModel.customFields['whatsapp'] ?? '',
-              'location': postModel.customFields['location'] ?? '',
-            },  
-          ));
-      }
-      return newerPostByCategory;
+        final post = Post(
+          id: postModel.id,
+          title: postModel.title,
+          content: postModel.content,
+          featuredImgUrl: postModel.featuredImgUrl,
+          images: postModel.images,
+          categories: postModel.categories,
+          contactInfo: {
+            'phone': postModel.customFields['phone'] ?? '',
+            'whatsapp': postModel.customFields['whatsapp'] ?? '',
+            'location': postModel.customFields['location'] ?? '',
+          },
+        );
+
+        return map..putIfAbsent(categoryId, () => <Post>[])..[categoryId]!.add(post);
+      });
     } catch (e) {
       rethrow;
     }
