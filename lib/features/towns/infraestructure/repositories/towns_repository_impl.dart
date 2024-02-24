@@ -26,6 +26,7 @@ class TownsRepositoryImpl extends TownsRepository {
   }
 
   @override
+
   /// Retrieves newer posts from the specified town category and page number.
   ///
   /// Returns a map where keys are section category IDs and values are lists
@@ -53,7 +54,9 @@ class TownsRepositoryImpl extends TownsRepository {
           },
         );
 
-        return map..putIfAbsent(categoryId, () => <Post>[])..[categoryId]!.add(post);
+        return map
+          ..putIfAbsent(categoryId, () => <Post>[])
+          ..[categoryId]!.add(post);
       });
     } catch (e) {
       rethrow;
@@ -72,17 +75,18 @@ class TownsRepositoryImpl extends TownsRepository {
         (CategoryModel categoryModel) => categoryModel.parentId,
       );
 
-      return categoryModelsByParentId.map((parentId, categoryModelList) {
-        final categories = categoryModelList
-            .map((categoryModel) => Category(
-                  id: categoryModel.id,
-                  name: categoryModel.name,
-                  count: categoryModel.count,
-                  description: categoryModel.description,
-                ))
-            .toList();
-        return MapEntry(parentId, categories);
-      });
+      return categoryModelsByParentId
+          .map((parentId, categoryModelList) => MapEntry(
+                parentId,
+                categoryModelList
+                    .map((categoryModel) => Category(
+                          id: categoryModel.id,
+                          name: categoryModel.name,
+                          count: categoryModel.count,
+                          description: categoryModel.description,
+                        ))
+                    .toList(),
+              ));
     } catch (e) {
       rethrow;
     }
