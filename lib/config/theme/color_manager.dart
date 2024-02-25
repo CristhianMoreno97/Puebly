@@ -34,6 +34,7 @@ class ColorManager {
   static const Color magentaTint2 = Color(0xffFFE6F5);
   static const Color magentaTint3 = Color(0xffFF99D6);
   static const Color magentaShade1 = Color(0xffCC007A);
+  static const Color magentaShade2 = Color(0xff99005C);
   static const Color orangePeel = Color(0xffFF9E00);
   static const Color orangePeelTint1 = Color(0xffFFB133);
   static const Color blueShade2 = Color(0xff1352B3);

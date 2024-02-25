@@ -6,7 +6,8 @@ import 'package:puebly/features/towns/presentation/providers/sections_providers.
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
-import 'package:puebly/features/towns/presentation/widgets/filter_list_expansion.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_expansion_tile.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_filter_list.dart';
 import 'package:puebly/features/towns/presentation/widgets/post_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/section_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/sections_bottom_navbar.dart';
@@ -189,16 +190,12 @@ class _SectionHeader extends ConsumerWidget {
         .childCategories;
     final sectionInfo =
         ref.watch(townProvider(townCategoryId)).townSections[pageIndex].info;
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      child: FilterListExpansion(
-        //title: 'Tipos de comercios',
-        //title: 'Buscar comercios',
-        title: sectionInfo.filterTitle,
-        filters: childCategories,
-        townCategoryId: townCategoryId,
-        sectionIndex: pageIndex,
-      ),
+    
+    return CustomExpansionTile(
+      title: sectionInfo.filterTitle,
+      filters: childCategories,
+      townCategoryId: townCategoryId,
+      sectionIndex: pageIndex,
     );
   }
 }
