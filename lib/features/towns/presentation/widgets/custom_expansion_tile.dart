@@ -26,7 +26,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
       decoration: const BoxDecoration(
         color: ColorManager.pueblyPrimary1,
         borderRadius: BorderRadius.all(Radius.circular(16)),
