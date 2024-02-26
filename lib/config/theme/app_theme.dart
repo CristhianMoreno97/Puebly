@@ -66,13 +66,23 @@ class AppTheme {
             fontWeight: FontWeight.w700,
           ),
           titleLarge: TextStyle(
-            color: Colors.black,
+            color: ColorManager.blueOuterSpace,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),
+          titleSmall: TextStyle(
+            color: ColorManager.blueOuterSpace,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
           bodyMedium: TextStyle(
-            color: Colors.black,
+            color: ColorManager.blueOuterSpace,
             fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+          bodySmall: TextStyle(
+            color: ColorManager.blueOuterSpace,
+            fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         ),
