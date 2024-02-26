@@ -25,7 +25,6 @@ class CustomFilterList extends ConsumerWidget {
         selectedData.values.expand((e) => e).toList();
     final bool isLoading =
         ref.watch(townProvider(townCategoryId)).isChildCategoriesLoading;
-    final height = MediaQuery.of(context).size.height;
 
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -33,8 +32,7 @@ class CustomFilterList extends ConsumerWidget {
         bottomRight: Radius.circular(8),
       ),
       child: Container(
-        padding: const EdgeInsets.all(0),
-        height: height * 0.3,
+        height: 240,
         color: Colors.white,
         child: Stack(
           children: [
@@ -43,10 +41,12 @@ class CustomFilterList extends ConsumerWidget {
               selectedListData: selectedListData,
               hideSelectedTextCount: true,
               hideHeader: true,
+              hideSearchField: true,
               allButtonText: "Todos",
               resetButtonText: "Limpiar",
               applyButtonText: "Buscar",
               themeData: _filterListThemeData(context),
+              hideCloseIcon: true,
               onApplyButtonClick: (list) {
                 ref.read(selectedFiltersProvider.notifier).update((state) {
                   state.clear();
@@ -94,16 +94,28 @@ class CustomFilterList extends ConsumerWidget {
       wrapCrossAxisAlignment: WrapCrossAlignment.start,
       wrapSpacing: 0,
       backgroundColor: Colors.transparent,
-      headerTheme: const HeaderThemeData(),
+      headerTheme: const HeaderThemeData(
+        searchFieldHintText: "Buscar",
+        searchFieldTextStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+        ),
+        searchFieldHintTextStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Colors.grey,
+        ),
+      ),
       choiceChipTheme: const ChoiceChipThemeData(),
       controlBarButtonTheme: ControlButtonBarThemeData.raw(
         height: 40,
         padding: const EdgeInsets.all(0),
-        //margin: const EdgeInsets.only(bottom: 16),
+        margin: const EdgeInsets.only(bottom: 8),
         controlButtonTheme: ControlButtonThemeData(
           borderRadius: 8,
           textStyle: Theme.of(context).textTheme.bodyMedium,
-          primaryButtonBackgroundColor: ColorManager.magenta,
+          primaryButtonBackgroundColor: ColorManager.brightYellow,
         ),
         controlContainerDecoration: BoxDecoration(
           color: Colors.white,
@@ -133,17 +145,17 @@ class _ChoiceChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       decoration: BoxDecoration(
-        color: isSelected ? ColorManager.magentaTint2 : Colors.grey[100],
+        color: isSelected ? ColorManager.brightYellowTint2 : ColorManager.greyCultured,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         item.name,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-              color: isSelected ? ColorManager.magentaShade2 : Colors.grey[800],
+              color: isSelected ? ColorManager.brightYellowShade2 : ColorManager.blueOuterSpace,
             ),
       ),
     );
