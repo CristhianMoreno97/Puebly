@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ColorManager {
-  static const Color colorSeed = Color(0xffFFA51B);
-  static const Color colorSeedShade1 = Color(0xFFCC44BA);
-  static const Color primary = Color(0xffFF0099);
-  static const Color secondary = Color(0xff53d400);
-  static const Color secondaryShade1 = Color(0xff42AA00);
-  static const Color background = Color(0xffFFFFFF);
+  static const Color colorSeed = brightYellow;
+  static const Color secondary = Color(0xff53d400); // usado en puebly 1.0
   static const Color pueblyPrimary1 = Color(0xff00C417);
   static const Color pueblyPrimary2 = Color(0xff00EF1F);
   static const Color pueblyPrimary2a = Color(0xff738B76);
-  static const Color pueblyPrimary2b = Color(0xff808080);
   static const Color pueblyPrimary2c = Color(0xffB3B3B3);
   static const Color pueblySecundary1 = Color(0xffFF9E00);
-  static const Color pueblySecundary1b = Color(0xffCC7E00);
-  static const Color pueblySecundary1a = Color(0xffFFE2B3);
-  static const Color pueblySecundary2 = Color(0xffFECB00);
 
   /// inputs
   static const Color inputFill = Color(0xffFFFFFF);
@@ -35,9 +27,17 @@ class ColorManager {
   static const Color magentaTint3 = Color(0xffFF99D6);
   static const Color magentaShade1 = Color(0xffCC007A);
   static const Color magentaShade2 = Color(0xff99005C);
+  static const Color brightYellow = Color(0xffFFA51B);
+  static const Color brightYellowTint1 = Color(0xffFFEDD1);
+  static const Color brightYellowTint2 = Color(0xffFFEDD1);
+  static const Color brightYellowShade2 = Color(0xffB37413);
   static const Color orangePeel = Color(0xffFF9E00);
   static const Color orangePeelTint1 = Color(0xffFFB133);
   static const Color blueShade2 = Color(0xff1352B3);
+  static const Color blueGunmetal = Color(0xff0E2431);
+  static const Color greyCultured = Color(0xffF5F5F5);
+  static const Color blueOuterSpace = Color(0xff3F4A51);
+  
   // Gradients
   static const LinearGradient magentaGradient = LinearGradient(
     colors: [
@@ -78,39 +78,6 @@ class ColorPalette1 {
   static const Color color7a = Color(0xFF59D9DB);
 }
 
-class ColorPalette2 {
-  static const Color color1 = Color(0xff8184ce);
-  static const Color color1a = Color(0xff8080ff);
-  static const Color color2 = Color(0xff66d0d2);
-  static const Color color2a = Color(0xffC280ff);
-  static const Color color3 = Color(0xff00d581);
-  static const Color color3a = Color(0xfff59a23);
-  static const Color color4 = Color(0xff49d854);
-  static const Color color4a = Color(0xff027db4);
-  static const Color color5 = Color(0xffffc32d);
-  static const Color color5a = Color(0xff70b603);
-  static const Color color6 = Color(0xFFf7803e);
-  static const Color color6a = Color(0xFFb67903);
-  static const Color color7 = Color(0xFFf04f4f);
-  static const Color color7a = Color(0xFF6866cc);
-}
-
-class ColorPalette3 {
-  static const Color color1 = Color(0xff5e61be);
-  static const Color color1a = Color(0xff080ff8);
-  static const Color color2 = Color(0xff4f7c90);
-  static const Color color2a = Color(0xffC280ff);
-  static const Color color3 = Color(0xff3d9b5b);
-  static const Color color3a = Color(0xfff59a23);
-  static const Color color4 = Color(0xff4fab38);
-  static const Color color4a = Color(0xff027db4);
-  static const Color color5 = Color(0xff94a52f);
-  static const Color color5a = Color(0xff70b603);
-  static const Color color6 = Color(0xFFd19728);
-  static const Color color6a = Color(0xFFb67903);
-  static const Color color7 = Color(0xFFd8612a);
-  static const Color color7a = Color(0xFF6866cc);
-}
 
 class ColorPalette4 {
   static const Color color1 = Color(0xff8249b4);
