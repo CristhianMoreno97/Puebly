@@ -104,7 +104,10 @@ class _MainView extends ConsumerWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: TownSectionsInfo.sections.length,
           itemBuilder: (context, index) {
-            return _SectionView(townCategoryId, index);
+            return _SectionView(
+              townCategoryId: townCategoryId,
+              pageIndex: index,
+            );
           },
           onPageChanged: (index) {
             ref.read(sectionIndexProvider.notifier).state = index;
@@ -118,7 +121,11 @@ class _MainView extends ConsumerWidget {
 class _SectionView extends ConsumerStatefulWidget {
   final int townCategoryId;
   final int pageIndex;
-  const _SectionView(this.townCategoryId, this.pageIndex);
+
+  const _SectionView({
+    required this.townCategoryId,
+    required this.pageIndex,
+  });
 
   @override
   _SectionViewState createState() => _SectionViewState();
@@ -151,28 +158,66 @@ class _SectionViewState extends ConsumerState<_SectionView> {
 
   @override
   Widget build(BuildContext context) {
-    final posts = ref.watch(townProvider(widget.townCategoryId));
-    return Stack(
-      children: [
-        CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            SliverToBoxAdapter(
-                child: _SectionHeader(widget.townCategoryId, widget.pageIndex)),
-            if (posts.townSections[widget.pageIndex].posts.isNotEmpty)
-              _SectionContent(widget.townCategoryId, widget.pageIndex),
-            if (!posts.townSections[widget.pageIndex].isLastPage)
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-                  child: PostCard(),
-                ),
-              ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
-          ],
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: [
+        SliverToBoxAdapter(
+          child: _SectionHeader(widget.townCategoryId, widget.pageIndex),
         ),
-        if (posts.isLoading) const _LoadingProgress(),
+        SliverToBoxAdapter(
+          child: _PostsView(
+            townCategoryId: widget.townCategoryId,
+            pageIndex: widget.pageIndex,
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class _PostsView extends StatelessWidget {
+  const _PostsView({
+    required this.townCategoryId,
+    required this.pageIndex,
+  });
+
+  final int townCategoryId;
+  final int pageIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _PostsViewNonSliver(
+          townCategoryId: townCategoryId,
+          pageIndex: pageIndex,
+        ),
+      ],
+    );
+  }
+}
+
+class _PostsViewNonSliver extends ConsumerWidget {
+  final int townCategoryId;
+  final int pageIndex;
+
+  const _PostsViewNonSliver({required this.townCategoryId, required this.pageIndex});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(townProvider(townCategoryId));
+    final sectionPosts = posts.townSections[pageIndex].posts;
+
+    return MasonryGridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 1,
+      mainAxisSpacing: 16,
+      padding: const EdgeInsets.all(16),
+      itemCount: sectionPosts.length,
+      itemBuilder: (context, index) {
+        return PostCard(post: sectionPosts[index]);
+      },
     );
   }
 }
@@ -196,34 +241,6 @@ class _SectionHeader extends ConsumerWidget {
       filters: childCategories,
       townCategoryId: townCategoryId,
       sectionIndex: pageIndex,
-    );
-  }
-}
-
-class _SectionContent extends ConsumerWidget {
-  final int townCategoryId;
-  final int pageIndex;
-
-  const _SectionContent(this.townCategoryId, this.pageIndex);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(townProvider(townCategoryId));
-    final sectionPosts = posts.townSections[pageIndex].posts;
-
-    return SliverPadding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      sliver: SliverMasonryGrid.extent(
-        // physics: const BouncingScrollPhysics(
-        //     decelerationRate: ScrollDecelerationRate.fast),
-        maxCrossAxisExtent: 680,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childCount: sectionPosts.length,
-        itemBuilder: (context, index) {
-          return PostCard(post: sectionPosts[index]);
-        },
-      ),
     );
   }
 }
