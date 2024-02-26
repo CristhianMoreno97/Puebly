@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:puebly/config/theme/color_manager.dart';
-import 'package:puebly/features/towns/domain/entities/category.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_filter_list.dart';
+import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
 
 class CustomExpansionTile extends StatefulWidget {
-  final String title;
-  final List<Category> filters;
   final int townCategoryId;
   final int sectionIndex;
   const CustomExpansionTile({
     super.key,
-    required this.title,
-    required this.filters,
     required this.townCategoryId,
     required this.sectionIndex,
   });
@@ -25,6 +21,10 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
 
   @override
   Widget build(BuildContext context) {
+    final title =
+        TownSectionsInfo.getByIndex(widget.sectionIndex)?.filterTitle ??
+            'Categoría no encontrada';
+
     return Container(
       margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
       decoration: const BoxDecoration(
@@ -35,7 +35,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         color: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         child: ExpansionTile(
-          title: _TitleText(widget.title),
+          title: _TitleText(title),
           backgroundColor: Colors.transparent,
           shape: _expansionTileShape(),
           collapsedShape: _expansionTileShape(),
@@ -56,7 +56,6 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
           },
           children: [
             CustomFilterList(
-              filters: widget.filters,
               townCategoryId: widget.townCategoryId,
               sectionIndex: widget.sectionIndex,
             ),

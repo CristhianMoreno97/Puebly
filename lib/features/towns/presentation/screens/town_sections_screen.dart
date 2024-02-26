@@ -225,20 +225,12 @@ class _PostsViewNonSliver extends ConsumerWidget {
 class _SectionHeader extends ConsumerWidget {
   final int townCategoryId;
   final int pageIndex;
+ 
   const _SectionHeader(this.townCategoryId, this.pageIndex);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final childCategories = ref
-        .watch(townProvider(townCategoryId))
-        .townSections[pageIndex]
-        .childCategories;
-    final sectionInfo =
-        ref.watch(townProvider(townCategoryId)).townSections[pageIndex].info;
-    
     return CustomExpansionTile(
-      title: sectionInfo.filterTitle,
-      filters: childCategories,
       townCategoryId: townCategoryId,
       sectionIndex: pageIndex,
     );

@@ -6,18 +6,20 @@ import 'package:puebly/features/towns/domain/entities/category.dart';
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
 
 class CustomFilterList extends ConsumerWidget {
-  final List<Category> filters;
   final int townCategoryId;
   final int sectionIndex;
   const CustomFilterList({
     super.key,
-    required this.filters,
     required this.townCategoryId,
     required this.sectionIndex,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final filters = ref
+        .watch(townProvider(townCategoryId))
+        .townSections[sectionIndex]
+        .childCategories;
     final selectedData = ref.watch(selectedFiltersProvider);
     final List<Category> selectedListData =
         selectedData.values.expand((e) => e).toList();
@@ -32,7 +34,7 @@ class CustomFilterList extends ConsumerWidget {
       ),
       child: Container(
         padding: const EdgeInsets.all(0),
-        height: height * 0.4,
+        height: height * 0.3,
         color: Colors.white,
         child: Stack(
           children: [
