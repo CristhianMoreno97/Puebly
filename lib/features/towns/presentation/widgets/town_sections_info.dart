@@ -74,6 +74,24 @@ class TownSectionsInfo {
           filterTitle: 'Filtrar por categoría',
         ),
       ];
+
+  static SectionInfo? getByCategoryId(int categoryId) {
+    return sections.firstWhere((element) => element.categoryId == categoryId,
+        orElse: () => const SectionInfo(
+              name: '',
+              selectedIcon: Icons.error,
+              unselectedIcon: Icons.error,
+              categoryId: 0,
+              featuredImage: '',
+              color: Colors.white,
+              description: '',
+              filterTitle: '',
+            ));
+  }
+
+  static SectionInfo? getByIndex(int index) {
+    return sections[index];
+  }
 }
 
 class SectionInfo {
