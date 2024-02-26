@@ -230,7 +230,7 @@ class _SectionHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomExpansionTile(
+    return CustomAccordion(
       townCategoryId: townCategoryId,
       sectionIndex: pageIndex,
     );
