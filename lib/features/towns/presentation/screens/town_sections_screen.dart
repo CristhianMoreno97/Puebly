@@ -175,7 +175,7 @@ class _SectionViewState extends ConsumerState<_SectionView> {
   }
 }
 
-class _PostsView extends StatelessWidget {
+class _PostsView extends ConsumerWidget {
   const _PostsView({
     required this.townCategoryId,
     required this.pageIndex,
@@ -185,13 +185,22 @@ class _PostsView extends StatelessWidget {
   final int pageIndex;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final townSection = ref.watch(townProvider(townCategoryId)).townSections[pageIndex];
+
     return Column(
       children: [
-        _PostsViewNonSliver(
-          townCategoryId: townCategoryId,
-          pageIndex: pageIndex,
-        ),
+        if (townSection.posts.isNotEmpty)
+          _PostsViewNonSliver(
+            townCategoryId: townCategoryId,
+            pageIndex: pageIndex,
+          ),
+        if (townSection.posts.isEmpty) 
+          const SizedBox(height: 16),
+        if (!townSection.isLastPage)
+          const Padding(
+              padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
+              child: PostCard())
       ],
     );
   }
