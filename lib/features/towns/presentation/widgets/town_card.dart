@@ -17,7 +17,7 @@ class TownCard extends ConsumerWidget {
         if (!town.enabled) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Próximamente en tu municipio'),
+              content: Text('Próximamente en Puebly'),
               backgroundColor: ColorManager.pueblySecundary1,
             ),
           );
