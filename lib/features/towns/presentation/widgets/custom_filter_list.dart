@@ -32,7 +32,7 @@ class CustomFilterList extends ConsumerWidget {
         bottomRight: Radius.circular(8),
       ),
       child: Container(
-        height: 240,
+        height: 260,
         color: Colors.white,
         child: Stack(
           children: [
@@ -109,9 +109,10 @@ class CustomFilterList extends ConsumerWidget {
       ),
       choiceChipTheme: const ChoiceChipThemeData(),
       controlBarButtonTheme: ControlButtonBarThemeData.raw(
-        height: 40,
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.only(bottom: 8),
+        height: 48,
+        buttonSpacing: 16,
+        padding: const EdgeInsets.all(4),
+        margin: const EdgeInsets.only(bottom: 16, left: 0, right: 0, top: 0),
         controlButtonTheme: ControlButtonThemeData(
           borderRadius: 8,
           textStyle: Theme.of(context).textTheme.bodyMedium,
@@ -122,9 +123,10 @@ class CustomFilterList extends ConsumerWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12.withOpacity(0.1),
-              spreadRadius: -1,
-              blurRadius: 4,
+              color: ColorManager.blueOuterSpace.withOpacity(0.2),
+              spreadRadius: 0,
+              blurRadius: 8,
+              blurStyle: BlurStyle.inner,
               offset: const Offset(1, 1),
             ),
           ],
