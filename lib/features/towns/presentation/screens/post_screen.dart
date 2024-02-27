@@ -50,6 +50,7 @@ class _PostView extends StatelessWidget {
                 _FeaturedImage(post.featuredImgUrl,
                     galleryImageUrls: post.images),
                 _HtmlContent(post.content, galleryImageUrls: post.images),
+                const SizedBox(height: 16),
                 _ContactInfo(post.contactInfo),
               ],
             ),
