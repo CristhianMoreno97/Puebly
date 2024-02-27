@@ -192,6 +192,11 @@ class _TextContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text ?? '', style: Theme.of(context).textTheme.titleSmall);
+    return Text(
+      text ?? '',
+      style: Theme.of(context).textTheme.titleSmall,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }
