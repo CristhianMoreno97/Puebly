@@ -48,6 +48,10 @@ class CustomFilterList extends ConsumerWidget {
               themeData: _filterListThemeData(context),
               hideCloseIcon: true,
               onApplyButtonClick: (list) {
+                if (ref.read(townProvider(townCategoryId)).townSections[sectionIndex].isLoading) {
+                  return;
+                }
+
                 ref.read(selectedFiltersProvider.notifier).update((state) {
                   state.clear();
                   if (list != null) {
