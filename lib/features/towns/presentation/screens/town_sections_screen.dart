@@ -25,7 +25,7 @@ class TownSectionsScreen extends ConsumerWidget {
     return Stack(
       children: [
         Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: ColorManager.greyCultured,
           drawer: const CustomDrawer(),
           appBar: const CustomAppBar(),
           body: _MainView(townCategoryId: townCategoryId),
@@ -160,6 +160,7 @@ class _SectionViewState extends ConsumerState<_SectionView> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: scrollController,
+      physics: const BouncingScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
           child: _SectionHeader(widget.townCategoryId, widget.pageIndex),
