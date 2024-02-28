@@ -211,18 +211,22 @@ class _PostsViewNonSliver extends ConsumerWidget {
   final int townCategoryId;
   final int pageIndex;
 
-  const _PostsViewNonSliver({required this.townCategoryId, required this.pageIndex});
+  const _PostsViewNonSliver({
+    required this.townCategoryId,
+    required this.pageIndex,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final posts = ref.watch(townProvider(townCategoryId));
     final sectionPosts = posts.townSections[pageIndex].posts;
 
-    return MasonryGridView.count(
+    return MasonryGridView.extent(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 1,
+      maxCrossAxisExtent: 680,
       mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
       padding: const EdgeInsets.all(16),
       itemCount: sectionPosts.length,
       itemBuilder: (context, index) {
