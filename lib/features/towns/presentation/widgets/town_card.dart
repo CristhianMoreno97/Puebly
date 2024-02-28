@@ -47,9 +47,11 @@ class TownCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _ImageViewer(imagePath: town.featuredImgUrl),
-            _HeaderText(text: town.name),
-            _Content(text: town.description),
+            _ImageViewer(imagePath: town.featuredImgUrl, enabled: town.enabled),
+            const SizedBox(height: 8),
+            _HeaderText(text: town.name, enabled: town.enabled),
+            //_Content(text: town.description),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -59,10 +61,12 @@ class TownCard extends ConsumerWidget {
 
 class _ImageViewer extends StatelessWidget {
   final String imagePath;
+  final bool enabled;
 
   const _ImageViewer({
     Key? key,
     required this.imagePath,
+    required this.enabled,
   }) : super(key: key);
 
   @override
@@ -87,18 +91,32 @@ class _ImageViewer extends StatelessWidget {
             topRight: Radius.circular(16),
             bottomLeft: Radius.circular(16),
           ),
-          child: CachedNetworkImage(
-            imageUrl: imagePath,
-            width: width,
-            height: width,
-            fit: BoxFit.cover,
-            placeholder: (context, url) => Center(
-              child: ClipRRect(
-                child: Image.asset('assets/images/puebly-loader.gif',
-                    width: width, height: width, fit: BoxFit.cover),
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              enabled ? Colors.transparent : Colors.grey.withOpacity(0.8),
+              enabled ? BlendMode.multiply : BlendMode.saturation,
+            ),
+            child: ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                enabled
+                    ? Colors.transparent
+                    : Colors.white.withOpacity(0.2), // Aclarar los negros
+                enabled ? BlendMode.multiply : BlendMode.colorDodge,
+              ),
+              child: CachedNetworkImage(
+                imageUrl: imagePath,
+                width: width,
+                height: width,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: ClipRRect(
+                    child: Image.asset('assets/images/puebly-loader.gif',
+                        width: width, height: width, fit: BoxFit.cover),
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         );
       },
@@ -108,17 +126,23 @@ class _ImageViewer extends StatelessWidget {
 
 class _HeaderText extends StatelessWidget {
   final String text;
+  final bool enabled;
 
-  const _HeaderText({required this.text});
+  const _HeaderText({
+    required this.text,
+    required this.enabled,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         text,
         style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: ColorManager.colorSeed,
+              color: enabled
+                  ? ColorManager.colorSeed
+                  : ColorManager.colorSeed.withOpacity(0.6),
             ),
       ),
     );
@@ -132,14 +156,16 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 0, 4, 16),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Colors.black54,
+    return text != ''
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.black38,
+                  ),
             ),
-      ),
-    );
+          )
+        : const SizedBox();
   }
 }
