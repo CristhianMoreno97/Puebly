@@ -26,67 +26,63 @@ class CustomFilterList extends ConsumerWidget {
     final bool isLoading =
         ref.watch(townProvider(townCategoryId)).isChildCategoriesLoading;
 
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(8),
-        bottomRight: Radius.circular(8),
-      ),
-      child: Container(
-        height: 260,
-        color: Colors.white,
-        child: Stack(
-          children: [
-            FilterListWidget(
-              listData: filters,
-              selectedListData: selectedListData,
-              hideSelectedTextCount: true,
-              hideHeader: true,
-              hideSearchField: true,
-              allButtonText: "Todos",
-              resetButtonText: "Limpiar",
-              applyButtonText: "Buscar",
-              themeData: _filterListThemeData(context),
-              hideCloseIcon: true,
-              onApplyButtonClick: (list) {
-                if (ref.read(townProvider(townCategoryId)).townSections[sectionIndex].isLoading) {
-                  return;
-                }
-
-                ref.read(selectedFiltersProvider.notifier).update((state) {
-                  state.clear();
-                  if (list != null) {
-                    for (final element in list) {
-                      state[element.id] = [element];
-                    }
+    return SizedBox(
+      height: 280,
+      child: Stack(
+        children: [
+          FilterListWidget(
+            listData: filters,
+            selectedListData: selectedListData,
+            hideSelectedTextCount: true,
+            hideHeader: true,
+            hideSearchField: true,
+            allButtonText: "Todos",
+            resetButtonText: "Limpiar",
+            applyButtonText: "Buscar",
+            themeData: _filterListThemeData(context),
+            hideCloseIcon: true,
+            onApplyButtonClick: (list) {
+              if (ref
+                  .read(townProvider(townCategoryId))
+                  .townSections[sectionIndex]
+                  .isLoading) {
+                return;
+              }
+    
+              ref.read(selectedFiltersProvider.notifier).update((state) {
+                state.clear();
+                if (list != null) {
+                  for (final element in list) {
+                    state[element.id] = [element];
                   }
-                  return state;
-                });
-                ref
-                    .read(townProvider(townCategoryId).notifier)
-                    .resetSection(sectionIndex);
-                ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
-                      sectionIndex,
-                      childCategories: list?.map((e) => e.id).toList(),
-                    );
-              },
-              validateSelectedItem: (list, item) {
-                if (list == null) return false;
-                return list.contains(item);
-              },
-              choiceChipLabel: (item) {
-                return item!.name;
-              },
-              onItemSearch: (item, query) {
-                return item.name.toLowerCase().contains(query.toLowerCase());
-              },
-              choiceChipBuilder: (context, item, isSelected) => _ChoiceChip(
-                item: item,
-                isSelected: isSelected ?? false,
-              ),
+                }
+                return state;
+              });
+              ref
+                  .read(townProvider(townCategoryId).notifier)
+                  .resetSection(sectionIndex);
+              ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
+                    sectionIndex,
+                    childCategories: list?.map((e) => e.id).toList(),
+                  );
+            },
+            validateSelectedItem: (list, item) {
+              if (list == null) return false;
+              return list.contains(item);
+            },
+            choiceChipLabel: (item) {
+              return item!.name;
+            },
+            onItemSearch: (item, query) {
+              return item.name.toLowerCase().contains(query.toLowerCase());
+            },
+            choiceChipBuilder: (context, item, isSelected) => _ChoiceChip(
+              item: item,
+              isSelected: isSelected ?? false,
             ),
-            if (isLoading) const _LoadingProgress(),
-          ],
-        ),
+          ),
+          if (isLoading) const _LoadingProgress(),
+        ],
       ),
     );
   }
@@ -97,7 +93,7 @@ class CustomFilterList extends ConsumerWidget {
       wrapAlignment: WrapAlignment.start,
       wrapCrossAxisAlignment: WrapCrossAlignment.start,
       wrapSpacing: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       headerTheme: const HeaderThemeData(
         searchFieldHintText: "Buscar",
         searchFieldTextStyle: TextStyle(
@@ -113,27 +109,39 @@ class CustomFilterList extends ConsumerWidget {
       ),
       choiceChipTheme: const ChoiceChipThemeData(),
       controlBarButtonTheme: ControlButtonBarThemeData.raw(
-        height: 48,
-        buttonSpacing: 16,
-        padding: const EdgeInsets.all(4),
+        backgroundColor: ColorManager.magenta,
+        height: 56,
+        buttonSpacing: 8,
+        padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.only(bottom: 16, left: 0, right: 0, top: 0),
         controlButtonTheme: ControlButtonThemeData(
+          backgroundColor: Colors.white,
           borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.bodyMedium,
+          textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+          primaryButtonTextStyle:
+              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
           primaryButtonBackgroundColor: ColorManager.brightYellow,
         ),
         controlContainerDecoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: ColorManager.blueOuterSpace.withOpacity(0.2),
-              spreadRadius: 0,
-              blurRadius: 8,
-              blurStyle: BlurStyle.inner,
-              offset: const Offset(1, 1),
-            ),
-          ],
+          border: Border.all(
+            color: ColorManager.blueOuterSpaceTint1
+          )
+          // boxShadow: const [
+          //   BoxShadow(
+          //     color: ColorManager.blueOuterSpace,
+          //     spreadRadius: -2,
+          //     blurRadius: 2,
+          //     blurStyle: BlurStyle.normal,
+          //     offset: Offset(0, 1),
+          //   ),
+          // ],
         ),
       ),
     );
@@ -154,14 +162,17 @@ class _ChoiceChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       decoration: BoxDecoration(
-        color: isSelected ? ColorManager.brightYellowTint2 : ColorManager.greyCultured,
+        color:
+            isSelected ? ColorManager.brightYellowTint2 : Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         item.name,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-              color: isSelected ? ColorManager.brightYellowShade2 : ColorManager.blueOuterSpace,
+              color: isSelected
+                  ? ColorManager.brightYellowShade2
+                  : ColorManager.blueOuterSpace,
             ),
       ),
     );
