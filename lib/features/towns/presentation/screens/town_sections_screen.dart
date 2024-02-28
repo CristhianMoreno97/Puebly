@@ -139,13 +139,24 @@ class _SectionViewState extends ConsumerState<_SectionView> {
     super.initState();
 
     scrollController.addListener(() async {
-      if ((scrollController.position.pixels + 600) >= scrollController.position.maxScrollExtent) {
+      final scrollPosition = scrollController.position;
+
+      if ((scrollPosition.pixels + 600) >= scrollPosition.maxScrollExtent) {
+        final townSection = ref
+            .read(townProvider(widget.townCategoryId))
+            .townSections[widget.pageIndex];
+
+        if (townSection.isLastPage || townSection.isLoading) {
+          return;
+        }
+
         final selectedFilters = ref.read(selectedFiltersProvider);
-        final List<int> childCategoryIds =  selectedFilters.keys.toList();
+        final List<int> childCategoryIds = selectedFilters.keys.toList();
 
         await ref
             .read(townProvider(widget.townCategoryId).notifier)
-            .getSectionPosts(widget.pageIndex, childCategories: childCategoryIds);
+            .getSectionPosts(widget.pageIndex,
+                childCategories: childCategoryIds);
       }
     });
   }
@@ -171,6 +182,9 @@ class _SectionViewState extends ConsumerState<_SectionView> {
             pageIndex: widget.pageIndex,
           ),
         ),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 16),
+        )
       ],
     );
   }
