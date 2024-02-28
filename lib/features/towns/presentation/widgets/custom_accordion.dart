@@ -22,10 +22,14 @@ class CustomAccordion extends StatelessWidget {
     return Accordion(
       openAndCloseAnimation: true,
       headerPadding: const EdgeInsets.all(12),
-      headerBackgroundColor: ColorManager.pueblyPrimary1,
-      contentBackgroundColor: Colors.white,
+      headerBackgroundColor: Colors.white,
+      headerBorderRadius: 16,
+      headerBorderWidth: 1,
+      headerBorderColor: ColorManager.blueOuterSpaceTint1,
+      contentBackgroundColor: Colors.transparent,
       contentBorderRadius: 16,
-      contentBorderColor: Colors.transparent,
+      contentBorderWidth: 1,
+      contentBorderColor: ColorManager.greyCultured,
       disableScrolling: true,
       scaleWhenAnimating: false,
       paddingBetweenClosedSections: 0,
@@ -39,6 +43,14 @@ class CustomAccordion extends StatelessWidget {
         AccordionSection(
           isOpen: false,
           header: _TitleText(title),
+          rightIcon: const Icon(
+            Icons.arrow_drop_down_rounded,
+            color: ColorManager.blueOuterSpace,
+          ),
+          leftIcon: const Icon(
+            Icons.search,
+            color: ColorManager.blueOuterSpace,
+          ),
           content: CustomFilterList(
             townCategoryId: townCategoryId,
             sectionIndex: sectionIndex,
@@ -58,14 +70,7 @@ class _TitleText extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-        color: Colors.white,
-        shadows: [
-          Shadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
+        color: ColorManager.blueOuterSpace,
       ),
     );
   }
