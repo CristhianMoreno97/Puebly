@@ -35,8 +35,11 @@ class ColorManager {
   static const Color orangePeelTint1 = Color(0xffFFB133);
   static const Color blueShade2 = Color(0xff1352B3);
   static const Color blueGunmetal = Color(0xff0E2431);
-  static const Color greyCultured = Color(0xffF5F5F5);
+  static const Color greyCultured = Color(0xFFF5F5F5);
+  static const Color greySnow = Color(0xFFF7F8FA);
   static const Color blueOuterSpace = Color(0xff3F4A51);
+  static const Color blueOuterSpaceTint1 = Color(0xffECEDEE);
+  static const Color blueOuterSpaceTint2 = Color(0xffD9DBDC);
   
   // Gradients
   static const LinearGradient magentaGradient = LinearGradient(
