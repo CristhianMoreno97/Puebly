@@ -73,26 +73,26 @@ class _ContactInfo extends StatelessWidget {
 
     // Lista de botones
     final List<Widget> items = [
-      LaunchButton(
+      contactInfo['whatsapp'] != '' ? LaunchButton(
         text: 'WhatsApp',
         icon: FontAwesomeIcons.whatsapp,
         uri: Uri.parse(
             'whatsapp://send?phone=$whatsappNumber&text=$defaultWhatsAppMessage'),
-      ),
+      ): const SizedBox(),
       const SizedBox(width: 8, height: 8),
-      LaunchButton(
+      contactInfo['phone'] != '' ? LaunchButton(
         text: 'Llamar',
         icon: Icons.phone,
         uri: Uri.parse('tel:${contactInfo['phone']}'),
         color: ColorManager.blueShade2,
-      ),
+      ): const SizedBox(),
       const SizedBox(width: 8, height: 8),
-      LaunchButton(
+      contactInfo['location'] != '' ? LaunchButton(
         text: 'Ubicación',
         icon: Icons.location_on,
         uri: Uri.parse(contactInfo['location'] ?? ''),
         color: ColorManager.colorSeed,
-      ),
+      ): const SizedBox(),
     ];
 
     return LayoutBuilder(
