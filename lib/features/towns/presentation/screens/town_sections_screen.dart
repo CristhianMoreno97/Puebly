@@ -83,20 +83,19 @@ class _MainView extends ConsumerWidget {
 
   const _MainView({required this.townCategoryId});
 
-  Future<bool> willPopAction(WidgetRef ref) async {
-    final showSectionsView = ref.watch(showTownSectionsViewProvider);
-    if (!showSectionsView) {
-      ref.read(showTownSectionsViewProvider.notifier).state = true;
-      return false;
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return WillPopScope(
-      onWillPop: () async {
-        return await willPopAction(ref);
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) return;
+        final showSectionsView = ref.watch(showTownSectionsViewProvider);
+        if (!showSectionsView) {
+          ref.read(showTownSectionsViewProvider.notifier).state = true;
+          return;
+        }
+        final NavigatorState navigator = Navigator.of(context);
+        navigator.pop();
       },
       child: SafeArea(
         child: PageView.builder(
