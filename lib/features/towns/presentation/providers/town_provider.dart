@@ -27,7 +27,13 @@ class TownNotifier extends StateNotifier<TownState> {
 
   Future getNewerPosts() async {
     if (state.isLoading || state.isLastPage) return;
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(
+        isLoading: true,
+        townSections: state.townSections
+            .map((section) => section.copyWith(
+                  isLoading: true,
+                ))
+            .toList());
 
     final newerPostByCategory =
         await _townsRepository.getNewerPosts(townCategoryId, 1);
