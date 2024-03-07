@@ -24,6 +24,7 @@ class TownNotifier extends StateNotifier<TownState> {
         )) {
     getNewerPosts();
   }
+  
   Future<void> getNewerPosts() async {
     if (_shouldReturnEarly()) return;
 
