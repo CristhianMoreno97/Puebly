@@ -11,7 +11,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/1.Comercio.jpg',
           color: ColorPalette4.color7,
           description: "Conoce los mejores restaurantes, tiendas, hoteles y negocios locales.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
         SectionInfo(
           name: 'Turismo',
@@ -21,7 +21,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/2.Turismo.jpg',
           color: ColorPalette4.color6,
           description: "Explora los puntos turísticos que ofrece nuestro hermoso municipio.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
         SectionInfo(
           name: 'Plaza',
@@ -31,7 +31,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/3.Plaza_1.jpg',
           color: ColorPalette4.color5,
           description: "Consigue una amplia variedad de hortalizas, tubérculos, hierbas y animales, al por mayor y al detalle.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
         SectionInfo(
           name: 'Empleo',
@@ -41,7 +41,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/4.Empleo.jpg',
           color: ColorPalette4.color4,
           description: "Encuentra ofertas de trabajo por jornal en diversas tareas del campo.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
         SectionInfo(
           name: 'Anuncios',
@@ -51,7 +51,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/5.Anuncios.jpg',
           color: ColorPalette4.color3,
           description: "Infórmate sobre servicios de finca raíz, acarreos, construcción, aseo, maquinaria y mucho más.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
         SectionInfo(
           name: 'Comunidad',
@@ -61,7 +61,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/Comunidad.jpg',
           color: ColorPalette4.color2,
           description: "Entérate de anuncios de la alcaldía, fechas del pago adulto mayor, entre otros.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
         SectionInfo(
           name: 'Sabías que',
@@ -71,7 +71,7 @@ class TownSectionsInfo {
           featuredImage: 'assets/images/6.sabias_que.jpg',
           color: ColorPalette4.color1,
           description: "Descubre datos interesantes y curiosos sobre nuestro municipio y su historia.",
-          filterTitle: '¿Qué estás buscando?',
+          filterTitle: 'Seleccionar categorías',
         ),
       ];
 

@@ -48,7 +48,7 @@ class CustomAccordion extends StatelessWidget {
             color: ColorManager.blueOuterSpace,
           ),
           leftIcon: const Icon(
-            Icons.search,
+            Icons.filter_alt,
             color: ColorManager.blueOuterSpace,
           ),
           content: CustomFilterList(
