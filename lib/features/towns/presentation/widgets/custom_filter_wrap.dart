@@ -16,7 +16,7 @@ class CustomFilterWrap extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref
+    final List<Category> categories = ref
         .watch(townProvider(townCategoryId))
         .townSections[sectionIndex]
         .childCategories;
@@ -25,22 +25,27 @@ class CustomFilterWrap extends ConsumerWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          child: Wrap(
-            direction: Axis.horizontal,
-            crossAxisAlignment: WrapCrossAlignment.end,
-            alignment: WrapAlignment.start,
-            spacing: 8,
-            runSpacing: 4,
-            children: categories
-                .map((category) => _ChoiceChip(
-                      category: category,
-                      sectionIndex: sectionIndex,
-                      townCategoryId: townCategoryId,
-                    ))
-                .toList(),
-          ),
+          child: _buildChoiceChipWrap(categories, sectionIndex, townCategoryId),
         ),
       ],
+    );
+  }
+
+  Widget _buildChoiceChipWrap(
+      List<Category> categories, int sectionIndex, int townCategoryId) {
+    return Wrap(
+      direction: Axis.horizontal,
+      crossAxisAlignment: WrapCrossAlignment.end,
+      alignment: WrapAlignment.start,
+      spacing: 8,
+      runSpacing: 4,
+      children: categories
+          .map((category) => _ChoiceChip(
+                category: category,
+                sectionIndex: sectionIndex,
+                townCategoryId: townCategoryId,
+              ))
+          .toList(),
     );
   }
 }
@@ -49,6 +54,7 @@ class _ChoiceChip extends ConsumerWidget {
   final Category category;
   final int townCategoryId;
   final int sectionIndex;
+
   const _ChoiceChip({
     required this.category,
     required this.townCategoryId,
@@ -57,51 +63,60 @@ class _ChoiceChip extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedCategoryIds = ref.watch(selectedFiltersProvider);
-    final isSelected = selectedCategoryIds.contains(category.id);
+    final isSelected = _isSelected(ref, category.id);
     return ChoiceChip(
       label: Text(category.name),
-      selected: selectedCategoryIds.contains(category.id),
-      padding: const EdgeInsets.all(0),
+      selected: isSelected,
+      padding: EdgeInsets.zero,
       labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       visualDensity: VisualDensity.compact,
       showCheckmark: false,
-      labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-            color: isSelected
-                ? ColorManager.brightYellowShade2
-                : ColorManager.blueOuterSpace,
-          ),
+      labelStyle: _chipLabelStyle(context, isSelected),
+      onSelected: (value) => _handleChipSelected(ref, value),
+      side: BorderSide.none,
       color: isSelected
           ? MaterialStateProperty.all<Color>(ColorManager.brightYellowTint2)
           : MaterialStateProperty.all<Color>(Colors.white),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      side: BorderSide.none,
-      onSelected: (value) async {
-        if (ref
-            .read(townProvider(townCategoryId))
-            .townSections[sectionIndex]
-            .isLoading) {
-          return;
-        }
-        final currentSet = Set<int>.from(ref.read(selectedFiltersProvider));
-        if (value) {
-          currentSet.add(category.id);
-        } else {
-          currentSet.remove(category.id);
-        }
-        ref.read(selectedFiltersProvider.notifier).state = currentSet;
-        ref
-            .read(townProvider(townCategoryId).notifier)
-            .resetSection(sectionIndex);
-        await ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
-              sectionIndex,
-              childCategories: currentSet.toList(),
-            );
-      },
     );
+  }
+
+  TextStyle _chipLabelStyle(BuildContext context, bool isSelected) {
+    return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+          color: isSelected
+              ? ColorManager.brightYellowShade2
+              : ColorManager.blueOuterSpace,
+        );
+  }
+
+  bool _isSelected(WidgetRef ref, int categoryId) {
+    final selectedCategoryIds = ref.watch(selectedFiltersProvider);
+    return selectedCategoryIds.contains(categoryId);
+  }
+
+  void _handleChipSelected(WidgetRef ref, bool value) async {
+    if (!_isLoadingSection(ref)) {
+      final currentSet = Set<int>.from(ref.read(selectedFiltersProvider));
+      value ? currentSet.add(category.id) : currentSet.remove(category.id);
+      ref.read(selectedFiltersProvider.notifier).state = currentSet;
+
+      await _resetAndFetchSection(ref, currentSet);
+    }
+  }
+
+  bool _isLoadingSection(WidgetRef ref) {
+    return ref
+        .read(townProvider(townCategoryId))
+        .townSections[sectionIndex]
+        .isLoading;
+  }
+
+  Future<void> _resetAndFetchSection(WidgetRef ref, Set<int> currentSet) async {
+    ref.read(townProvider(townCategoryId).notifier).resetSection(sectionIndex);
+    await ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
+          sectionIndex,
+          childCategories: currentSet.toList(),
+        );
   }
 }
 
