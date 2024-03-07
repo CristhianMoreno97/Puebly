@@ -21,14 +21,17 @@ class CustomFilterWrap extends ConsumerWidget {
         .townSections[sectionIndex]
         .childCategories;
 
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          child: _buildChoiceChipWrap(categories, sectionIndex, townCategoryId),
-        ),
-      ],
-    );
+    final isLoadingSection = _isLoadingSection(ref);
+    final isLoadingCategories = _isLoadingCategories(ref);
+
+    return Stack(children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: _buildChoiceChipWrap(categories, sectionIndex, townCategoryId),
+      ),
+      if (isLoadingCategories) const _ImageLoader(),
+      if (isLoadingSection) const _LinearLoader(),
+    ]);
   }
 
   Widget _buildChoiceChipWrap(
@@ -47,6 +50,17 @@ class CustomFilterWrap extends ConsumerWidget {
               ))
           .toList(),
     );
+  }
+
+  bool _isLoadingSection(WidgetRef ref) {
+    return ref
+        .read(townProvider(townCategoryId))
+        .townSections[sectionIndex]
+        .isLoading;
+  }
+
+  bool _isLoadingCategories(WidgetRef ref) {
+    return ref.watch(townProvider(townCategoryId)).isChildCategoriesLoading;
   }
 }
 
@@ -122,3 +136,33 @@ class _ChoiceChip extends ConsumerWidget {
 
 final selectedFiltersProvider = StateProvider<Set<int>>((ref) => {});
 
+class _LinearLoader extends StatelessWidget {
+  const _LinearLoader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const LinearProgressIndicator(
+        color: ColorManager.colorSeed, backgroundColor: Colors.white);
+  }
+}
+
+class _ImageLoader extends StatelessWidget {
+  const _ImageLoader();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: Container(
+        color: Colors.white,
+        child: Align(
+          alignment: Alignment.center,
+          child: Image.asset(
+            'assets/images/puebly-loader.gif',
+            width: double.infinity,
+          ),
+        ),
+      ),
+    );
+  }
+}
