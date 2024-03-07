@@ -24,57 +24,29 @@ class TownNotifier extends StateNotifier<TownState> {
         )) {
     getNewerPosts();
   }
+  Future<void> getNewerPosts() async {
+    if (_shouldReturnEarly()) return;
 
-  Future getNewerPosts() async {
-    if (state.isLoading || state.isLastPage) return;
-    state = state.copyWith(
-        isLoading: true,
-        townSections: state.townSections
-            .map((section) => section.copyWith(
-                  isLoading: true,
-                ))
-            .toList());
+    _setLoadingState(true);
 
     final newerPostByCategory =
         await _townsRepository.getNewerPosts(townCategoryId, 1);
-
     if (newerPostByCategory.isEmpty) {
-      state = state.copyWith(isLastPage: true, isLoading: false);
+      _updateStateForEmptyResults();
       return;
     }
 
-    state = state.copyWith(
-      isLoading: false,
-      page: state.page.map((e) => e + 1).toList(),
-      townSections: state.townSections
-          .map((section) => section.copyWith(
-                posts: [
-                  ...section.posts,
-                  ...newerPostByCategory[section.info.categoryId] ?? []
-                ],
-                isLoading: false,
-                isLastPage: newerPostByCategory[section.info.categoryId]!.length < 10,
-                page: section.page + 1,
-              ))
-          .toList(),
-    );
+    _updateStateWithNewPosts(newerPostByCategory);
 
     getSectionChildCategories();
   }
 
-  Future getSectionPosts(int sectionIndex, {List<int>? childCategories}) async {
+  Future<void> getSectionPosts(int sectionIndex,
+      {List<int>? childCategories}) async {
     final targetSection = state.townSections[sectionIndex];
+    if (targetSection.isLoading) return;
 
-    if (targetSection.isLoading || targetSection.isLoading) return;
-
-    state = state.copyWith(
-      townSections: state.townSections.map((section) {
-        if (section.info.categoryId == targetSection.info.categoryId) {
-          return section.copyWith(isLoading: true);
-        }
-        return section;
-      }).toList(),
-    );
+    _setSectionLoadingState(targetSection.info.categoryId, true);
 
     final postsByCategory = await _townsRepository.getNewerPosts(
       townCategoryId,
@@ -84,38 +56,101 @@ class TownNotifier extends StateNotifier<TownState> {
     );
 
     if (postsByCategory.isEmpty) {
-      state = state.copyWith(
-        isLoading: false,
-        townSections: state.townSections.map((section) {
-          if (section.info.categoryId == targetSection.info.categoryId) {
-            return section.copyWith(
-              isLastPage: true,
-              isLoading: false,
-            );
-          }
-          return section;
-        }).toList(),
-      );
+      _updateSectionStateForEmptyResults(targetSection.info.categoryId);
       return;
     }
 
+    _updateSectionStateWithNewPosts(
+        targetSection.info.categoryId, postsByCategory);
+  }
+
+  bool _shouldReturnEarly() => state.isLoading || state.isLastPage;
+
+  void _setLoadingState(bool isLoading) {
+    state = state.copyWith(
+      isLoading: isLoading,
+      townSections: state.townSections
+          .map((section) => section.copyWith(isLoading: isLoading))
+          .toList(),
+    );
+  }
+
+  void _updateStateForEmptyResults() {
+    state = state.copyWith(isLastPage: true, isLoading: false);
+  }
+
+  void _updateStateWithNewPosts(Map<dynamic, dynamic> newerPostByCategory) {
     state = state.copyWith(
       isLoading: false,
+      page: state.page.map((e) => e + 1).toList(),
+      townSections: _mapSectionsWithNewPosts(newerPostByCategory),
+    );
+  }
+
+  void _setSectionLoadingState(int categoryId, bool isLoading) {
+    state = state.copyWith(
       townSections: state.townSections.map((section) {
-        if (section.info.categoryId == targetSection.info.categoryId) {
+        if (section.info.categoryId == categoryId) {
+          return section.copyWith(isLoading: true);
+        }
+        return section;
+      }).toList(),
+    );
+  }
+
+  void _updateSectionStateForEmptyResults(int categoryId) {
+    state = _setSectionState(categoryId, isLastPage: true, isLoading: false);
+  }
+
+  void _updateSectionStateWithNewPosts(
+    int categoryId,
+    Map<dynamic, dynamic> postsByCategory,
+  ) {
+    state = _setSectionState(categoryId,
+        isLastPage: postsByCategory[categoryId]!.length < 10,
+        isLoading: false,
+        postsByCategory: postsByCategory);
+  }
+
+  TownState _setSectionState(
+    int categoryId, {
+    bool? isLastPage,
+    bool? isLoading,
+    Map<dynamic, dynamic>? postsByCategory,
+  }) {
+    return state.copyWith(
+      isLoading: isLoading ?? false,
+      townSections: state.townSections.map((section) {
+        if (section.info.categoryId == categoryId) {
           return section.copyWith(
-            posts: [
-              ...section.posts,
-              ...postsByCategory[section.info.categoryId] ?? []
-            ],
-            isLoading: false,
-            isLastPage: postsByCategory[section.info.categoryId]!.length < 10,
+            posts: isLoading == true
+                ? section.posts
+                : [...section.posts, ...postsByCategory![categoryId] ?? []],
+            isLoading: isLoading ?? false,
+            isLastPage: isLastPage ?? false,
             page: section.page + 1,
           );
         }
         return section;
       }).toList(),
     );
+  }
+
+  List<TownSection> _mapSectionsWithNewPosts(
+    Map<dynamic, dynamic> newerPostByCategory,
+  ) {
+    return state.townSections.map((section) {
+      return section.copyWith(
+        posts: [
+          ...section.posts,
+          ...newerPostByCategory[section.info.categoryId] ?? []
+        ],
+        isLoading: false,
+        isLastPage:
+            newerPostByCategory[section.info.categoryId]?.length < 10 ?? true,
+        page: section.page + 1,
+      );
+    }).toList();
   }
 
   void resetSection(int sectionIndex) {
@@ -178,7 +213,8 @@ class TownState {
   }) {
     return TownState(
       isLoading: isLoading ?? this.isLoading,
-      isChildCategoriesLoading: isChildCategoriesLoading ?? this.isChildCategoriesLoading,
+      isChildCategoriesLoading:
+          isChildCategoriesLoading ?? this.isChildCategoriesLoading,
       isLastPage: isLastPage ?? this.isLastPage,
       page: page ?? this.page,
       townSections: townSections ?? this.townSections,
