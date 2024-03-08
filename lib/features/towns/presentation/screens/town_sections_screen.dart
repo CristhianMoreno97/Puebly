@@ -106,16 +106,37 @@ class _MainView extends ConsumerWidget {
           itemCount: TownSectionsInfo.sections.length,
           itemBuilder: (context, index) {
             return _SectionView(
+              key: PageStorageKey('pageKey$index'),
               townCategoryId: townCategoryId,
               pageIndex: index,
             );
           },
-          onPageChanged: (index) {
+          onPageChanged: (index) async {
+            final previousIndex = ref.read(sectionIndexProvider);
+            _resetAndFetchSection(ref, {}, previousIndex);
             ref.read(sectionIndexProvider.notifier).state = index;
           },
         ),
       ),
     );
+  }
+
+  Future<void> _resetAndFetchSection(
+      WidgetRef ref, Set<int> currentSet, int sectionIndex) async {
+    final selectedFilters = ref.read(selectedFiltersProvider);
+    final isLoading = ref
+        .read(townProvider(townCategoryId))
+        .townSections[sectionIndex]
+        .isLoading;
+
+    if (selectedFilters.isEmpty || isLoading) return;
+
+    ref.read(townProvider(townCategoryId).notifier).resetSection(sectionIndex);
+    ref.read(selectedFiltersProvider.notifier).state[sectionIndex] = currentSet;
+    await ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
+          sectionIndex,
+          childCategories: currentSet.toList(),
+        );
   }
 }
 
@@ -124,6 +145,7 @@ class _SectionView extends ConsumerStatefulWidget {
   final int pageIndex;
 
   const _SectionView({
+    super.key,
     required this.townCategoryId,
     required this.pageIndex,
   });
