@@ -152,7 +152,7 @@ class _SectionViewState extends ConsumerState<_SectionView> {
         }
 
         final selectedFilters = ref.read(selectedFiltersProvider);
-        final List<int> childCategoryIds = selectedFilters.toList();
+        final List<int> childCategoryIds = selectedFilters[widget.pageIndex]?.toList() ?? [];
 
         await ref
             .read(townProvider(widget.townCategoryId).notifier)

@@ -79,7 +79,7 @@ class CustomFilterWrap extends ConsumerWidget {
     if (selectedFilters.isEmpty || isLoading) return;
 
     ref.read(townProvider(townCategoryId).notifier).resetSection(sectionIndex);
-    ref.read(selectedFiltersProvider.notifier).state = currentSet;
+    ref.read(selectedFiltersProvider.notifier).state[sectionIndex] = currentSet;
     await ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
           sectionIndex,
           childCategories: currentSet.toList(),
@@ -127,15 +127,15 @@ class _ChoiceChip extends ConsumerWidget {
   }
 
   bool _isSelected(WidgetRef ref, int categoryId) {
-    final selectedCategoryIds = ref.watch(selectedFiltersProvider);
+    final selectedCategoryIds = ref.watch(selectedFiltersProvider)[sectionIndex] ?? {};
     return selectedCategoryIds.contains(categoryId);
   }
 
   void _handleChipSelected(WidgetRef ref, bool value) async {
     if (!_isLoadingSection(ref)) {
-      final currentSet = Set<int>.from(ref.read(selectedFiltersProvider));
+      final currentSet = Set<int>.from(ref.read(selectedFiltersProvider)[sectionIndex] ?? {});
       value ? currentSet.add(category.id) : currentSet.remove(category.id);
-      ref.read(selectedFiltersProvider.notifier).state = currentSet;
+      ref.read(selectedFiltersProvider.notifier).state[sectionIndex] = currentSet;
 
       await _resetAndFetchSection(ref, currentSet);
     }
@@ -157,7 +157,7 @@ class _ChoiceChip extends ConsumerWidget {
   }
 }
 
-final selectedFiltersProvider = StateProvider<Set<int>>((ref) => {});
+final selectedFiltersProvider = StateProvider<Map<int, Set<int>>>((ref) => {});
 
 class _LinearLoader extends StatelessWidget {
   const _LinearLoader();
