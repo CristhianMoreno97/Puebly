@@ -7,7 +7,7 @@ import 'package:puebly/features/towns/presentation/providers/town_provider.dart'
 import 'package:puebly/features/towns/presentation/widgets/custom_accordion.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
-import 'package:puebly/features/towns/presentation/widgets/custom_filter_list.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_filter_wrap.dart';
 import 'package:puebly/features/towns/presentation/widgets/post_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/section_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/sections_bottom_navbar.dart';
@@ -89,11 +89,13 @@ class _MainView extends ConsumerWidget {
       canPop: false,
       onPopInvoked: (bool didPop) {
         if (didPop) return;
-        final showSectionsView = ref.watch(showTownSectionsViewProvider);
+
+        final showSectionsView = ref.read(showTownSectionsViewProvider);
         if (!showSectionsView) {
           ref.read(showTownSectionsViewProvider.notifier).state = true;
           return;
         }
+
         final NavigatorState navigator = Navigator.of(context);
         navigator.pop();
       },
@@ -150,7 +152,7 @@ class _SectionViewState extends ConsumerState<_SectionView> {
         }
 
         final selectedFilters = ref.read(selectedFiltersProvider);
-        final List<int> childCategoryIds = selectedFilters.keys.toList();
+        final List<int> childCategoryIds = selectedFilters.toList();
 
         await ref
             .read(townProvider(widget.townCategoryId).notifier)
