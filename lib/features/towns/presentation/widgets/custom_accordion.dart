@@ -25,7 +25,7 @@ class CustomAccordion extends StatelessWidget {
       headerBackgroundColor: Colors.white,
       headerBorderRadius: 16,
       headerBorderWidth: 1,
-      headerBorderColor: ColorManager.blueOuterSpaceTint1,
+      headerBorderColor: ColorManager.blueOuterSpaceTint6,
       contentBackgroundColor: Colors.transparent,
       contentBorderRadius: 16,
       contentBorderWidth: 1,
