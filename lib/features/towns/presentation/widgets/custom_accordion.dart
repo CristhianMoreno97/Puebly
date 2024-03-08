@@ -1,7 +1,7 @@
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:puebly/config/theme/color_manager.dart';
-import 'package:puebly/features/towns/presentation/widgets/custom_filter_list.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_filter_wrap.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
 
 class CustomAccordion extends StatelessWidget {
@@ -51,7 +51,7 @@ class CustomAccordion extends StatelessWidget {
             Icons.filter_alt,
             color: ColorManager.blueOuterSpace,
           ),
-          content: CustomFilterList(
+          content: CustomFilterWrap(
             townCategoryId: townCategoryId,
             sectionIndex: sectionIndex,
           ),
