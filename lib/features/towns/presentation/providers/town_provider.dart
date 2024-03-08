@@ -24,7 +24,7 @@ class TownNotifier extends StateNotifier<TownState> {
         )) {
     getNewerPosts();
   }
-  
+
   Future<void> getNewerPosts() async {
     if (_shouldReturnEarly()) return;
 
@@ -126,7 +126,7 @@ class TownNotifier extends StateNotifier<TownState> {
           return section.copyWith(
             posts: isLoading == true
                 ? section.posts
-                : [...section.posts, ...postsByCategory![categoryId] ?? []],
+                : [...section.posts, ...postsByCategory?[categoryId] ?? []],
             isLoading: isLoading ?? false,
             isLastPage: isLastPage ?? false,
             page: section.page + 1,
