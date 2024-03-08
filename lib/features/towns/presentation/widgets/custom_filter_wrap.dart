@@ -24,14 +24,21 @@ class CustomFilterWrap extends ConsumerWidget {
     final isLoadingSection = _isLoadingSection(ref);
     final isLoadingCategories = _isLoadingCategories(ref);
 
-    return Stack(children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-        child: _buildChoiceChipWrap(categories, sectionIndex, townCategoryId),
-      ),
-      if (isLoadingCategories) const _ImageLoader(),
-      if (isLoadingSection) const _LinearLoader(),
-    ]);
+    return PopScope(
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        await _resetAndFetchSection(ref, {});
+      },
+      child: Stack(children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          child: _buildChoiceChipWrap(categories, sectionIndex, townCategoryId),
+        ),
+        Container(color: Colors.transparent, height: 8),
+        if (isLoadingCategories) const _ImageLoader(),
+        if (isLoadingSection) const _LinearLoader(),
+      ]),
+    );
   }
 
   Widget _buildChoiceChipWrap(
@@ -61,6 +68,22 @@ class CustomFilterWrap extends ConsumerWidget {
 
   bool _isLoadingCategories(WidgetRef ref) {
     return ref.watch(townProvider(townCategoryId)).isChildCategoriesLoading;
+  }
+
+  Future<void> _resetAndFetchSection(WidgetRef ref, Set<int> currentSet) async {
+    final selectedFilters = ref.read(selectedFiltersProvider);
+    final isLoading = ref
+        .read(townProvider(townCategoryId))
+        .townSections[sectionIndex]
+        .isLoading;
+    if (selectedFilters.isEmpty || isLoading) return;
+
+    ref.read(townProvider(townCategoryId).notifier).resetSection(sectionIndex);
+    ref.read(selectedFiltersProvider.notifier).state = currentSet;
+    await ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
+          sectionIndex,
+          childCategories: currentSet.toList(),
+        );
   }
 }
 
