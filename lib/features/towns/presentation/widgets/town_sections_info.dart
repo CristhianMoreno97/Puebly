@@ -12,6 +12,8 @@ class TownSectionsInfo {
           color: ColorPalette4.color7,
           description: "Conoce los mejores restaurantes, tiendas, hoteles y negocios locales.",
           filterTitle: 'Seleccionar categorías',
+          adText: '¿Aún no está tu negocio?',
+          adButtonText: '!Publícalo aquí!'
         ),
         SectionInfo(
           name: 'Turismo',
@@ -32,6 +34,8 @@ class TownSectionsInfo {
           color: ColorPalette4.color5,
           description: "Consigue una amplia variedad de hortalizas, tubérculos, hierbas y animales, al por mayor y al detalle.",
           filterTitle: 'Seleccionar categorías',
+          adText: '¿Quieres ofrecer tus productos?',
+          adButtonText: '¡Hazlo aquí!'
         ),
         SectionInfo(
           name: 'Empleo',
@@ -42,6 +46,8 @@ class TownSectionsInfo {
           color: ColorPalette4.color4,
           description: "Encuentra ofertas de trabajo por jornal en diversas tareas del campo.",
           filterTitle: 'Seleccionar categorías',
+          adText: '¿Tienes una oferta de empleo?',
+          adButtonText: 'Contáctanos'
         ),
         SectionInfo(
           name: 'Anuncios',
@@ -103,6 +109,8 @@ class SectionInfo {
   final Color color;
   final String description;
   final String filterTitle;
+  final String? adText;
+  final String? adButtonText;
 
   const SectionInfo({
     required this.name,
@@ -113,5 +121,7 @@ class SectionInfo {
     required this.color,
     required this.description,
     required this.filterTitle,
+    this.adText,
+    this.adButtonText,
   });
 }
