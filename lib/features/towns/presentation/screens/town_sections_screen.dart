@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
@@ -12,6 +13,7 @@ import 'package:puebly/features/towns/presentation/widgets/post_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/section_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/sections_bottom_navbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TownSectionsScreen extends ConsumerWidget {
   final String townId;
@@ -123,7 +125,8 @@ class _MainView extends ConsumerWidget {
 
   Future<void> _resetAndFetchSection(
       WidgetRef ref, Set<int> currentSet, int sectionIndex) async {
-    final selectedFilters = ref.read(selectedFiltersProvider)[sectionIndex] ?? {};
+    final selectedFilters =
+        ref.read(selectedFiltersProvider)[sectionIndex] ?? {};
     final isLoading = ref
         .read(townProvider(townCategoryId))
         .townSections[sectionIndex]
@@ -174,7 +177,8 @@ class _SectionViewState extends ConsumerState<_SectionView> {
         }
 
         final selectedFilters = ref.read(selectedFiltersProvider);
-        final List<int> childCategoryIds = selectedFilters[widget.pageIndex]?.toList() ?? [];
+        final List<int> childCategoryIds =
+            selectedFilters[widget.pageIndex]?.toList() ?? [];
 
         await ref
             .read(townProvider(widget.townCategoryId).notifier)
@@ -199,6 +203,9 @@ class _SectionViewState extends ConsumerState<_SectionView> {
         SliverToBoxAdapter(
           child: _SectionHeader(widget.townCategoryId, widget.pageIndex),
         ),
+        const SliverToBoxAdapter(
+          child: _AdText(),
+        ),
         SliverToBoxAdapter(
           child: _PostsView(
             townCategoryId: widget.townCategoryId,
@@ -210,6 +217,49 @@ class _SectionViewState extends ConsumerState<_SectionView> {
         )
       ],
     );
+  }
+}
+
+class _AdText extends ConsumerWidget {
+  const _AdText();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sectionIndex = ref.watch(sectionIndexProvider);
+    final adText = TownSectionsInfo.sections[sectionIndex].adText;
+    final adButtonText = TownSectionsInfo.sections[sectionIndex].adButtonText;
+    final whatsappUri = Uri.parse(
+        'whatsapp://send?phone=${EnviromentConstants.whatsappNumber}');
+
+    return adText != null
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(adText, style: Theme.of(context).textTheme.bodySmall),
+              if (adButtonText != null)
+                TextButton(
+                  onPressed: () async {
+                    if (await canLaunchUrl(whatsappUri)) {
+                      await launchUrl(whatsappUri,
+                          mode: LaunchMode.externalApplication);
+                    } else {
+                      throw 'Could not launch $whatsappUri';
+                    }
+                  },
+                  style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll(EdgeInsets.all(4)),
+                      visualDensity: VisualDensity.compact),
+                  child: Text(
+                    adButtonText,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: ColorManager.malachiteTone3),
+                  ),
+                )
+            ],
+          )
+        : const SizedBox(height: 16);
   }
 }
 
@@ -234,7 +284,7 @@ class _PostsView extends ConsumerWidget {
             townCategoryId: townCategoryId,
             pageIndex: pageIndex,
           ),
-        if (townSection.posts.isEmpty) const SizedBox(height: 16),
+        if (townSection.posts.isNotEmpty) const SizedBox(height: 16),
         if (!townSection.isLastPage)
           const Padding(
               padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
@@ -264,7 +314,7 @@ class _PostsViewNonSliver extends ConsumerWidget {
       maxCrossAxisExtent: 680,
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: sectionPosts.length,
       itemBuilder: (context, index) {
         return PostCard(post: sectionPosts[index]);
