@@ -123,7 +123,7 @@ class _MainView extends ConsumerWidget {
 
   Future<void> _resetAndFetchSection(
       WidgetRef ref, Set<int> currentSet, int sectionIndex) async {
-    final selectedFilters = ref.read(selectedFiltersProvider);
+    final selectedFilters = ref.read(selectedFiltersProvider)[sectionIndex] ?? {};
     final isLoading = ref
         .read(townProvider(townCategoryId))
         .townSections[sectionIndex]
@@ -224,7 +224,8 @@ class _PostsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final townSection = ref.watch(townProvider(townCategoryId)).townSections[pageIndex];
+    final townSection =
+        ref.watch(townProvider(townCategoryId)).townSections[pageIndex];
 
     return Column(
       children: [
@@ -233,8 +234,7 @@ class _PostsView extends ConsumerWidget {
             townCategoryId: townCategoryId,
             pageIndex: pageIndex,
           ),
-        if (townSection.posts.isEmpty) 
-          const SizedBox(height: 16),
+        if (townSection.posts.isEmpty) const SizedBox(height: 16),
         if (!townSection.isLastPage)
           const Padding(
               padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
@@ -276,7 +276,7 @@ class _PostsViewNonSliver extends ConsumerWidget {
 class _SectionHeader extends ConsumerWidget {
   final int townCategoryId;
   final int pageIndex;
- 
+
   const _SectionHeader(this.townCategoryId, this.pageIndex);
 
   @override
