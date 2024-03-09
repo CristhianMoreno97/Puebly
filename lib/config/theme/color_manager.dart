@@ -20,6 +20,8 @@ class ColorManager {
 
   // customs
   static const Color malachite = Color(0xff00C417);
+  static const Color malachiteTone1 = Color(0xff1AB62C);
+  static const Color malachiteTone3 = Color(0xff33A941);
   static const Color malachiteTint1 = Color(0xffCCF3D1);
   static const Color magenta = Color(0xffFF0099);
   static const Color magentaTint1 = Color(0xffFFCCEB);
