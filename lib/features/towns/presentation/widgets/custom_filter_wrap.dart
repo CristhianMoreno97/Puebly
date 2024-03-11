@@ -119,6 +119,7 @@ class _ChoiceChip extends ConsumerWidget {
 
   TextStyle _chipLabelStyle(BuildContext context, bool isSelected) {
     return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          fontSize: 14,
           fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
           color: isSelected
               ? ColorManager.brightYellowShade2
@@ -133,8 +134,10 @@ class _ChoiceChip extends ConsumerWidget {
 
   void _handleChipSelected(WidgetRef ref, bool value) async {
     if (!_isLoadingSection(ref)) {
-      final currentSet = Set<int>.from(ref.read(selectedFiltersProvider)[sectionIndex] ?? {});
+      final currentSet = <int>{};
+
       value ? currentSet.add(category.id) : currentSet.remove(category.id);
+      
       ref.read(selectedFiltersProvider.notifier).state[sectionIndex] = currentSet;
 
       await _resetAndFetchSection(ref, currentSet);
