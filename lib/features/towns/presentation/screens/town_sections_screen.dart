@@ -232,33 +232,36 @@ class _AdText extends ConsumerWidget {
         'whatsapp://send?phone=${EnviromentConstants.whatsappNumber}');
 
     return adText != null
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(adText, style: Theme.of(context).textTheme.bodySmall),
-              if (adButtonText != null)
-                TextButton(
-                  onPressed: () async {
-                    if (await canLaunchUrl(whatsappUri)) {
-                      await launchUrl(whatsappUri,
-                          mode: LaunchMode.externalApplication);
-                    } else {
-                      throw 'Could not launch $whatsappUri';
-                    }
-                  },
-                  style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(EdgeInsets.all(4)),
-                      visualDensity: VisualDensity.compact),
-                  child: Text(
-                    adButtonText,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: ColorManager.malachiteTone3),
-                  ),
-                )
-            ],
-          )
+        ? Padding(
+          padding: const EdgeInsets.only(top: 4, bottom: 6),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(adText, style: Theme.of(context).textTheme.bodySmall),
+                if (adButtonText != null)
+                  TextButton(
+                    onPressed: () async {
+                      if (await canLaunchUrl(whatsappUri)) {
+                        await launchUrl(whatsappUri,
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        throw 'Could not launch $whatsappUri';
+                      }
+                    },
+                    style: const ButtonStyle(
+                        padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal:4, vertical:0)),
+                        visualDensity: VisualDensity.compact),
+                    child: Text(
+                      adButtonText,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ColorManager.malachiteTone3),
+                    ),
+                  )
+              ],
+            ),
+        )
         : const SizedBox(height: 16);
   }
 }
