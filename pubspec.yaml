@@ -34,6 +34,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^5.3.3
   filter_list: ^1.0.2
+  firebase_core: ^2.27.0
   flutter:
     sdk: flutter
   flutter_custom_clippers: ^2.1.0

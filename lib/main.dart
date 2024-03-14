@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/app_theme.dart';
 import 'package:puebly/features/home/presentation/providers/is_dark_mode_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'config/constants/enviroment_constants.dart';
 import 'config/router/app_router_provider.dart';
 
 void main() async {
   await EnviromentConstants.initEnviroment();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   runApp(const ProviderScope(child: MainApp()));
 }
 
@@ -22,7 +28,8 @@ class MainApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1)),
           child: child!,
         );
       },

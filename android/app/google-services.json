@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "974738265062",
+    "project_id": "puebly-app",
+    "storage_bucket": "puebly-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974738265062:android:560ca7dadd73016154fc27",
+        "android_client_info": {
+          "package_name": "com.puebly.puebly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqDudSo2dOM1yPpdhuBUQKTPth9fTd0tg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
