@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/app_theme.dart';
@@ -5,9 +6,13 @@ import 'package:puebly/features/home/presentation/providers/is_dark_mode_provide
 
 import 'config/constants/enviroment_constants.dart';
 import 'config/router/app_router_provider.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await EnviromentConstants.initEnviroment();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const ProviderScope(child: MainApp()));
 }
 
