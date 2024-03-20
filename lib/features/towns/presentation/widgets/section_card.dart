@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puebly/features/analytics/services/analytics_service.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
 import 'package:puebly/features/towns/utils/section_utils.dart';
 
@@ -17,6 +18,7 @@ class SectionCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () async {
+        AnalyticsService.selectedSection(TownSectionsInfo.sections[index].name);
         await SectionUtils.navigateTo(index, ref, context);
         return;
       },

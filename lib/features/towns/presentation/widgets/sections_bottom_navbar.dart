@@ -4,6 +4,7 @@ import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_sections_info.dart';
 import 'package:puebly/features/towns/utils/section_utils.dart';
+import 'package:puebly/features/analytics/services/analytics_service.dart';
 
 class SectionsBottomNavBar extends ConsumerWidget {
   const SectionsBottomNavBar({super.key});
@@ -30,7 +31,10 @@ class SectionsBottomNavBar extends ConsumerWidget {
                 _NavBarItem(
                   sectionInfo: TownSectionsInfo.sections[index],
                   isSelected: index == selectedIndex,
-                  onTap: () => SectionUtils.navigateTo(index, ref, context),
+                  onTap: () {
+                    AnalyticsService.selectedSection(TownSectionsInfo.sections[index].name);
+                    SectionUtils.navigateTo(index, ref, context);
+                  },
                 ),
             ],
           ),
