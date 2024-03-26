@@ -11,6 +11,10 @@ class AnalyticsService {
     await _instance.setAnalyticsCollectionEnabled(true);
   }
 
+  static getInstance() {
+    return _instance;
+  }
+
   static void selectedSection(String name) async {
     return _instance.logEvent(
       name: 'selected_section',
