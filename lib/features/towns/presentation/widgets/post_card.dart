@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/analytics/services/analytics_service.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 
@@ -27,6 +28,7 @@ class PostCard extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         if (post == null) return;
+        AnalyticsService.selectedPost(post?.title ?? '', post?.id ?? 0);
         ref.read(postProvider.notifier).state = post;
         context.push('/post/${post!.id}');
       },
