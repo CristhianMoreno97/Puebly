@@ -78,6 +78,7 @@ class _ContactInfo extends StatelessWidget {
         icon: FontAwesomeIcons.whatsapp,
         uri: Uri.parse(
             'whatsapp://send?phone=$whatsappNumber&text=$defaultWhatsAppMessage'),
+        actionTag: 'whatsapp',
       ): const SizedBox(),
       const SizedBox(width: 8, height: 8),
       contactInfo['phone'] != '' ? LaunchButton(
@@ -85,6 +86,7 @@ class _ContactInfo extends StatelessWidget {
         icon: Icons.phone,
         uri: Uri.parse('tel:${contactInfo['phone']}'),
         color: ColorManager.blueShade2,
+        actionTag: 'call',
       ): const SizedBox(),
       const SizedBox(width: 8, height: 8),
       contactInfo['location'] != '' ? LaunchButton(
@@ -92,6 +94,7 @@ class _ContactInfo extends StatelessWidget {
         icon: Icons.location_on,
         uri: Uri.parse(contactInfo['location'] ?? ''),
         color: ColorManager.colorSeed,
+        actionTag: 'location',
       ): const SizedBox(),
     ];
 
