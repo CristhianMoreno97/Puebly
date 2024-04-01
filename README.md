@@ -15,38 +15,46 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-## Configuración variables de entorno
+## Environment Variables Configuration
 
-El proyecto usa el paquete flutter_dotenv para la configuración de las variables de entorno. Para configurar las variables de entorno se debe seguir los siguientes pasos:
+The project uses the flutter_dotenv package for the configuration of environment variables. To set up the environment variables, follow these steps:
 
-**1.** Crear archivo .env en la raiz del proyecto
+**1.** Create a .env file at the project root
 
-**2.** Agregar las siguientes variables de entorno
+**2.** Add the following environment variables
 
 ```
 URL_BASE="https://puebly.com"
 PUEBLY_WHATSAPP_NUMBER="+573990009999"
 ```
 
-Donde **URL_BASE** es la url base de la api y **PUEBLY_WHATSAPP_NUMBER** es el número de whatsapp del proyecto.
+Where **URL_BASE** is the base URL of the API, and **PUEBLY_WHATSAPP_NUMBER** is the project's WhatsApp number.
 
-**3.** Agregar el archivo .env al .gitignore
+# Build and release Android app
 
+Below, we outline some essential configurations that must be completed before building and launching the Android application. For a more comprehensive understanding, please refer to the configurations detailed in [Flutter's official documentation](https://docs.flutter.dev/deployment/android#adding-a-launcher-icon).
 
-# Produccion
-cambiar el nombre del paquete
+## Change package name
+
+To define a custom package name, execute the following command:
+
 ```
-flutter pub run change_app_package_name:main com.puebly.pueblyboica
+flutter pub run change_app_package_name:main com.yourcustomdomain.yourappname
 ```
 
-para cambiar el icono de la aplicacion:
+## Customize the application icon
+
+follow the configuration guide of the [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) package, and finally, execute the following command:
+
 ```
 flutter pub run flutter_launcher_icons
 ```
 
-android AAB 
-
+## Building the app for release
+### Build an app bundle
+To build an app bundle, run the following command:
+```
 flutter build appbundle
-
+```
 
 
