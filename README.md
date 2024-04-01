@@ -30,6 +30,14 @@ PUEBLY_WHATSAPP_NUMBER="+573990009999"
 
 Where **URL_BASE** is the base URL of the API, and **PUEBLY_WHATSAPP_NUMBER** is the project's WhatsApp number.
 
+## Change package name
+
+To define a custom package name, execute the following command, replacing `com.yourapp.package` with your application's unique package name:
+
+```
+flutter pub run change_app_package_name:main com.yourapp.package
+```
+
 ## Firebase Configuration
 This application leverages Google Analytics to garner insights from user interactions. In order to integrate this functionality, the app needs to be configured to utilize Firebase. Begin by adhering to [this comprehensive guide](https://firebase.google.com/docs/flutter/setup?platform=android) which will walk you through installing the Firebase CLI and initiating a new project within Firebase. After signing into your Google account using the `firebase login` command, proceed by executing the commands listed below:
 
@@ -69,14 +77,6 @@ By following these steps and utilizing the commands as outlined, you can seamles
 # Build and release Android app
 
 Below, we outline some essential configurations that must be completed before building and launching the Android application. For a more comprehensive understanding, please refer to the configurations detailed in [Flutter's official documentation](https://docs.flutter.dev/deployment/android#adding-a-launcher-icon).
-
-## Change package name
-
-To define a custom package name, execute the following command, replacing `com.yourapp.package` with your application's unique package name:
-
-```
-flutter pub run change_app_package_name:main com.yourapp.package
-```
 
 ## Customize the application icon
 
