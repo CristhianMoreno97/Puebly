@@ -5,12 +5,33 @@ import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/town.dart';
 import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
+import 'package:puebly/features/towns/presentation/widgets/custom_button.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/widgets/town_card.dart';
 import 'package:puebly/features/towns/presentation/widgets/welcome_view.dart';
+import 'package:version_check/version_check.dart';
 
-class TownsScreen extends StatelessWidget {
+class TownsScreen extends StatefulWidget {
   const TownsScreen({super.key});
+
+  @override
+  State<TownsScreen> createState() => _TownsScreenState();
+}
+
+class _TownsScreenState extends State<TownsScreen> {
+  final versionCheck = VersionCheck(
+    showUpdateDialog: _customShowUpdateDialog,
+  );
+
+  Future<void> checkVersion() async {
+    await versionCheck.checkVersion(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkVersion();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,4 +130,64 @@ class _FooterView extends StatelessWidget {
           ),
     );
   }
+}
+
+void _customShowUpdateDialog(BuildContext context, VersionCheck versionCheck) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          '¡No te pierdas las últimas actualizaciones!',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: ColorManager.pueblySecundary1,
+              ),
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Text(
+                'Versión ${versionCheck.storeVersion} disponible',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: ColorManager.blueOuterSpaceTint8),
+              ),
+              Text(
+                'Hemos escuchado tus comentarios y hemos realizado mejoras significativas.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text(
+              'DESPUÉS',
+              style: TextStyle(
+                color: ColorManager.blueOuterSpace,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          SizedBox(
+            width: 150,
+            child: CustomButton(
+              onTap: () async {
+                await versionCheck.launchStore();
+              },
+              text: 'ACTUALIZAR',
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
