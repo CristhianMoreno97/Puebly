@@ -25,7 +25,7 @@ class TownCard extends ConsumerWidget {
         }
         ref.read(showTownSectionsViewProvider.notifier).state = true;
         ref.read(sectionIndexProvider.notifier).state = 0;
-        context.push('/town/${town.categoryId}');
+        context.push('/app/town/${town.categoryId}');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),

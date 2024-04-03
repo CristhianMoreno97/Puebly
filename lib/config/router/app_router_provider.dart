@@ -14,32 +14,32 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     observers: [
       FirebaseAnalyticsObserver(analytics: AnalyticsService.getInstance()),
     ],
-    initialLocation: '/towns',
+    initialLocation: '/app/towns',
     routes: [
       GoRoute(
-        path: '/',
+        path: '/app',
         builder: (context, state) => const MainScreen(),
       ),
       GoRoute(
-        path: '/auxiliary-screen',
+        path: '/app/auxiliary-screen',
         builder: (context, state) => const AuxiliaryScreen(),
       ),
       GoRoute(
-        path: '/towns',
+        path: '/app/towns',
         builder: (context, state) => const TownsScreen(),
       ),
       GoRoute(
-        path: '/town/:townCategoryId',
+        path: '/app/town/:townCategoryId',
         builder: (context, state) => TownSectionsScreen(
             townId: state.pathParameters['townCategoryId'] ?? 'no-id'),
       ),
       GoRoute(
-        path: '/post/:postId',
+        path: '/app/post/:postId',
         builder: (context, state) => PostScreen(
             postId: state.pathParameters['postId'] ?? 'no-id'),
       ),
       GoRoute(
-        path: '/webview',
+        path: '/app/webview',
         builder: (context, state) => const WebViewScreen(),
       ),
     ],

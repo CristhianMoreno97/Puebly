@@ -30,7 +30,7 @@ class PostCard extends ConsumerWidget {
         if (post == null) return;
         AnalyticsService.selectedPost(post?.title ?? '', post?.id ?? 0);
         ref.read(postProvider.notifier).state = post;
-        context.push('/post/${post!.id}');
+        context.push('/app/post/${post!.id}');
       },
       child: Container(
         decoration: BoxDecoration(

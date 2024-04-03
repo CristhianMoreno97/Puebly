@@ -61,7 +61,7 @@ class SectionsScreen extends ConsumerWidget {
           }
           if (webViewPath != null) {
             ref.read(auxiliaryWebViewPathProvider.notifier).state = webViewPath;
-            context.push('/auxiliary-screen');
+            context.push('/app/auxiliary-screen');
           }
         },
         child: Card(

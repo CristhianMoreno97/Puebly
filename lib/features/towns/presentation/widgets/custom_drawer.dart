@@ -34,7 +34,7 @@ class _DrawerView extends StatelessWidget {
         label: 'pueblos',
         icon: Icons.home_filled,
         routeType: 'go-route',
-        path: '/towns')
+        path: '/app/towns')
   ];
 
   final remainingDrawerItems = const [
@@ -147,7 +147,7 @@ class DrawerItem extends ConsumerWidget {
           case 'webview':
             Navigator.pop(context);
             ref.read(webViewPathProvider.notifier).state = drawerItemInfo.path;
-            context.push('/webview');
+            context.push('/app/webview');
           default:
         }
       },
