@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,18 +8,47 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
 import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/launch_button.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
 
-class PostScreen extends ConsumerWidget {
+class PostScreen extends ConsumerStatefulWidget {
   final String postId;
   const PostScreen({super.key, required this.postId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  PostScreenState createState() => PostScreenState();
+}
+
+class PostScreenState extends ConsumerState<PostScreen> {
+  @override
+  void initState() {
+    super.initState();
+    initDeepLinks(ref);
+  }
+
+  // TODO warning: when opening a second link, initState does not run again  
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> initDeepLinks(WidgetRef ref) async {
+    final currentPost = ref.read(postProvider);
+    final postId = int.tryParse(widget.postId);
+    if (postId == null) return;
+    if (currentPost == null || currentPost.id != postId) {
+      final post = await ref.read(townsProvider.notifier).getPost(postId);
+      ref.read(postProvider.notifier).state = post;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final post = ref.watch(postProvider);
 
     return Scaffold(
@@ -25,7 +56,7 @@ class PostScreen extends ConsumerWidget {
       drawer: const CustomDrawer(),
       body: post != null
           ? _PostView(post)
-          : Text('\n¡Post no encontrado!, $widget.postId'),
+          : Text('\n¡Post no encontrado!, $widget.postId'),  // TODO implement loading state
     );
   }
 }
