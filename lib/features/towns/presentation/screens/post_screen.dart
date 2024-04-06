@@ -23,8 +23,9 @@ class PostScreen extends ConsumerWidget {
     return Scaffold(
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
-      body:
-          post != null ? _PostView(post) : const Text('\n¡Post no encontrado!'),
+      body: post != null
+          ? _PostView(post)
+          : Text('\n¡Post no encontrado!, $widget.postId'),
     );
   }
 }
@@ -73,29 +74,35 @@ class _ContactInfo extends StatelessWidget {
 
     // Lista de botones
     final List<Widget> items = [
-      contactInfo['whatsapp'] != '' ? LaunchButton(
-        text: 'WhatsApp',
-        icon: FontAwesomeIcons.whatsapp,
-        uri: Uri.parse(
-            'whatsapp://send?phone=$whatsappNumber&text=$defaultWhatsAppMessage'),
-        actionTag: 'whatsapp',
-      ): const SizedBox(),
+      contactInfo['whatsapp'] != ''
+          ? LaunchButton(
+              text: 'WhatsApp',
+              icon: FontAwesomeIcons.whatsapp,
+              uri: Uri.parse(
+                  'whatsapp://send?phone=$whatsappNumber&text=$defaultWhatsAppMessage'),
+              actionTag: 'whatsapp',
+            )
+          : const SizedBox(),
       const SizedBox(width: 8, height: 8),
-      contactInfo['phone'] != '' ? LaunchButton(
-        text: 'Llamar',
-        icon: Icons.phone,
-        uri: Uri.parse('tel:${contactInfo['phone']}'),
-        color: ColorManager.blueShade2,
-        actionTag: 'call',
-      ): const SizedBox(),
+      contactInfo['phone'] != ''
+          ? LaunchButton(
+              text: 'Llamar',
+              icon: Icons.phone,
+              uri: Uri.parse('tel:${contactInfo['phone']}'),
+              color: ColorManager.blueShade2,
+              actionTag: 'call',
+            )
+          : const SizedBox(),
       const SizedBox(width: 8, height: 8),
-      contactInfo['location'] != '' ? LaunchButton(
-        text: 'Ubicación',
-        icon: Icons.location_on,
-        uri: Uri.parse(contactInfo['location'] ?? ''),
-        color: ColorManager.colorSeed,
-        actionTag: 'location',
-      ): const SizedBox(),
+      contactInfo['location'] != ''
+          ? LaunchButton(
+              text: 'Ubicación',
+              icon: Icons.location_on,
+              uri: Uri.parse(contactInfo['location'] ?? ''),
+              color: ColorManager.colorSeed,
+              actionTag: 'location',
+            )
+          : const SizedBox(),
     ];
 
     return LayoutBuilder(
