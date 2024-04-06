@@ -112,4 +112,22 @@ class TownsRepositoryImpl extends TownsRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Post> getPost(int id) async {
+    final postModel = await _townsDataSource.getPost(id);
+    return Post(
+      id: postModel.id,
+      title: postModel.title,
+      content: postModel.content,
+      featuredImgUrl: postModel.featuredImgUrl,
+      images: postModel.images,
+      categories: postModel.categories,
+      contactInfo: {
+        'phone': postModel.customFields['phone'] ?? '',
+        'whatsapp': postModel.customFields['whatsapp'] ?? '',
+        'location': postModel.customFields['location'] ?? '',
+      },
+    );
+  }
 }

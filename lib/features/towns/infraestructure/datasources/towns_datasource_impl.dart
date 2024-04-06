@@ -46,13 +46,27 @@ class TownsDataSourceImpl extends TownsDataSource {
   }
 
   @override
-  Future<List<CategoryModel>> getSectionChildCategories(int townCategoryId) async {
+  Future<List<CategoryModel>> getSectionChildCategories(
+      int townCategoryId) async {
     try {
-      final response = await _dio.get('/wp-json/api/v1/section-child-categories?t=$townCategoryId');
+      final response = await _dio
+          .get('/wp-json/api/v1/section-child-categories?t=$townCategoryId');
       final List<CategoryModel> categories = (response.data as List)
           .map((category) => CategoryModelMapper.fromJson(category))
           .toList();
       return categories;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostModel> getPost(int id) async {
+    try {
+      final response = await _dio.get('/wp-json/api/v1/post/$id');
+      final PostModel post =
+          PostModelMapper.fromJson(response.data as Map<String, dynamic>);
+      return post;
     } catch (e) {
       rethrow;
     }

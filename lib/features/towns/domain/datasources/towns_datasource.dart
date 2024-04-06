@@ -7,4 +7,5 @@ abstract class TownsDataSource {
   Future<List<PostModel>> getNewerPosts(int townCategoryId, int page,
       {int? section, List<int>? sectionChilds});
   Future<List<CategoryModel>> getSectionChildCategories(int townCategoryId);
+  Future<PostModel> getPost(int id);
 }
