@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/domain/entities/town.dart';
 import 'package:puebly/features/towns/domain/repositories/towns_repository.dart';
 import 'package:puebly/features/towns/presentation/providers/towns_repository_provider.dart';
@@ -32,11 +31,6 @@ class TownsNotifier extends StateNotifier<TownsState> {
       page: state.page + 1,
       towns: [...state.towns, ...towns],
     );
-  }
-
-  Future<Post> getPost(int id) async {
-    final post = await _townsRepository.getPost(id);
-    return post;
   }
 }
 

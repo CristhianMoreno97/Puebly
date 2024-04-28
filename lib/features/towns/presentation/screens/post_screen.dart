@@ -8,8 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:puebly/config/theme/color_manager.dart';
-import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
-import 'package:puebly/features/towns/domain/entities/post.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/launch_button.dart';
@@ -27,10 +25,10 @@ class PostScreenState extends ConsumerState<PostScreen> {
   @override
   void initState() {
     super.initState();
-    initDeepLinks(ref);
+    Future.microtask(() => initDeepLinks(ref));
   }
 
-  // TODO warning: when opening a second link, initState does not run again  
+  // TODO warning: when opening a second link, initState does not run again
 
   @override
   void dispose() {
@@ -38,57 +36,94 @@ class PostScreenState extends ConsumerState<PostScreen> {
   }
 
   Future<void> initDeepLinks(WidgetRef ref) async {
-    final currentPost = ref.read(postProvider);
     final postId = int.tryParse(widget.postId);
     if (postId == null) return;
-    if (currentPost == null || currentPost.id != postId) {
-      final post = await ref.read(townsProvider.notifier).getPost(postId);
-      ref.read(postProvider.notifier).state = post;
+
+    final post = ref.read(postProvider).post;
+    if (post == null || post.id != postId) {
+      await ref.read(postProvider.notifier).getPost(postId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final post = ref.watch(postProvider);
-
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      drawer: const CustomDrawer(),
-      body: post != null
-          ? _PostView(post)
-          : Text('\n¡Post no encontrado!, $widget.postId'),  // TODO implement loading state
+    return const Scaffold(
+      appBar: CustomAppBar(),
+      drawer: CustomDrawer(),
+      body: _PostView(), // TODO implement loading state
     );
   }
 }
 
-class _PostView extends StatelessWidget {
-  final Post post;
-  const _PostView(this.post);
+class _PostView extends ConsumerWidget {
+  const _PostView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postState = ref.watch(postProvider);
+
+    return postState.isLoading
+        ? const _LoadingProgress()
+        : const _PostContent();
+  }
+}
+
+class _PostContent extends ConsumerWidget {
+  const _PostContent();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postState = ref.watch(postProvider);
+    final post = postState.post;
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        physics: const BouncingScrollPhysics(
-            decelerationRate: ScrollDecelerationRate.fast),
-        child: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _TitleText(post.title),
-                _FeaturedImage(post.featuredImgUrl,
-                    galleryImageUrls: post.images),
-                _HtmlContent(post.content, galleryImageUrls: post.images),
-                const SizedBox(height: 16),
-                _ContactInfo(post.contactInfo),
-              ],
+      child: post != null
+          ? SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              physics: const BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.fast),
+              child: Center(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _TitleText(post.title),
+                      _FeaturedImage(post.featuredImgUrl,
+                          galleryImageUrls: post.images),
+                      _HtmlContent(post.content, galleryImageUrls: post.images),
+                      const SizedBox(height: 16),
+                      _ContactInfo(post.contactInfo),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : const Text('Publicación no encontrada.'),
+    );
+  }
+}
+
+class _LoadingProgress extends ConsumerWidget {
+  const _LoadingProgress();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        const LinearProgressIndicator(
+          color: ColorManager.colorSeed,
+          backgroundColor: Colors.white,
+        ),
+        Expanded(
+          child: Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/images/puebly-loader.gif',
+              width: double.infinity,
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
