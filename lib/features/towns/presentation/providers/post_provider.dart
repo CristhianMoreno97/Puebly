@@ -14,14 +14,14 @@ class PostNotifier extends StateNotifier<PostState> {
   PostNotifier(this._townsRepository) : super(PostState());
 
   void setPost(Post post) {
-    state = state.copyWith(post: post);
+    state = state.copyWith(post: post, isLoading: false);
   }
 
   Future<PostState> getPost(int id) async {
     state = state.copyWith(isLoading: true);
     final post = await _townsRepository.getPost(id);
     setPost(post);
-    state = state.copyWith(isLoading: false);
+    // state = state.copyWith(isLoading: false);
     return state;
   }
 }
