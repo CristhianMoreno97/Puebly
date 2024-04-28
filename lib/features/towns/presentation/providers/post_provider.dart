@@ -17,12 +17,10 @@ class PostNotifier extends StateNotifier<PostState> {
     state = state.copyWith(post: post, isLoading: false);
   }
 
-  Future<PostState> getPost(int id) async {
+  Future<void> getPost(int id) async {
     state = state.copyWith(isLoading: true);
     final post = await _townsRepository.getPost(id);
     setPost(post);
-    // state = state.copyWith(isLoading: false);
-    return state;
   }
 }
 
