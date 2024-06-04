@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/domain/entities/town.dart';
 import 'package:puebly/features/towns/presentation/providers/towns_provider.dart';
+import 'package:puebly/features/towns/presentation/providers/webview_providers.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_button.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
@@ -123,11 +126,53 @@ class _FooterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "¡Próximamente tú municipio en Puebly!",
-      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: Colors.black54,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "¡Próximamente tú municipio en Puebly!",
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Colors.black54,
+              ),
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        const MyPrivacyPolicyWidget(),
+        const SizedBox(
+          height: 24,
+        ),
+      ],
+    );
+  }
+}
+
+class MyPrivacyPolicyWidget extends ConsumerWidget {
+  const MyPrivacyPolicyWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              color: Colors.black54,
+            ),
+        children: <TextSpan>[
+          const TextSpan(
+              text:
+                  'En Puebly, valoramos tu privacidad y seguridad. Manejamos tus datos con el mayor cuidado y transparencia, siguiendo las mejores prácticas de seguridad. Para más detalles, lee nuestra '),
+          TextSpan(
+            text: 'Política de Privacidad',
+            style: const TextStyle(color: Colors.blue),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                ref.read(webViewPathProvider.notifier).state = 'policies';
+                context.push('/app/webview');
+              },
           ),
+          const TextSpan(text: ' aquí.'),
+        ],
+      ),
     );
   }
 }

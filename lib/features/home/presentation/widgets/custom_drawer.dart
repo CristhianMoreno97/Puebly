@@ -130,7 +130,7 @@ class CustomDrawer extends ConsumerWidget {
 
         buildTopDrawerItem(
           DrawerItem(
-            label: 'Acerca de nosotros',
+            label: '¿Quiénes somos?',
             urlPath: 'acerca-de-nosotros',
             icon: Icons.info_rounded,
             selectedIcon: Icons.info_rounded,
@@ -171,6 +171,10 @@ class CustomDrawer extends ConsumerWidget {
           isFaIcon: true,
           url: Uri.parse('https://youtube.com/@Puebly'),
           androidPackageName: 'com.google.android.youtube',
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(color: Colors.white),
         ),
         // dark mode button
         /*

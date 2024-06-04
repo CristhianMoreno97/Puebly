@@ -39,15 +39,20 @@ class _DrawerView extends StatelessWidget {
 
   final remainingDrawerItems = const [
     DrawerItemInfo(
-        label: 'Acerca de nosotros',
-        icon: Icons.info_rounded,
-        routeType: 'webview',
-        path: 'acerca-de-nosotros'),
-    DrawerItemInfo(
         label: 'Contacto',
         icon: FontAwesomeIcons.whatsapp,
         routeType: 'link-app',
         path: 'whatsapp://send?phone=+573124270705&text=Hola Puebly, '),
+    DrawerItemInfo(
+        label: 'Acerca de nosotros',
+        icon: Icons.info,
+        routeType: 'webview',
+        path: 'acerca-de-nosotros'),
+    DrawerItemInfo(
+        label: 'Políticas',
+        icon: Icons.privacy_tip,
+        routeType: 'webview',
+        path: 'policies'),
     // DrawerItemInfo(
     //     label: 'Política de privacidad',
     //     icon: Icons.privacy_tip_rounded,
