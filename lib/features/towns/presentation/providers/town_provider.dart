@@ -48,21 +48,26 @@ class TownNotifier extends StateNotifier<TownState> {
     if (targetSection.isLoading) return;
 
     _setSectionLoadingState(targetSection.info.categoryId, true);
+    try {
+      final postsByCategory = await _townsRepository.getNewerPosts(
+        townCategoryId,
+        targetSection.page,
+        section: targetSection.info.categoryId,
+        sectionChilds: childCategories,
+      );
 
-    final postsByCategory = await _townsRepository.getNewerPosts(
-      townCategoryId,
-      targetSection.page,
-      section: targetSection.info.categoryId,
-      sectionChilds: childCategories,
-    );
+      if (postsByCategory.isEmpty) {
+        _updateSectionStateForEmptyResults(targetSection.info.categoryId);
+        return;
+      }
 
-    if (postsByCategory.isEmpty) {
+      _updateSectionStateWithNewPosts(
+          targetSection.info.categoryId, postsByCategory);
+      
+    } catch (e) {
+      // TODO: add error handling. mostrar un aviso "No fue posible obtener más publicaciones, revisa tu conexión a internet"
       _updateSectionStateForEmptyResults(targetSection.info.categoryId);
-      return;
     }
-
-    _updateSectionStateWithNewPosts(
-        targetSection.info.categoryId, postsByCategory);
   }
 
   bool _shouldReturnEarly() => state.isLoading || state.isLastPage;
