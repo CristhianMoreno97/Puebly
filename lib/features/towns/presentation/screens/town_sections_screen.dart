@@ -71,6 +71,17 @@ class _SectionsView extends ConsumerWidget {
                       },
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                    SliverToBoxAdapter(
+                      child: Text(
+                        'Puebly realiza un proceso de verificación para asegurar la autenticidad de las publicaciones antes de que puedan visualizarse en nuestra aplicación. Sin embargo, te recomendamos siempre realizar tus propias verificaciones adicionales antes de llevar a cabo cualquier transacción.',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: Colors.black54,
+                            ),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: 16),
+                    ),
                   ],
                 ),
               ),

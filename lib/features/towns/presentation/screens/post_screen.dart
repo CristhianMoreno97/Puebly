@@ -93,12 +93,30 @@ class _PostContent extends ConsumerWidget {
                       _HtmlContent(post.content, galleryImageUrls: post.images),
                       const SizedBox(height: 16),
                       _ContactInfo(post.contactInfo),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const _DisclaimerInfo(),
                     ],
                   ),
                 ),
               ),
             )
           : const Text('Publicación no encontrada.'),
+    );
+  }
+}
+
+class _DisclaimerInfo extends StatelessWidget {
+  const _DisclaimerInfo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Puebly actúa únicamente como un intermediario que facilita la publicación de información por parte de terceros. Puebly no se responsabiliza por los negocios realizados entre el dueño de la publicación y el usuario final. Se recomienda verificar la autenticidad y las condiciones del servicio/producto ofrecido antes de realizar cualquier transacción.',
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: Colors.black54,
+          ),
     );
   }
 }
