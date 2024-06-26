@@ -244,8 +244,8 @@ class _AdText extends ConsumerWidget {
 
     return adText != null
         ? Padding(
-          padding: const EdgeInsets.only(top: 4, bottom: 6),
-          child: Row(
+            padding: const EdgeInsets.only(top: 4, bottom: 6),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -261,7 +261,8 @@ class _AdText extends ConsumerWidget {
                       }
                     },
                     style: const ButtonStyle(
-                        padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal:4, vertical:0)),
+                        padding: WidgetStatePropertyAll(
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 0)),
                         visualDensity: VisualDensity.compact),
                     child: Text(
                       adButtonText,
@@ -272,7 +273,7 @@ class _AdText extends ConsumerWidget {
                   )
               ],
             ),
-        )
+          )
         : const SizedBox(height: 16);
   }
 }

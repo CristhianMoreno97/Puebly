@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                backgroundColor: WidgetStateProperty.all(Colors.blue),
               ),
               child: const Text(
                 "Filter Page",
@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               onPressed: _openFilterDialog,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                backgroundColor: WidgetStateProperty.all(Colors.blue),
               ),
               child: const Text(
                 "Filter Dialog",
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               onPressed: openFilterDelegate,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                backgroundColor: WidgetStateProperty.all(Colors.blue),
               ),
               child: const Text(
                 "Filter Delegate",
@@ -213,8 +213,8 @@ class FilterPage extends StatelessWidget {
             print(isSelected);
             print(selectedUserList);
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                   border: Border.all(
                 color: isSelected! ? Colors.blue[300]! : Colors.grey[300]!,

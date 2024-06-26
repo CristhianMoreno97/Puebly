@@ -112,8 +112,8 @@ class _ChoiceChip extends ConsumerWidget {
       onSelected: (value) => _handleChipSelected(ref, value),
       side: BorderSide.none,
       color: isSelected
-          ? MaterialStateProperty.all<Color>(ColorManager.brightYellowTint2)
-          : MaterialStateProperty.all<Color>(Colors.white),
+          ? WidgetStateProperty.all<Color>(ColorManager.brightYellowTint2)
+          : WidgetStateProperty.all<Color>(Colors.white),
     );
   }
 

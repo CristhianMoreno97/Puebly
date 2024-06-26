@@ -225,10 +225,10 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
       height: 64,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
+          backgroundColor: WidgetStateProperty.all<Color>(
             isDarkMode ? Colors.black : Colors.white,
           ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -258,10 +258,10 @@ class WebViewWithDrawerState extends ConsumerState<WebViewWithDrawer> {
       padding: const EdgeInsets.all(8),
       visualDensity: VisualDensity.compact,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
+        backgroundColor: WidgetStateProperty.all<Color>(
           ColorManager.pueblyPrimary1,
         ),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

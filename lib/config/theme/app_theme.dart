@@ -35,12 +35,12 @@ class AppTheme {
           shadowColor: Colors.transparent,
           backgroundColor: isDarkMode ? Colors.black : Colors.white,
           elevation: 0,
-          iconTheme: const MaterialStatePropertyAll(
+          iconTheme: const WidgetStatePropertyAll(
             IconThemeData(
               size: 60,
             ),
           ),
-          labelTextStyle: MaterialStatePropertyAll(
+          labelTextStyle: WidgetStatePropertyAll(
             TextStyle(
               color: isDarkMode ? Colors.white : Colors.black,
               fontSize: 20,

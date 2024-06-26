@@ -5,19 +5,19 @@ class StyleManager {
   static ButtonStyle whatsappButtonStyle(BuildContext context,
       {Color bgColor = ColorManager.whastapp}) {
     return ButtonStyle(
-      elevation: MaterialStateProperty.all<double>(10),
-      backgroundColor: MaterialStateProperty.all<Color>(bgColor),
-      textStyle: MaterialStateProperty.all<TextStyle>(
+      elevation: WidgetStateProperty.all<double>(10),
+      backgroundColor: WidgetStateProperty.all<Color>(bgColor),
+      textStyle: WidgetStateProperty.all<TextStyle>(
         Theme.of(context).textTheme.labelLarge!.copyWith(
               fontSize: 18,
             ),
       ),
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
         const EdgeInsets.symmetric(vertical: 8),
       ),
     );

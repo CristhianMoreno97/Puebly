@@ -89,8 +89,8 @@ class WebViewWithTabs extends ConsumerWidget {
       },
       // TODO: difinir estilo del boton en un archivo de tema, por ejemplo: app_theme.dart
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(ColorManager.pueblyPrimary1),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        backgroundColor: WidgetStateProperty.all<Color>(ColorManager.pueblyPrimary1),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
