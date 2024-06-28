@@ -73,22 +73,22 @@ UpdateRelStyle(puebly, fireb, $offsetX="-40", $offsetY="10")
 
 - El **Administrador** interactúa con el sistema **Puebly** a través del **Servidor WordPress** para crear y administrar publicaciones, categorías y otros contenidos relacionados con el municipio.
 - Los **Publicadores de productos y servicios** interactúan con el sistema **Puebly** para realizar publicaciones relacionadas con el municipio.
-- Los **Usuarios de productos y servicios** acceden al sistema **Puebly** para obtener información relevante a través de las diferentes secciones ofrecidas (Comercio, Turismo, Plaza, Empleo, Anuncios, Comunidad, Sabías que) utilizando la **Aplicación Móvil Flutter**.
-- La **Aplicación Móvil Flutter** se comunica con el **Servidor WordPress** utilizando una API REST para obtener las publicaciones categorizadas según el ID de las categorías, mostrando esta información filtrada y organizada según la sección correspondiente.
-- La **Aplicación Móvil Flutter** utiliza los servicios de **Google Analytics** proporcionados por Firebase para rastrear y monitorear la interacción del usuario con las publicaciones, garantizando a los publicadores que sus publicaciones están siendo visualizadas.
+- Los **Usuarios de productos y servicios** acceden al sistema **Puebly** para obtener información relevante a través de las diferentes secciones ofrecidas (Comercio, Turismo, Plaza, Empleo, Anuncios, Comunidad, Sabías que) utilizando la **Aplicación Móvil Puebly**.
+- La **Aplicación Móvil Puebly** se comunica con el **Servidor WordPress** utilizando una API REST para obtener las publicaciones categorizadas según el ID de las categorías, mostrando esta información filtrada y organizada según la sección correspondiente.
+- La **Aplicación Móvil Puebly** utiliza los servicios de **Google Analytics** proporcionados por Firebase para rastrear y monitorear la interacción del usuario con las publicaciones, garantizando a los publicadores que sus publicaciones están siendo visualizadas.
 
 ## Diagrama de Contenedores
 
 El Diagrama de Contenedores proporciona una visión de alto nivel de los diferentes contenedores que forman parte del sistema **Puebly**, ilustrando cómo se comunican e interactúan entre ellos. Los contenedores principales en nuestro sistema son:
 
-1. **Aplicación Móvil Flutter**: Interfaz de usuario que interactúa con el servidor para obtener contenido.
+1. **Aplicación Móvil Puebly**: Interfaz de usuario que interactúa con el servidor para obtener contenido.
 2. **API REST**: Interfaz a través de la cual la aplicación móvil accede a la información de WordPress.
 3. **Servidor WordPress**: Back-end que aloja la API REST y permite la gestión del contenido.
 4. **Base de Datos**: Base de datos relacional que almacena las publicaciones y otros datos de contenido generados en WordPress.
 
 ### Contenedores
 
-#### **Aplicación Móvil Flutter**
+#### **Aplicación Móvil Puebly**
   - **Descripción**: Front-end que consume la API REST del servidor WordPress para mostrar información categorizada.
   - **Tecnología**: Dart, Flutter, Riverpod.
   - **Responsabilidades**: Proveer interfaces de usuario para las secciones de Comercio, Turismo, Plaza, Empleo, Anuncios, Comunidad y Sabías que ofrece cada municipio.
@@ -103,7 +103,7 @@ El Diagrama de Contenedores proporciona una visión de alto nivel de los diferen
 #### **API REST**
   - **Descripción**: Interfaz programática expuesta por el servidor WordPress.
   - **Tecnología**: PHP, WordPress.
-  - **Responsabilidades**: Proveer los endpoints necesarios para que la Aplicación Móvil Flutter obtenga el contenido según las diferentes categorías.
+  - **Responsabilidades**: Proveer los endpoints necesarios para que la Aplicación Móvil Puebly obtenga el contenido según las diferentes categorías.
     - ✅ Proveer lista de municipios.
     - ✅ Proveer las publicaciones más recientes por municipio.
     - ✅ Proveer las publicaciones por categoría.
@@ -141,7 +141,7 @@ Person(usuarios, "Usuarios de productos y servicios", "Buscan información sobre
 System_Boundary(puebly, "Sistema Puebly") {
     Container(server, "Servidor WordPress", "PHP", "Maneja y provee contenido a través de la API REST.")
     Container(spi, "API REST", "API", "Provee acceso a las publicaciones categorizadas.")
-    Container(app, "Aplicación Móvil Flutter", "Dart, Flutter", "Provee interfaces de usuario para las secciones.")
+    Container(app, "Aplicación Móvil Puebly", "Dart, Flutter", "Provee interfaces de usuario para las secciones.")
     ContainerDb(db, "Base de Datos", "MySQL", "Almacena publicaciones, categorías y usuarios.")
 }
 
@@ -160,8 +160,8 @@ UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 ```
 
 ### Interacciones
-- Los **Usuarios de productos y servicios** acceden a la **Aplicación Móvil Flutter** para explorar y beneficiarse de los contenidos.
-- La **Aplicación Móvil Flutter** interactúa con la **API REST** para obtener y mostrar el contenido.
+- Los **Usuarios de productos y servicios** acceden a la **Aplicación Móvil Puebly** para explorar y beneficiarse de los contenidos.
+- La **Aplicación Móvil Puebly** interactúa con la **API REST** para obtener y mostrar el contenido.
 - El **Servidor WordPress** se comunica con la **Base de Datos** para almacenar y recuperar datos.
 - El **Administrador** y los **Publicadores de productos y servicios** interactúan con el **Servidor WordPress** para crear y gestionar contenido.
 - **Google Analytics** recopila y analiza los eventos e interacciones de los usuarios para generar métricas.
