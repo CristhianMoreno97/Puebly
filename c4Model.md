@@ -63,10 +63,10 @@ Rel_Down(publicadores, puebly, "Provee contenido")
 Rel(puebly, fireb, "Envía eventos de usuario")
 
 UpdateLayoutConfig($c4ShapeInRow="3")
-UpdateRelStyle(administrador, puebly, $lineColor="white", $textColor="white", $offsetX="-50", $offsetY="-10")
-UpdateRelStyle(publicadores, puebly, $lineColor="white", $textColor="white", $offsetX="0", $offsetY="-10")
-UpdateRelStyle(usuarios, puebly, $lineColor="white", $textColor="white", $offsetX="50", $offsetY="-10")
-UpdateRelStyle(puebly, fireb, $lineColor="white", $textColor="white", $offsetX="0", $offsetY="10")
+UpdateRelStyle(administrador, puebly, $offsetX="-50", $offsetY="-10")
+UpdateRelStyle(publicadores, puebly, $offsetX="0", $offsetY="-10")
+UpdateRelStyle(usuarios, puebly, $offsetX="50", $offsetY="-10")
+UpdateRelStyle(puebly, fireb, $offsetX="-40", $offsetY="10")
 ```
 
 ### Interacciones 
