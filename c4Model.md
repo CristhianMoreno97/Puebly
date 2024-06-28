@@ -37,9 +37,9 @@ graph TD
   A2 -->|Provee contenido| A3
   A3 -->|Solicita contenido| A2
   A3 -->|Envía eventos de usuario| A1
-  C([Comerciantes]) -->|Consulta y actualiza información de sus negocios| A3
+  C([Comerciantes]) -->|Consultan y publican información de sus negocios| A3
   D([Turistas]) -->|Exploran puntos turísticos y eventos| A3
-  E([Productores Locales]) -->|Publican y comercializan productos| A3
+  E([Productores Locales]) -->|Publican productos y servicios| A3
   F([Empleadores y Trabajadores]) -->|Publican y buscan ofertas de empleo| A3
   G([Comunidad en General]) -->|Reciben anuncios y datos comunitarios| A3
 ```
