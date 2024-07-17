@@ -5,7 +5,7 @@ import 'package:puebly/config/constants/enviroment_constants.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/towns/presentation/providers/sections_providers.dart';
 import 'package:puebly/features/towns/presentation/providers/town_provider.dart';
-import 'package:puebly/features/towns/presentation/widgets/custom_accordion.dart';
+import 'package:puebly/features/towns/presentation/widgets/section_categories_dialog.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_drawer.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_filter_wrap.dart';
@@ -211,6 +211,9 @@ class _SectionViewState extends ConsumerState<_SectionView> {
       controller: scrollController,
       physics: const BouncingScrollPhysics(),
       slivers: [
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 16),
+        ),
         SliverToBoxAdapter(
           child: _SectionHeader(widget.townCategoryId, widget.pageIndex),
         ),
@@ -346,25 +349,12 @@ class _SectionHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomAccordion(
-      townCategoryId: townCategoryId,
-      sectionIndex: pageIndex,
-    );
-  }
-}
-
-class _LoadingProgress extends StatelessWidget {
-  const _LoadingProgress();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        LinearProgressIndicator(
-          color: ColorManager.colorSeed,
-          backgroundColor: Colors.white,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: SectionCategoriesDialog(
+        townId: townCategoryId,
+        sectionIndex: pageIndex,
+      ),
     );
   }
 }
