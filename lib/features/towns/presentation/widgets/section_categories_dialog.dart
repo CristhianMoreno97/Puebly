@@ -55,11 +55,12 @@ class _CategoriesSimpleDialog extends ConsumerWidget {
         .townSections[sectionIndex]
         .childCategories;
     final int? categorySelected =
-        ref.watch(_sectionCategorySelectedProvider)[sectionIndex];
+        ref.watch(sectionCategorySelectedProvider)[sectionIndex];
     final isLoadingSection =
         ref.watch(townProvider(townId)).townSections[sectionIndex].isLoading;
     final isLoadingCategories =
         ref.watch(townProvider(townId)).isChildCategoriesLoading;
+
     void onPressed(Category category) {
       if (isLoadingSection) return;
 
@@ -67,7 +68,7 @@ class _CategoriesSimpleDialog extends ConsumerWidget {
           categorySelected == category.id ? null : category.id;
 
       ref
-          .read(_sectionCategorySelectedProvider.notifier)
+          .read(sectionCategorySelectedProvider.notifier)
           .update((state) => {...state, sectionIndex: selectedFilter});
       ref.read(townProvider(townId).notifier).resetSection(sectionIndex);
       ref.read(townProvider(townId).notifier).getSectionPosts(
@@ -148,5 +149,5 @@ class _CategoryOption extends StatelessWidget {
   }
 }
 
-final _sectionCategorySelectedProvider =
+final sectionCategorySelectedProvider =
     StateProvider<Map<int, int?>>((ref) => {});

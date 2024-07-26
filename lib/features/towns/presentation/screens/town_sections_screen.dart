@@ -103,6 +103,9 @@ class _MainView extends ConsumerWidget {
       onPopInvoked: (bool didPop) {
         if (didPop) return;
 
+        final sectionIndex = ref.read(sectionIndexProvider);
+        _resetAndFetchSection(ref, sectionIndex);
+
         final showSectionsView = ref.read(showTownSectionsViewProvider);
         if (!showSectionsView) {
           ref.read(showTownSectionsViewProvider.notifier).state = true;
@@ -126,7 +129,7 @@ class _MainView extends ConsumerWidget {
           },
           onPageChanged: (index) async {
             final previousIndex = ref.read(sectionIndexProvider);
-            _resetAndFetchSection(ref, {}, previousIndex);
+            _resetAndFetchSection(ref, previousIndex);
             ref.read(sectionIndexProvider.notifier).state = index;
           },
         ),
@@ -135,21 +138,21 @@ class _MainView extends ConsumerWidget {
   }
 
   Future<void> _resetAndFetchSection(
-      WidgetRef ref, Set<int> currentSet, int sectionIndex) async {
-    final selectedFilters =
-        ref.read(selectedFiltersProvider)[sectionIndex] ?? {};
+      WidgetRef ref, int sectionIndex) async {
+    final selectedCategory   =
+        ref.read(sectionCategorySelectedProvider)[sectionIndex];
     final isLoading = ref
         .read(townProvider(townCategoryId))
         .townSections[sectionIndex]
         .isLoading;
 
-    if (selectedFilters.isEmpty || isLoading) return;
+    if (selectedCategory == null || isLoading) return;
 
     ref.read(townProvider(townCategoryId).notifier).resetSection(sectionIndex);
-    ref.read(selectedFiltersProvider.notifier).state[sectionIndex] = currentSet;
+    ref.read(sectionCategorySelectedProvider.notifier).state[sectionIndex] = null;
     await ref.read(townProvider(townCategoryId).notifier).getSectionPosts(
           sectionIndex,
-          childCategories: currentSet.toList(),
+          childCategories: null,
         );
   }
 }
@@ -187,14 +190,14 @@ class _SectionViewState extends ConsumerState<_SectionView> {
           return;
         }
 
-        final selectedFilters = ref.read(selectedFiltersProvider);
-        final List<int> childCategoryIds =
-            selectedFilters[widget.pageIndex]?.toList() ?? [];
+        final selectedFilters = ref.read(sectionCategorySelectedProvider);
+        final int? childCategoryId =
+            selectedFilters[widget.pageIndex];
 
         await ref
             .read(townProvider(widget.townCategoryId).notifier)
             .getSectionPosts(widget.pageIndex,
-                childCategories: childCategoryIds);
+                childCategories: childCategoryId != null ? [childCategoryId] : null);
       }
     });
   }
