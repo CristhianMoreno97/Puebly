@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:puebly/config/theme/color_manager.dart';
+import 'package:puebly/features/towns/infraestructure/services/post_tracking_service.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 import 'package:puebly/features/towns/presentation/widgets/custom_appbar.dart';
 import 'package:puebly/features/towns/presentation/widgets/launch_button.dart';
@@ -25,7 +26,11 @@ class PostScreenState extends ConsumerState<PostScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => initDeepLinks(ref));
+    final postId = int.tryParse(widget.postId);
+    if (postId != null) {
+      _postTrackingInit(ref, postId);
+      Future.microtask(() => initDeepLinks(ref));
+    }
   }
 
   // TODO warning: when opening a second link, initState does not run again
@@ -33,6 +38,11 @@ class PostScreenState extends ConsumerState<PostScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _postTrackingInit(WidgetRef ref, int postId) {
+    final postState = ref.read(postProvider);
+    PostTrackingService().logPostView(postId, postState.post?.title);
   }
 
   Future<void> initDeepLinks(WidgetRef ref) async {
