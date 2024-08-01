@@ -32,4 +32,22 @@ class PostTrackingService {
       rethrow;
     }
   }
-} 
+
+  Future<void> logPostInteraction(int postId, String type) async {
+    final deviceUuid = await getDeviceUuid();
+    final hmac = generateHmac(deviceUuid, EnviromentConstants.sharedSecretKey);
+
+    var data = {
+      'uuid': deviceUuid,
+      'hmac': hmac,
+      'post_id': postId,
+      'type': type, // nombre sugerido: action_tag
+    };
+
+    try {
+      await _dio.post('/api/v1/log-post-interaction', data: data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+}

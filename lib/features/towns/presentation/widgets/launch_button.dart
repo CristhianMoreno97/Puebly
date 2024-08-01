@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puebly/config/theme/color_manager.dart';
 import 'package:puebly/features/analytics/services/analytics_service.dart';
+import 'package:puebly/features/towns/infraestructure/services/post_tracking_service.dart';
 import 'package:puebly/features/towns/presentation/providers/post_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,18 +36,30 @@ class LaunchButton extends ConsumerWidget {
                   post?.title ?? '',
                   post?.id ?? 0,
                 );
+                PostTrackingService().logPostInteraction(
+                  post?.id ?? 0,
+                  'whatsapp',
+                );
                 break;
               case 'call':
                 AnalyticsService.selectedCallButton(
-                    post?.title ?? '',
-                    post?.id ?? 0,
-                  );
+                  post?.title ?? '',
+                  post?.id ?? 0,
+                );
+                PostTrackingService().logPostInteraction(
+                  post?.id ?? 0,
+                  'call',
+                );
                 break;
               case 'location':
                 AnalyticsService.selectedLocationButton(
-                    post?.title ?? '',
-                    post?.id ?? 0,
-                  );
+                  post?.title ?? '',
+                  post?.id ?? 0,
+                );
+                PostTrackingService().logPostInteraction(
+                  post?.id ?? 0,
+                  'location',
+                );
                 break;
               default:
             }
